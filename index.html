@@ -12,6 +12,122 @@
       href="https://unicons.iconscout.com/release/v4.0.8/css/line.css"
     />
   </head>
+  <style>
+/* Tooltip container */
+.services__modal-service {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+}
+
+.services__modal-services {
+    overflow-y: auto;         
+    padding-right: 0.5rem;
+    flex-grow: 1;            
+}
+
+/* Tooltip bubble */
+.services__modal-service .tech-tooltip {
+    position: absolute;
+    bottom: 110%;
+    left: 0;
+    background: #1f2933;
+    color: #f9fafb;
+    padding: 0.6rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateY(6px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    z-index: 10;
+}
+
+/* Tooltip arrow */
+.services__modal-service .tech-tooltip::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 1rem;
+    border-width: 6px;
+    border-style: solid;
+    border-color: #1f2933 transparent transparent transparent;
+}
+
+/* Show tooltip on hover */
+.services__modal-service:hover .tech-tooltip {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Optional tech badge styling */
+.tech-tooltip span {
+    background: #374151;
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    margin-right: 0.25rem;
+    display: inline-block;
+    margin-top: 0.2rem;
+}
+
+
+/* Modal overlay */
+.services__modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+/* Modal box */
+.services__modal-content {
+    position: relative;
+    /*background: #fff;*/
+    width: 90%;
+    max-width: 1000px;
+    max-height: 85vh;
+
+    display: flex;
+    flex-direction: column;   /* 🔥 enables fixed header */
+    border-radius: 12px;
+}
+
+/* Keep close button visible */
+.services__modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.6rem;
+    cursor: pointer;
+    z-index: 20;
+    /*background: #fff;*/
+    padding: 0.25rem;
+    border-radius: 50%;
+}
+
+/* Logo container */
+.modal-image-container {
+    flex-shrink: 0;          
+    position: relative;
+    /*background: #fff;*/
+    padding-bottom: 1rem;
+    z-index: 10;
+}
+
+/* Optional: smoother scroll */
+.services__modal-content {
+    scroll-behavior: smooth;
+}
+</style>
 
   <body oncontextmenu="return false">
     <header class="header" id="header">
@@ -56,7 +172,7 @@
             </li>
             <li class="nav__item">
               <a href="#contact" class="nav__link">
-                <i class="uil uil-message nav__icon"></i>Contact-Me
+                <i class="uil uil-message nav__icon"></i>Contact Me
               </a>
             </li>
           </ul>
@@ -134,7 +250,7 @@
                 Data Analyst & Scientist
               </h3>
               <p class="home__description">
-                A Senior Analyst working at the City of Boroondara, Melbourne, Victoria. 
+                A Senior Data Analyst working at the City of Boroondara, Melbourne, Victoria. 
                 <!--<strong>Canara Engineering College </strong>, Manglore.-->
               </p>
               <a href="#contact" class="button button--flex">
@@ -208,6 +324,118 @@
             <div class="qualification__content qualifiation__active services__content" data-content id="education" 
                 style="display: flex; flex-wrap: nowrap; gap: 10px; overflow-x: auto; padding-bottom: 20px;">
     
+                <div class="qualification__data" style="min-width: 500px; flex: 1 1 auto; padding: 0; gap: 0px;">
+                    <div>
+                        <h3 class="qualification__title">Senior Data Analyst</h3>
+                        <span class="qualification__subtitle">
+                            City Of Boroondara<br />Melbourne, Victoria, Australia
+                        </span>
+                        <div class="qualification__calender">
+                            <i class="uil uil-calendar-alt"></i>
+                            May 2025 - Current
+                        </div>
+                        <span class="button button--flex button--small button--link services__button">
+                            View More
+                            <i class="uil uil-arrow-right button__icon"></i>
+                        </span>
+                        <div class="services__modal">
+                            <div class="services__modal-content">
+                                <div class="modal-image-container">
+                                  <img src="assets\img\work_experience\boroondara.webp" alt="City of Boroondara" class="modal-image">
+                              </div>
+                                <i class="uil uil-times services__modal-close"></i>
+                                <ul class="services__modal-services grid">
+                                    <!-- Executive & Enterprise Dashboards -->
+                                    <li class="services__modal-service">
+                                        <i class="uil uil-check-circle services__moda-icon"></i>
+                                        <p>Designed and delivered executive-grade Power BI dashboards across Customer Experience, Councillor Correspondence, CRM analytics, Finance, and Communications, actively used by the Mayor, Councillors, Directors, and CEO.</p>
+                                        <div class="tech-tooltip">
+                                            <span>Power BI</span><span>DAX</span><span>Power Query</span><span>Azure SQL</span><span>RLS</span>
+                                        </div>
+                                    </li>
+
+                                    <li class="services__modal-service">
+                                        <i class="uil uil-check-circle services__moda-icon"></i>
+                                        <p>Led the development of an award-winning Statutory Building Permit analytics dashboard, recognised at the State Urban Planning Annual Awards for excellence in data-driven regulatory reporting.</p>
+                                        <div class="tech-tooltip">
+                                            <span>Power BI</span><span>DAX</span><span>Azure SQL</span><span>Planning Data</span>
+                                        </div>
+                                    </li>
+
+                                    <!-- CRM & Customer Analytics -->
+                                    <li class="services__modal-service">
+                                        <i class="uil uil-check-circle services__moda-icon"></i>
+                                        <p>Built the organisation’s primary CRM Request Analytics Dashboard, delivering insights into productivity, service performance, and customer demand while identifying data quality and system implementation defects.</p>
+                                        <div class="tech-tooltip">
+                                            <span>Power BI</span><span>CRM</span><span>DAX</span><span>Data Quality</span>
+                                        </div>
+                                    </li>
+
+                                    <li class="services__modal-service">
+                                        <i class="uil uil-check-circle services__moda-icon"></i>
+                                        <p>Delivered an eForm feedback analytics dashboard that enabled rapid identification of customer portal defects and improvements to the digital customer experience.</p>
+                                        <div class="tech-tooltip">
+                                            <span>Power BI</span><span>eForms</span><span>CX Analytics</span>
+                                        </div>
+                                    </li>
+
+                                    <!-- Finance -->
+                                    <li class="services__modal-service">
+                                        <i class="uil uil-check-circle services__moda-icon"></i>
+                                        <p>Developed a mission-critical finance dashboard following Oracle Finance implementation, consolidating GL, Purchase Orders, Contracts, Budgets, and Cost Centres across all directorates into a single executive view.</p>
+                                        <div class="tech-tooltip">
+                                            <span>Oracle Finance</span><span>Power BI</span><span>GL</span><span>PO</span><span>Azure SQL</span>
+                                        </div>
+                                    </li>
+
+                                    <!-- Self-Service & BI Engineering -->
+                                    <li class="services__modal-service">
+                                        <i class="uil uil-check-circle services__moda-icon"></i>
+                                        <p>Enabled self-service analytics for Strategic Communications by integrating eight disparate data sources with over 72 Power Query transformations, including SSRS (web imports), Viva Engage, PayGlobal, and Microsoft Communications platforms.</p>
+                                        <div class="tech-tooltip">
+                                            <span>Power BI</span><span>Power Query</span><span>SSRS</span><span>Viva Engage</span><span>PayGlobal</span>
+                                        </div>
+                                    </li>
+
+                                    <li class="services__modal-service">
+                                        <i class="uil uil-check-circle services__moda-icon"></i>
+                                        <p>Standardised enterprise reporting through a custom Power BI JSON theming framework, reducing dashboard development time by up to one week and ensuring consistent visual design.</p>
+                                        <div class="tech-tooltip">
+                                            <span>Power BI</span><span>JSON</span><span>UI/UX</span><span>Automation</span>
+                                        </div>
+                                    </li>
+
+                                    <!-- Data Architecture & Governance -->
+                                    <li class="services__modal-service">
+                                        <i class="uil uil-check-circle services__moda-icon"></i>
+                                        <p>Engineered an automated Power BI lineage and dependency extraction system, enabling data engineers to identify active production dependencies during the organisation’s data warehouse transformation program.</p>
+                                        <div class="tech-tooltip">
+                                            <span>R</span><span>SQL</span><span>Tabular Editor 2</span><span>Metadata</span>
+                                        </div>
+                                    </li>
+
+                                    <li class="services__modal-service">
+                                        <i class="uil uil-check-circle services__moda-icon"></i>
+                                        <p>Implemented Row-Level Security (RLS) and Azure SQL–based semantic models to deliver secure, scalable, and governed analytics solutions.</p>
+                                        <div class="tech-tooltip">
+                                            <span>RLS</span><span>Azure SQL</span><span>Power BI</span><span>Governance</span>
+                                        </div>
+                                    </li>
+
+                                    <!-- Advanced Analytics -->
+                                    <li class="services__modal-service">
+                                        <i class="uil uil-check-circle services__moda-icon"></i>
+                                        <p>Built a geospatial analytics solution linking Dynamic CRM cases to the nearest shopping centres and precincts, using spatial buffers, shortest path algorithms for geo-coded cases, and NLP techniques to infer locations from free-text fields.</p>
+                                        <div class="tech-tooltip">
+                                            <span>R</span><span>Leaflet</span><span>Geospatial</span><span>Shortest Path</span><span>NLP</span>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- Qualification 1 -->
                 <div class="qualification__data" style="min-width: 500px; flex: 1 1 auto; padding: 0; gap: 0px;">
                     <div>
@@ -260,7 +488,7 @@
                     </div>
                 </div>
     
-                <!-- Qualification 2 (Example: University) -->
+                
                 <div class="qualification__data" style="min-width: 500px; flex: 1 1 auto; padding: 0; gap: 0px;">
                     <div>
                         <h3 class="qualification__title">Data Analyst</h3>
@@ -1024,6 +1252,25 @@
               </a>
             </div>
           </div>
+
+          <!-- ------------------------portfollio 7-------------------- -->
+          <div class="portfolio__content grid swiper-slide">
+            <div class="portfolio__images">
+            <img src="assets/img/projects/tennis_cover.png" class="portfolio__img" style="height: 200px; object-fit: cover;"/>
+            <img src="assets/img/projects/tennis_season.png" class="portfolio__img" style="height: 200px; object-fit: cover;"/>
+            </div>
+            <div class="portfolio__data">
+              <h3 class="portfolio__title">Website Developments</h3>
+              <p class="portfolio__description">
+                As I come from a computer science background, I have experience in web development which I wanted to get back into after years of solely working on data projects. Therefore this year, I have set myself a challenge of creating multiple websites for various use cases.
+                One of these use cases was creating a Tennis For Dummies website during the Australian Open for my friends who have never watched a game. The website provides comprehensive information about the sport, including rules, techniques, and player profiles whilst utilising key web development principles through the use of 
+                HTML, CSS and JavaScript. I have incorprated refresh API calls so that information on the website updates with each match and time of the year. 
+              </p>
+              <a download="" href="assets\Project\Tennis For Dummies.html" class="button button--flex button--small portfolio__button" target="_blank">
+                  Tennis For Dummies<i class="uil uil-external-link-alt button__icon"></i>
+              </a>
+            </div>
+          </div>
           </div>
 
           
@@ -1118,7 +1365,7 @@
               <div>
                 <h3 class="contact__title">Location</h3>
                 <span class="contact__subtitle"
-                  >Perth, Western Australia, Australia</span
+                  >Melbourne, Victoria, Australia</span
                 >
               </div>
             </div>
