@@ -1,0 +1,1814 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tennis For Dummies - Grand Slams, Rankings & Rules</title>
+    <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Playfair+Display:wght@400;700;900&family=Work+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --court-green: #2E7D32;
+            --court-clay: #C85A3D;
+            --court-blue: #0F4C81;
+            --grass-green: #4A7C59;
+            --white: #FFFFFF;
+            --off-white: #F5F5F0;
+            --dark: #1A1A1A;
+            --gold: #D4AF37;
+            --shadow: rgba(0, 0, 0, 0.15);
+        }
+
+        body {
+            font-family: 'Work Sans', sans-serif;
+            background: var(--off-white);
+            color: var(--dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: var(--dark);
+            color: var(--white);
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 1.5rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2rem;
+            letter-spacing: 3px;
+            color: var(--gold);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gold);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover:after {
+            width: 100%;
+        }
+
+        /* Main Content */
+        main {
+            margin-top: 80px;
+        }
+
+        .page {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Section */
+        .hero {
+            height: 70vh;
+            background: linear-gradient(135deg, var(--court-green) 0%, var(--grass-green) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 40px,
+                rgba(255, 255, 255, 0.03) 40px,
+                rgba(255, 255, 255, 0.03) 80px
+            );
+            animation: courtLines 20s linear infinite;
+        }
+
+        @keyframes courtLines {
+            from { transform: translateY(0); }
+            to { transform: translateY(80px); }
+        }
+
+        .hero-content {
+            text-align: center;
+            color: var(--white);
+            z-index: 1;
+            max-width: 900px;
+            padding: 2rem;
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 5rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            text-shadow: 4px 4px 8px rgba(0, 0, 0, 0.4);
+            letter-spacing: 2px;
+        }
+
+        .hero p {
+            font-size: 1.5rem;
+            font-weight: 300;
+            opacity: 0.95;
+        }
+
+        /* Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
+            text-align: center;
+            color: var(--dark);
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background: var(--gold);
+            margin: 1rem auto;
+        }
+
+        /* Grand Slam Grid */
+        .slam-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .slam-card {
+            background: var(--white);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px var(--shadow);
+            cursor: pointer;
+            transition: all 0.4s ease;
+            position: relative;
+        }
+
+        .slam-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+        }
+
+        .slam-header {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-family: 'Bebas Neue', cursive;
+            font-size: 3rem;
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slam-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.2), rgba(0,0,0,0));
+        }
+
+        .australian-open { background: linear-gradient(135deg, #0F4C81, #1976D2); }
+        .french-open { background: linear-gradient(135deg, #C85A3D, #E67E50); }
+        .wimbledon { background: linear-gradient(135deg, #2E7D32, #4A7C59); }
+        .us-open { background: linear-gradient(135deg, #1A237E, #3949AB); }
+
+        .slam-content {
+            padding: 2rem;
+        }
+
+        .slam-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+            color: var(--dark);
+        }
+
+        .slam-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .slam-info-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .slam-info-item strong {
+            color: var(--court-green);
+        }
+
+        /* Rules Section */
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .rule-card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px var(--shadow);
+        }
+
+        .rule-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--court-green);
+        }
+
+        .rule-card ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .rule-card li {
+            padding: 0.8rem 0;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+
+        .rule-card li:before {
+            content: '•';
+            position: absolute;
+            left: 0;
+            color: var(--gold);
+            font-size: 1.5rem;
+            line-height: 1;
+        }
+
+        /* Rankings Table */
+        .rankings-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-top: 3rem;
+        }
+
+        .ranking-section {
+            background: var(--white);
+            border-radius: 15px;
+            padding: 2rem;
+            box-shadow: 0 5px 20px var(--shadow);
+        }
+
+        .ranking-section h3 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            color: var(--court-green);
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .ranking-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .ranking-table thead {
+            background: var(--court-green);
+            color: var(--white);
+        }
+
+        .ranking-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .ranking-table td {
+            padding: 1rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        .ranking-table tbody tr:hover {
+            background: var(--off-white);
+        }
+
+        .rank-number {
+            font-weight: 700;
+            color: var(--gold);
+            font-size: 1.2rem;
+        }
+
+        /* Season Calendar */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .calendar-item {
+            background: var(--white);
+            padding: 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 3px 15px var(--shadow);
+            border-left: 5px solid var(--court-green);
+        }
+
+        .calendar-item h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--dark);
+        }
+
+        .calendar-item .date {
+            color: var(--court-green);
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .calendar-item .location {
+            color: #666;
+            font-size: 0.9rem;
+            margin-top: 0.3rem;
+        }
+
+        /* Grand Slam Detail Page */
+        .slam-detail {
+            background: var(--white);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 40px var(--shadow);
+        }
+
+        .slam-detail-header {
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            position: relative;
+        }
+
+        .slam-detail-header h2 {
+            font-family: 'Bebas Neue', cursive;
+            font-size: 5rem;
+            letter-spacing: 5px;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+
+        .slam-detail-header .subtitle {
+            font-size: 1.5rem;
+            opacity: 0.9;
+            z-index: 1;
+        }
+
+        .slam-detail-content {
+            padding: 4rem;
+        }
+
+        .detail-section {
+            margin-bottom: 4rem;
+        }
+
+        .detail-section h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 2rem;
+            color: var(--court-green);
+        }
+
+        .champions-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+        }
+
+        .champion-year {
+            background: var(--off-white);
+            padding: 1rem;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .champion-year .year {
+            font-weight: 700;
+            color: var(--gold);
+            font-size: 1.2rem;
+        }
+
+        .champion-year .name {
+            margin-top: 0.5rem;
+            color: var(--dark);
+        }
+
+        /* Draw/Results Section */
+        .draw-section {
+            background: var(--off-white);
+            padding: 2rem;
+            border-radius: 10px;
+            margin-top: 2rem;
+        }
+
+        .match-result {
+            background: var(--white);
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .match-players {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .player-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .score {
+            font-weight: 700;
+            color: var(--court-green);
+            font-size: 1.2rem;
+        }
+
+        /* Back Button */
+        .back-btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: var(--court-green);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 600;
+            margin-bottom: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            background: var(--grass-green);
+            transform: translateX(-5px);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3rem;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .rankings-container {
+                grid-template-columns: 1fr;
+            }
+
+            .slam-detail-header h2 {
+                font-size: 3rem;
+            }
+
+            .slam-detail-content {
+                padding: 2rem;
+            }
+
+            .rules-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Loading Animation */
+        @keyframes ballBounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 3rem;
+        }
+
+        .tennis-ball {
+            width: 50px;
+            height: 50px;
+            background: #CCFF00;
+            border-radius: 50%;
+            margin: 0 auto;
+            animation: ballBounce 1s infinite;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Official Website Button */
+        .official-website-btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.8rem 1.5rem;
+            background: var(--dark);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 25px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .official-website-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .official-website-btn.ao-btn:hover {
+            background: #0F4C81;
+        }
+
+        .official-website-btn.fo-btn:hover {
+            background: #C85A3D;
+        }
+
+        .official-website-btn.wimb-btn:hover {
+            background: #2E7D32;
+        }
+
+        .official-website-btn.uso-btn:hover {
+            background: #1A237E;
+        }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="nav-content">
+            <div class="logo">TENNIS FOR DUMMIES</div>
+            <ul class="nav-links">
+                <li><a href="#" onclick="showPage('home')">Home</a></li>
+                <li><a href="#" onclick="showPage('rules')">Rules & How to Play</a></li>
+                <li><a href="#" onclick="showPage('grand-slams')">Grand Slams</a></li>
+                <li><a href="#" onclick="showPage('season-2026')">2026 Season</a></li>
+                <li><a href="#" onclick="showPage('rankings')">Rankings</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <main>
+        <!-- Home Page -->
+        <div id="home" class="page active">
+            <div class="hero">
+                <div class="hero-content">
+                    <h1>Tennis For Dummies</h1>
+                    <p>Your comprehensive guide to what I know about this sport...</p>
+                </div>
+            </div>
+            <div class="container">
+                <h2 class="section-title">Explore the Grand Slams</h2>
+                <div class="slam-grid">
+                    <div class="slam-card" onclick="showSlamDetail('australian-open')">
+                        <div class="slam-header australian-open">
+                            <span>AUSTRALIAN OPEN</span>
+                        </div>
+                        <div class="slam-content">
+                            <h3>Australian Open</h3>
+                            <div class="slam-info">
+                                <div class="slam-info-item">
+                                    <span>Surface:</span>
+                                    <strong>Hard Court</strong>
+                                </div>
+                                <div class="slam-info-item">
+                                    <span>Location:</span>
+                                    <strong>Melbourne, Australia</strong>
+                                </div>
+                                <div class="slam-info-item">
+                                    <span>When:</span>
+                                    <strong>January</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slam-card" onclick="showSlamDetail('french-open')">
+                        <div class="slam-header french-open">
+                            <span>ROLAND GARROS</span>
+                        </div>
+                        <div class="slam-content">
+                            <h3>French Open</h3>
+                            <div class="slam-info">
+                                <div class="slam-info-item">
+                                    <span>Surface:</span>
+                                    <strong>Clay</strong>
+                                </div>
+                                <div class="slam-info-item">
+                                    <span>Location:</span>
+                                    <strong>Paris, France</strong>
+                                </div>
+                                <div class="slam-info-item">
+                                    <span>When:</span>
+                                    <strong>May - June</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slam-card" onclick="showSlamDetail('wimbledon')">
+                        <div class="slam-header wimbledon">
+                            <span>WIMBLEDON</span>
+                        </div>
+                        <div class="slam-content">
+                            <h3>Wimbledon</h3>
+                            <div class="slam-info">
+                                <div class="slam-info-item">
+                                    <span>Surface:</span>
+                                    <strong>Grass</strong>
+                                </div>
+                                <div class="slam-info-item">
+                                    <span>Location:</span>
+                                    <strong>London, England</strong>
+                                </div>
+                                <div class="slam-info-item">
+                                    <span>When:</span>
+                                    <strong>June - July</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slam-card" onclick="showSlamDetail('us-open')">
+                        <div class="slam-header us-open">
+                            <span>US OPEN</span>
+                        </div>
+                        <div class="slam-content">
+                            <h3>US Open</h3>
+                            <div class="slam-info">
+                                <div class="slam-info-item">
+                                    <span>Surface:</span>
+                                    <strong>Hard Court</strong>
+                                </div>
+                                <div class="slam-info-item">
+                                    <span>Location:</span>
+                                    <strong>New York, USA</strong>
+                                </div>
+                                <div class="slam-info-item">
+                                    <span>When:</span>
+                                    <strong>August - September</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rules & How to Play -->
+        <div id="rules" class="page">
+            <div class="container">
+                <h2 class="section-title">Tennis Rules & How to Play</h2>
+                <div class="rules-grid">
+                    <div class="rule-card">
+                        <h3>The Basics</h3>
+                        <ul>
+                            <li>Tennis is played between two players (singles) or four players (doubles)</li>
+                            <li>The objective is to hit the ball over the net into the opponent's court</li>
+                            <li>The ball must bounce once before being returned</li>
+                            <li>Players alternate serves each game</li>
+                            <li>The first player to win 6 games wins a set (must win by 2)</li>
+                            <li>Matches are best of 3 or 5 sets</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <h3>Scoring System</h3>
+                        <ul>
+                            <li>Points: 0 (Love), 15, 30, 40, Game</li>
+                            <li>Deuce: When score is 40-40</li>
+                            <li>Advantage: One point after deuce</li>
+                            <li>Game: Win by 2 points after deuce</li>
+                            <li>Set: First to 6 games (win by 2)</li>
+                            <li>Tiebreak: At 6-6, first to 7 points (win by 2)</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <h3>The Court</h3>
+                        <ul>
+                            <li>Dimensions: 78 feet (23.77m) long</li>
+                            <li>Singles width: 27 feet (8.23m)</li>
+                            <li>Doubles width: 36 feet (10.97m)</li>
+                            <li>Net height: 3 feet (0.914m) at center</li>
+                            <li>Service boxes on each side</li>
+                            <li>Baseline and service lines</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <h3>Serving Rules</h3>
+                        <ul>
+                            <li>Server stands behind baseline</li>
+                            <li>Serve diagonally to opponent's service box</li>
+                            <li>Two serve attempts allowed</li>
+                            <li>Foot fault if stepping on/over baseline</li>
+                            <li>Let: Serve touches net but lands in - replay</li>
+                            <li>Alternate sides after each point</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <h3>Key Rules</h3>
+                        <ul>
+                            <li>Ball must land inside the lines (lines are in)</li>
+                            <li>Can't touch net with racket or body</li>
+                            <li>Ball can't bounce twice on your side</li>
+                            <li>Can't hit ball before it crosses net</li>
+                            <li>Ball can only be hit once per return</li>
+                            <li>Challenges allowed (Hawk-Eye system)</li>
+                        </ul>
+                    </div>
+
+                    <div class="rule-card">
+                        <h3>Grand Slam Specifics</h3>
+                        <ul>
+                            <li>Men play best of 5 sets</li>
+                            <li>Women play best of 3 sets</li>
+                            <li>Final set rules vary by tournament</li>
+                            <li>Australian Open: 10-point super tiebreak at 6-6 in final set</li>
+                            <li>French Open: No tiebreak in final set</li>
+                            <li>Wimbledon: Tiebreak at 12-12 in final set</li>
+                            <li>US Open: Regular tiebreak at 6-6 in final set</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grand Slams Overview -->
+        <div id="grand-slams" class="page">
+            <div class="container">
+                <h2 class="section-title">The Four Grand Slams</h2>
+                <p style="text-align: center; max-width: 800px; margin: 0 auto 3rem; font-size: 1.1rem; color: #666;">
+                    The Grand Slam tournaments are the four most prestigious tennis events in the world. 
+                    Click on any tournament to learn more about its history, champions, and current results.
+                </p>
+                <div class="slam-grid">
+                    <div class="slam-card" onclick="showSlamDetail('australian-open')">
+                        <div class="slam-header australian-open">
+                            <span>AUSTRALIAN OPEN</span>
+                        </div>
+                        <div class="slam-content">
+                            <h3>Australian Open</h3>
+                            <p>The first Grand Slam of the year, played on hard courts in the blazing Australian summer. Known for its blue courts and intense heat.</p>
+                            <div class="slam-info">
+                                <div class="slam-info-item">
+                                    <span>Status: </span>
+                                    <strong>Currently Playing (Semifinals)</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slam-card" onclick="showSlamDetail('french-open')">
+                        <div class="slam-header french-open">
+                            <span>ROLAND GARROS</span>
+                        </div>
+                        <div class="slam-content">
+                            <h3>French Open</h3>
+                            <p>The only Grand Slam played on clay courts. The slow surface and high bounce make it the most physically demanding tournament.</p>
+                            <div class="slam-info">
+                                <div class="slam-info-item">
+                                    <span>Next: </span>
+                                    <strong>May 25 - June 8, 2026</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slam-card" onclick="showSlamDetail('wimbledon')">
+                        <div class="slam-header wimbledon">
+                            <span>WIMBLEDON</span>
+                        </div>
+                        <div class="slam-content">
+                            <h3>Wimbledon</h3>
+                            <p>The oldest and most prestigious tennis tournament. Famous for its grass courts, strict dress code, and strawberries & cream tradition.</p>
+                            <div class="slam-info">
+                                <div class="slam-info-item">
+                                    <span>Next: </span>
+                                    <strong>June 29 - July 12, 2026</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="slam-card" onclick="showSlamDetail('us-open')">
+                        <div class="slam-header us-open">
+                            <span>US OPEN</span>
+                        </div>
+                        <div class="slam-content">
+                            <h3>US Open</h3>
+                            <p>The final Grand Slam of the year, played in New York City. Known for its electric atmosphere and night sessions under the lights.</p>
+                            <div class="slam-info">
+                                <div class="slam-info-item">
+                                    <span>Next: </span>
+                                    <strong>August 31 - September 13, 2026</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Australian Open Detail -->
+        <div id="australian-open-detail" class="page">
+            <div class="container">
+                <a href="#" class="back-btn" onclick="showPage('grand-slams')">&larr; Back to Grand Slams</a>
+                <div class="slam-detail">
+                    <div class="slam-detail-header australian-open">
+                        <h2>AUSTRALIAN OPEN 2026</h2>
+                        <p class="subtitle">January 18 - February 1, 2026 | Melbourne Park</p>
+                        <a href="https://ausopen.com/" target="_blank" class="official-website-btn ao-btn">Home | AO</a>
+                    </div>
+                    <div class="slam-detail-content">
+                        <div class="detail-section">
+                            <h3>About the Australian Open</h3>
+                            <p>The Australian Open is the first of the four Grand Slam tennis tournaments held each year. Played on hard courts at Melbourne Park, it's known for its extreme heat, vibrant blue courts, and passionate crowds. The tournament moved to its current location in 1988 and has since grown to become one of the world's premier sporting events.</p>
+                            <br>
+                            <p><strong>Surface:</strong> Plexicushion hard court (blue)<br>
+                            <strong>Venue:</strong> Melbourne Park<br>
+                            <strong>Prize Money:</strong> $96.5 million AUD (2026)<br>
+                            <strong>Winner's Prize:</strong> $4.15 million AUD each (singles)</p>
+                        </div>
+
+                        <div class="detail-section">
+                            <h3>2026 Tournament - SEMIFINALS</h3>
+                            <div class="draw-section" id="ao-schedule-container">
+                                <div class="loading">
+                                    <div class="tennis-ball"></div>
+                                    <p style="margin-top: 1rem;">Loading latest schedule...</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-section">
+                            <h3>Recent Champions (2020-2025)</h3>
+                            <div class="champions-list">
+                                <div class="champion-year">
+                                    <div class="year">2025</div>
+                                    <div class="name">Jannik Sinner 🇮🇹</div>
+                                    <div class="name">Madison Keys 🇺🇸</div>
+                                </div>
+                                <div class="champion-year">
+                                    <div class="year">2024</div>
+                                    <div class="name">Jannik Sinner 🇮🇹</div>
+                                    <div class="name">Aryna Sabalenka 🇧🇾</div>
+                                </div>
+                                <div class="champion-year">
+                                    <div class="year">2023</div>
+                                    <div class="name">Novak Djokovic 🇷🇸</div>
+                                    <div class="name">Aryna Sabalenka 🇧🇾</div>
+                                </div>
+                                <div class="champion-year">
+                                    <div class="year">2022</div>
+                                    <div class="name">Rafael Nadal 🇪🇸</div>
+                                    <div class="name">Ashleigh Barty 🇦🇺</div>
+                                </div>
+                                <div class="champion-year">
+                                    <div class="year">2021</div>
+                                    <div class="name">Novak Djokovic 🇷🇸</div>
+                                    <div class="name">Naomi Osaka 🇯🇵</div>
+                                </div>
+                                <div class="champion-year">
+                                    <div class="year">2020</div>
+                                    <div class="name">Novak Djokovic 🇷🇸</div>
+                                    <div class="name">Sofia Kenin 🇺🇸</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-section">
+                            <h3>Tournament Records & Facts</h3>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>Most Men's Titles:</strong> Novak Djokovic (10 titles - 2008, 2011-13, 2015-16, 2019-21, 2023)
+                                </li>
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>Most Women's Titles:</strong> Margaret Court (11 titles)
+                                </li>
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>Hottest Day:</strong> 42.2°C (108°F) in 2014
+                                </li>
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>First Tournament:</strong> 1905 (moved to Melbourne Park in 1988)
+                                </li>
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>Retractable Roofs:</strong> 3 courts (Rod Laver, John Cain, Margaret Court arenas)
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- French Open Detail -->
+        <div id="french-open-detail" class="page">
+            <div class="container">
+                <a href="#" class="back-btn" onclick="showPage('grand-slams')">&larr; Back to Grand Slams</a>
+                <div class="slam-detail">
+                    <div class="slam-detail-header french-open">
+                        <h2>FRENCH OPEN</h2>
+                        <p class="subtitle">May 25 - June 8, 2026 | Roland Garros, Paris</p>
+                        <a href="https://www.rolandgarros.com/en-us/" target="_blank" class="official-website-btn fo-btn">Roland-Garros 2026 - The official site</a>
+                    </div>
+                    <div class="slam-detail-content">
+                        <div class="detail-section">
+                            <h3>About Roland Garros</h3>
+                            <p>The French Open, also called Roland Garros, is the premier clay court championship in the world and the only Grand Slam tournament currently held on this surface. The slow-playing surface and five-set matches (for men) make it one of the most physically demanding tournaments. The distinctive red clay courts and Parisian atmosphere make it one of tennis's most iconic events.</p>
+                            <br>
+                            <p><strong>Surface:</strong> Red clay<br>
+                            <strong>Venue:</strong> Stade Roland Garros<br>
+                            <strong>Prize Money:</strong> €53.5 million (2026 estimated)<br>
+                            <strong>Unique Feature:</strong> No final set tiebreak - play continues until 2-game advantage</p>
+                        </div>
+
+                        <div class="detail-section">
+                            <h3>Recent Champions (2020-2025)</h3>
+                            <div class="champions-list">
+                                <div class="champion-year">
+                                    <div class="year">2025</div>
+                                    <div class="name">Carlos Alcaraz 🇪🇸</div>
+                                    <div class="name">Iga Świątek 🇵🇱</div>
+                                </div>
+                                <div class="champion-year">
+                                    <div class="year">2024</div>
+                                    <div class="name">Carlos Alcaraz 🇪🇸</div>
+                                    <div class="name">Iga Świątek 🇵🇱</div>
+                                </div>
+                                <div class="champion-year">
+                                    <div class="year">2023</div>
+                                    <div class="name">Novak Djokovic 🇷🇸</div>
+                                    <div class="name">Iga Świątek 🇵🇱</div>
+                                </div>
+                                <div class="champion-year">
+                                    <div class="year">2022</div>
+                                    <div class="name">Rafael Nadal 🇪🇸</div>
+                                    <div class="name">Iga Świątek 🇵🇱</div>
+                                </div>
+                                <div class="champion-year">
+                                    <div class="year">2021</div>
+                                    <div class="name">Novak Djokovic 🇷🇸</div>
+                                    <div class="name">Barbora Krejčíková 🇨🇿</div>
+                                </div>
+                                <div class="champion-year">
+                                    <div class="year">2020</div>
+                                    <div class="name">Rafael Nadal 🇪🇸</div>
+                                    <div class="name">Iga Świątek 🇵🇱</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-section">
+                            <h3>Tournament Records & Facts</h3>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>Most Men's Titles:</strong> Rafael Nadal (14 titles - "King of Clay")
+                                </li>
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>Most Women's Titles:</strong> Chris Evert (7 titles)
+                                </li>
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>First Tournament:</strong> 1891 (only French nationals until 1925)
+                                </li>
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>Named After:</strong> French aviator Roland Garros (renamed in 1928)
+                                </li>
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>Clay Courts:</strong> 15 tons of crushed brick used annually
+                                </li>
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>Main Court:</strong> Court Philippe Chatrier (capacity 15,225) - has retractable roof
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Wimbledon Detail -->
+        <div id="wimbledon-detail" class="page">
+            <div class="container">
+                <a href="#" class="back-btn" onclick="showPage('grand-slams')">&larr; Back to Grand Slams</a>
+                <div class="slam-detail">
+                    <div class="slam-detail-header wimbledon">
+                        <h2>WIMBLEDON</h2>
+                        <p class="subtitle">June 29 - July 12, 2026 | All England Club, London</p>
+                        <a href="https://www.wimbledon.com/" target="_blank" class="official-website-btn wimb-btn">Home - The Championships, Wimbledon - Official Site by IBM</a>
+                    </div>
+                    <div class="slam-detail-content">
+                        <div class="detail-section">
+                            <h3>About Wimbledon</h3>
+                            <p>Wimbledon is the oldest tennis tournament in the world and is widely regarded as the most prestigious. It is the only Grand Slam still played on grass courts, the game's original surface. Famous for its traditions including the strict all-white dress code, royal patronage, strawberries and cream, and the lack of sponsor advertising around the courts.</p>
+                            <br>
+                            <p><strong>Surface:</strong> Grass<br>
+                            <strong>Venue:</strong> All England Lawn Tennis and Croquet Club<br>
+                            <strong>Prize Money:</strong> £50 million (2026 estimated)<br>
+                            <strong>Traditions:</strong> All-white dress code, Centre Court queue, strawberries & cream<br>
+                            <strong>Royal Box:</strong> Members of the British Royal Family traditionally attend</p>
+                        </div>
+
+                        <div class="detail-section">
+                            <h3>Recent Champions (2020-2025)</h3>
+                            <div class="champions-list">
+                                <div class="champion-year">
+                                    <div class="year">2025</div>
+                                    <div class="name">Carlos Alcaraz 🇪🇸</div>
+                                    <div class="name">Markéta Vondroušová 🇨🇿</div>
+                                </div>
+                                <div class="champion-year">
+                                    <div class="year">2024</div>
+                                    <div class="name">Carlos Alcaraz 🇪🇸</div>
+                                    <div class="name">Barbora Krejčíková 🇨🇿</div>
+                                </div>
+                                <div class="champion-year">
+                                    <div class="year">2023</div>
+                                    <div class="name">Carlos Alcaraz 🇪🇸</div>
+                                    <div class="name">Markéta Vondroušová 🇨🇿</div>
+                                </div>
+                                <div class="champion-year">
+                                    <div class="year">2022</div>
+                                    <div class="name">Novak Djokovic 🇷🇸</div>
+                                    <div class="name">Elena Rybakina 🇰🇿</div>
+                                </div>
+                                <div class="champion-year">
+                                    <div class="year">2021</div>
+                                    <div class="name">Novak Djokovic 🇷🇸</div>
+                                    <div class="name">Ashleigh Barty 🇦🇺</div>
+                                </div>
+                                <div class="champion-year">
+                                    <div class="year">2020</div>
+                                    <div class="name" style="font-style: italic;">Cancelled (COVID-19)</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-section">
+                            <h3>Tournament Records & Facts</h3>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>Most Men's Titles:</strong> Roger Federer (8 titles)
+                                </li>
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>Most Women's Titles:</strong> Martina Navratilova (9 titles)
+                                </li>
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>First Tournament:</strong> 1877 (oldest Grand Slam)
+                                </li>
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>Retractable Roof:</strong> Centre Court (since 2009) and No. 1 Court (since 2019)
+                                </li>
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>Longest Match:</strong> Isner vs Mahut (2010) - 11 hours, 5 minutes over 3 days
+                                </li>
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>Grass Maintenance:</strong> 8mm precise height, courts prepared year-round
+                                </li>
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>Strawberries:</strong> Over 166,000 servings consumed during the fortnight
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- US Open Detail -->
+        <div id="us-open-detail" class="page">
+            <div class="container">
+                <a href="#" class="back-btn" onclick="showPage('grand-slams')">&larr; Back to Grand Slams</a>
+                <div class="slam-detail">
+                    <div class="slam-detail-header us-open">
+                        <h2>US OPEN</h2>
+                        <p class="subtitle">August 31 - September 13, 2026 | USTA Billie Jean King National Tennis Center, New York</p>
+                        <a href="https://www.usopen.org/" target="_blank" class="official-website-btn uso-btn">Official Site of the 2026 US Open Tennis Championships - A USTA Event</a>
+                    </div>
+                    <div class="slam-detail-content">
+                        <div class="detail-section">
+                            <h3>About the US Open</h3>
+                            <p>The US Open is the fourth and final Grand Slam tournament of the year, played on hard courts in New York City. Known for its electric atmosphere, especially during night sessions under the lights of Arthur Ashe Stadium. The tournament is famous for its loud, enthusiastic crowds and being the highest-attended annual sporting event in the world.</p>
+                            <br>
+                            <p><strong>Surface:</strong> DecoTurf hard court (acrylic)<br>
+                            <strong>Venue:</strong> USTA Billie Jean King National Tennis Center<br>
+                            <strong>Prize Money:</strong> $75 million (2026 estimated)<br>
+                            <strong>Main Stadium:</strong> Arthur Ashe Stadium (capacity 23,771 - largest tennis stadium)<br>
+                            <strong>Unique Feature:</strong> Tiebreak at 6-6 in final set</p>
+                        </div>
+
+                        <div class="detail-section">
+                            <h3>Recent Champions (2020-2025)</h3>
+                            <div class="champions-list">
+                                <div class="champion-year">
+                                    <div class="year">2025</div>
+                                    <div class="name">Novak Djokovic 🇷🇸</div>
+                                    <div class="name">Coco Gauff 🇺🇸</div>
+                                </div>
+                                <div class="champion-year">
+                                    <div class="year">2024</div>
+                                    <div class="name">Jannik Sinner 🇮🇹</div>
+                                    <div class="name">Aryna Sabalenka 🇧🇾</div>
+                                </div>
+                                <div class="champion-year">
+                                    <div class="year">2023</div>
+                                    <div class="name">Novak Djokovic 🇷🇸</div>
+                                    <div class="name">Coco Gauff 🇺🇸</div>
+                                </div>
+                                <div class="champion-year">
+                                    <div class="year">2022</div>
+                                    <div class="name">Carlos Alcaraz 🇪🇸</div>
+                                    <div class="name">Iga Świątek 🇵🇱</div>
+                                </div>
+                                <div class="champion-year">
+                                    <div class="year">2021</div>
+                                    <div class="name">Daniil Medvedev 🇷🇺</div>
+                                    <div class="name">Emma Raducanu 🇬🇧</div>
+                                </div>
+                                <div class="champion-year">
+                                    <div class="year">2020</div>
+                                    <div class="name">Dominic Thiem 🇦🇹</div>
+                                    <div class="name">Naomi Osaka 🇯🇵</div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="detail-section">
+                            <h3>Tournament Records & Facts</h3>
+                            <ul style="list-style: none; padding: 0;">
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>Most Men's Titles:</strong> Jimmy Connors, Pete Sampras, Roger Federer (5 titles each)
+                                </li>
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>Most Women's Titles:</strong> Serena Williams (6 titles)
+                                </li>
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>First Tournament:</strong> 1881 (moved to current location in 1978)
+                                </li>
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>Arthur Ashe Stadium:</strong> World's largest tennis stadium, retractable roof added 2016
+                                </li>
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>Equal Prize Money:</strong> First Grand Slam to offer equal prize money (1973)
+                                </li>
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>Attendance:</strong> Over 700,000+ spectators during the two-week tournament
+                                </li>
+                                <li style="padding: 1rem; background: var(--off-white); margin-bottom: 0.5rem; border-radius: 8px;">
+                                    <strong>Night Sessions:</strong> Famous for electric atmosphere under the lights
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2026 Season -->
+        <div id="season-2026" class="page">
+            <div class="container">
+                <h2 class="section-title">2026 Tennis Season</h2>
+                <p style="text-align: center; max-width: 900px; margin: 0 auto 3rem; font-size: 1.1rem; color: #666;">
+                    The 2026 season features 59 ATP tournaments across 29 countries plus the four Grand Slams. 
+                    The season started on January 2 with the United Cup and runs through the ATP Finals in November.
+                </p>
+
+                <div class="detail-section">
+                    <h3>Major Tournaments</h3>
+                    <div class="calendar-grid">
+                        <div class="calendar-item">
+                            <h4>United Cup</h4>
+                            <div class="date">January 2-12, 2026</div>
+                            <div class="location">Australia (Team Event)</div>
+                        </div>
+                        <div class="calendar-item" style="border-left-color: var(--court-blue);">
+                            <h4>Australian Open</h4>
+                            <div class="date">January 18 - February 1, 2026</div>
+                            <div class="location">Melbourne, Australia</div>
+                        </div>
+                        <div class="calendar-item">
+                            <h4>Indian Wells Masters</h4>
+                            <div class="date">March 2026</div>
+                            <div class="location">California, USA</div>
+                        </div>
+                        <div class="calendar-item">
+                            <h4>Miami Open</h4>
+                            <div class="date">March 2026</div>
+                            <div class="location">Florida, USA</div>
+                        </div>
+                        <div class="calendar-item">
+                            <h4>Monte-Carlo Masters</h4>
+                            <div class="date">April 2026</div>
+                            <div class="location">Monaco</div>
+                        </div>
+                        <div class="calendar-item">
+                            <h4>Madrid Open</h4>
+                            <div class="date">April-May 2026</div>
+                            <div class="location">Spain</div>
+                        </div>
+                        <div class="calendar-item">
+                            <h4>Rome Masters</h4>
+                            <div class="date">May 2026</div>
+                            <div class="location">Italy</div>
+                        </div>
+                        <div class="calendar-item" style="border-left-color: var(--court-clay);">
+                            <h4>French Open</h4>
+                            <div class="date">May 25 - June 8, 2026</div>
+                            <div class="location">Paris, France</div>
+                        </div>
+                        <div class="calendar-item" style="border-left-color: var(--grass-green);">
+                            <h4>Wimbledon</h4>
+                            <div class="date">June 29 - July 12, 2026</div>
+                            <div class="location">London, England</div>
+                        </div>
+                        <div class="calendar-item">
+                            <h4>Canadian Open</h4>
+                            <div class="date">August 2026</div>
+                            <div class="location">Canada</div>
+                        </div>
+                        <div class="calendar-item">
+                            <h4>Cincinnati Masters</h4>
+                            <div class="date">August 2026</div>
+                            <div class="location">Ohio, USA</div>
+                        </div>
+                        <div class="calendar-item" style="border-left-color: var(--court-blue);">
+                            <h4>US Open</h4>
+                            <div class="date">August 31 - September 13, 2026</div>
+                            <div class="location">New York, USA</div>
+                        </div>
+                        <div class="calendar-item">
+                            <h4>Shanghai Masters</h4>
+                            <div class="date">October 2026</div>
+                            <div class="location">China</div>
+                        </div>
+                        <div class="calendar-item">
+                            <h4>Paris Masters</h4>
+                            <div class="date">October-November 2026</div>
+                            <div class="location">Paris, France</div>
+                        </div>
+                        <div class="calendar-item" style="border-left-color: var(--gold);">
+                            <h4>ATP Finals</h4>
+                            <div class="date">November 2026</div>
+                            <div class="location">Turin, Italy</div>
+                        </div>
+                        <div class="calendar-item">
+                            <h4>Davis Cup Finals</h4>
+                            <div class="date">November 2026</div>
+                            <div class="location">TBD</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="detail-section" style="margin-top: 4rem;">
+                    <h3>2026 Season Highlights</h3>
+                    <ul style="list-style: none; padding: 0;">
+                        <li style="padding: 1rem; background: var(--white); margin-bottom: 0.5rem; border-radius: 8px; box-shadow: 0 2px 10px var(--shadow);">
+                            <strong>Season Start:</strong> One week later than usual - begins January 2 instead of late December
+                        </li>
+                        <li style="padding: 1rem; background: var(--white); margin-bottom: 0.5rem; border-radius: 8px; box-shadow: 0 2px 10px var(--shadow);">
+                            <strong>ATP Masters 1000:</strong> 9 tournaments, 7 with enhanced 12-day format
+                        </li>
+                        <li style="padding: 1rem; background: var(--white); margin-bottom: 0.5rem; border-radius: 8px; box-shadow: 0 2px 10px var(--shadow);">
+                            <strong>ATP 500:</strong> 16 events throughout the season
+                        </li>
+                        <li style="padding: 1rem; background: var(--white); margin-bottom: 0.5rem; border-radius: 8px; box-shadow: 0 2px 10px var(--shadow);">
+                            <strong>ATP 250:</strong> 29 events across 29 countries
+                        </li>
+                        <li style="padding: 1rem; background: var(--white); margin-bottom: 0.5rem; border-radius: 8px; box-shadow: 0 2px 10px var(--shadow);">
+                            <strong>New Addition:</strong> Estoril returns as ATP 250 event in July
+                        </li>
+                        <li style="padding: 1rem; background: var(--white); margin-bottom: 0.5rem; border-radius: 8px; box-shadow: 0 2px 10px var(--shadow);">
+                            <strong>Changes:</strong> Marseille moves to October, Stockholm to November, Metz discontinued
+                        </li>
+                        <li style="padding: 1rem; background: var(--white); margin-bottom: 0.5rem; border-radius: 8px; box-shadow: 0 2px 10px var(--shadow);">
+                            <strong>Year-End:</strong> 6th edition of ATP Finals in Turin, Italy
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="detail-section" style="margin-top: 4rem;">
+                    <h3>Notable Retirements Announced for 2026</h3>
+                    <div class="champions-list">
+                        <div class="champion-year">
+                            <div class="name" style="font-weight: 700; color: var(--dark);">Stan Wawrinka 🇨🇭</div>
+                            <div style="font-size: 0.9rem; margin-top: 0.5rem;">3x Grand Slam Champion</div>
+                            <div style="font-size: 0.85rem; color: #666;">Career-high: No. 3</div>
+                        </div>
+                        <div class="champion-year">
+                            <div class="name" style="font-weight: 700; color: var(--dark);">Gaël Monfils 🇫🇷</div>
+                            <div style="font-size: 0.9rem; margin-top: 0.5rem;">13 Career Titles</div>
+                            <div style="font-size: 0.85rem; color: #666;">Career-high: No. 6</div>
+                        </div>
+                        <div class="champion-year">
+                            <div class="name" style="font-weight: 700; color: var(--dark);">Milos Raonic 🇨🇦</div>
+                            <div style="font-size: 0.9rem; margin-top: 0.5rem;">8 Career Titles</div>
+                            <div style="font-size: 0.85rem; color: #666;">2016 Wimbledon Finalist</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rankings Page -->
+        <div id="rankings" class="page">
+            <div class="container">
+                <h2 class="section-title">Current ATP & WTA Rankings</h2>
+                <p style="text-align: center; max-width: 800px; margin: 0 auto 3rem; font-size: 1.1rem; color: #666;">
+                    Latest world rankings as of January 26, 2026
+                </p>
+
+                <div class="rankings-container">
+                    <!-- ATP Men's Rankings -->
+                    <div class="ranking-section">
+                        <h3>ATP Men's Singles Rankings</h3>
+                        <div id="atp-rankings-container">
+                            <div class="loading">
+                                <div class="tennis-ball"></div>
+                                <p style="margin-top: 1rem;">Loading latest rankings...</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- WTA Women's Rankings -->
+                    <div class="ranking-section">
+                        <h3>WTA Women's Singles Rankings</h3>
+                        <div id="wta-rankings-container">
+                            <div class="loading">
+                                <div class="tennis-ball"></div>
+                                <p style="margin-top: 1rem;">Loading latest rankings...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 3rem; padding: 2rem; background: var(--white); border-radius: 15px; box-shadow: 0 5px 20px var(--shadow);">
+                    <h3 style="font-family: 'Playfair Display', serif; font-size: 2rem; margin-bottom: 1rem; color: var(--court-green);">About the Rankings</h3>
+                    <p style="margin-bottom: 1rem;">ATP and WTA rankings are updated weekly on Mondays and are based on a rolling 52-week system. Players earn points based on their performance in tournaments, with Grand Slams offering the most points.</p>
+                    <p>Rankings determine seeding for tournaments and qualification for year-end championships. The top 8 singles players and doubles teams qualify for the ATP Finals and WTA Finals respectively.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // API configuration for live data
+        const API_CONFIG = {
+            anthropicApiUrl: 'https://api.anthropic.com/v1/messages'
+        };
+
+        // Country code to flag emoji mapping
+        const countryFlags = {
+            'ESP': '🇪🇸', 'ITA': '🇮🇹', 'GER': '🇩🇪', 'USA': '🇺🇸', 'SRB': '🇷🇸',
+            'AUS': '🇦🇺', 'NOR': '🇳🇴', 'CAN': '🇨🇦', 'GBR': '🇬🇧', 'DEN': '🇩🇰',
+            'RUS': '🇷🇺', 'BLR': '🇧🇾', 'POL': '🇵🇱', 'KAZ': '🇰🇿', 'CHN': '🇨🇳',
+            'UKR': '🇺🇦', 'CZE': '🇨🇿', 'FRA': '🇫🇷', 'JPN': '🇯🇵', 'ARG': '🇦🇷'
+        };
+
+        // Fetch live Australian Open schedule
+        async function fetchAOSchedule() {
+            try {
+                const response = await fetch(API_CONFIG.anthropicApiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: 'claude-sonnet-4-20250514',
+                        max_tokens: 1000,
+                        messages: [{
+                            role: 'user',
+                            content: 'Search for the current Australian Open 2026 schedule for semifinals and finals. Include match times in AEDT (Australian Eastern Daylight Time), player names with seedings, and match status. Format the response as JSON with this structure: {"mens_matches": [{"player1": "Name", "seed1": "1", "player2": "Name", "seed2": "3", "time": "Time in AEDT", "round": "Semifinal/Final", "status": "Scheduled/Completed/In Progress", "winner": "Name if completed"}], "womens_matches": [same structure]}'
+                        }],
+                        tools: [{
+                            type: 'web_search_20250305',
+                            name: 'web_search'
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+                
+                // Extract JSON from response
+                let scheduleData = null;
+                if (data.content) {
+                    for (const block of data.content) {
+                        if (block.type === 'text') {
+                            const jsonMatch = block.text.match(/\{[\s\S]*\}/);
+                            if (jsonMatch) {
+                                scheduleData = JSON.parse(jsonMatch[0]);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                return scheduleData || getDefaultAOSchedule();
+            } catch (error) {
+                console.error('Error fetching AO schedule:', error);
+                return getDefaultAOSchedule();
+            }
+        }
+
+        // Default schedule based on latest search results
+        function getDefaultAOSchedule() {
+            return {
+                mens_matches: [
+                    {
+                        player1: 'Carlos Alcaraz',
+                        seed1: '1',
+                        player2: 'Alexander Zverev',
+                        seed2: '3',
+                        time: 'Thursday, Jan 30, 2:00 PM AEDT',
+                        round: 'Semifinal',
+                        status: 'Scheduled',
+                        note: 'Alcaraz seeking first AO title'
+                    },
+                    {
+                        player1: 'Jannik Sinner',
+                        seed1: '2',
+                        player2: 'Novak Djokovic',
+                        seed2: '4',
+                        time: 'Friday, Jan 31, 7:00 PM AEDT',
+                        round: 'Semifinal',
+                        status: 'Scheduled',
+                        note: 'Sinner defending champion, Djokovic seeking record 25th major'
+                    }
+                ],
+                womens_matches: [
+                    {
+                        player1: 'Aryna Sabalenka',
+                        seed1: '1',
+                        player2: 'Elina Svitolina',
+                        seed2: '12',
+                        time: 'Thursday, Jan 30, 7:30 PM AEDT',
+                        round: 'Semifinal',
+                        status: 'Scheduled',
+                        note: 'Sabalenka seeking 4th consecutive AO final appearance'
+                    },
+                    {
+                        player1: 'Elena Rybakina',
+                        seed1: '5',
+                        player2: 'Jessica Pegula',
+                        seed2: '6',
+                        time: 'Thursday, Jan 30, 9:30 PM AEDT (approx)',
+                        round: 'Semifinal',
+                        status: 'Scheduled',
+                        note: 'Rybakina won Wimbledon 2022, Pegula seeking first AO final'
+                    }
+                ]
+            };
+        }
+
+        // Fetch ATP rankings
+        async function fetchATPRankings() {
+            try {
+                const response = await fetch(API_CONFIG.anthropicApiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: 'claude-sonnet-4-20250514',
+                        max_tokens: 1000,
+                        messages: [{
+                            role: 'user',
+                            content: 'Search for the current ATP tennis rankings as of January 2026. Return top 15 players in JSON format: [{"rank": 1, "name": "Player Name", "country": "Country Code", "points": 12050}]'
+                        }],
+                        tools: [{
+                            type: 'web_search_20250305',
+                            name: 'web_search'
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+                
+                let rankings = null;
+                if (data.content) {
+                    for (const block of data.content) {
+                        if (block.type === 'text') {
+                            const jsonMatch = block.text.match(/\[[\s\S]*\]/);
+                            if (jsonMatch) {
+                                rankings = JSON.parse(jsonMatch[0]);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                return rankings || getDefaultATPRankings();
+            } catch (error) {
+                console.error('Error fetching ATP rankings:', error);
+                return getDefaultATPRankings();
+            }
+        }
+
+        // Fetch WTA rankings
+        async function fetchWTARankings() {
+            try {
+                const response = await fetch(API_CONFIG.anthropicApiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        model: 'claude-sonnet-4-20250514',
+                        max_tokens: 1000,
+                        messages: [{
+                            role: 'user',
+                            content: 'Search for the current WTA tennis rankings as of January 2026. Return top 15 players in JSON format: [{"rank": 1, "name": "Player Name", "country": "Country Code", "points": 10990}]'
+                        }],
+                        tools: [{
+                            type: 'web_search_20250305',
+                            name: 'web_search'
+                        }]
+                    })
+                });
+
+                const data = await response.json();
+                
+                let rankings = null;
+                if (data.content) {
+                    for (const block of data.content) {
+                        if (block.type === 'text') {
+                            const jsonMatch = block.text.match(/\[[\s\S]*\]/);
+                            if (jsonMatch) {
+                                rankings = JSON.parse(jsonMatch[0]);
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                return rankings || getDefaultWTARankings();
+            } catch (error) {
+                console.error('Error fetching WTA rankings:', error);
+                return getDefaultWTARankings();
+            }
+        }
+
+        // Default ATP rankings
+        function getDefaultATPRankings() {
+            return [
+                {rank: 1, name: 'Carlos Alcaraz', country: 'ESP', points: 12050},
+                {rank: 2, name: 'Jannik Sinner', country: 'ITA', points: 11500},
+                {rank: 3, name: 'Alexander Zverev', country: 'GER', points: 5160},
+                {rank: 4, name: 'Taylor Fritz', country: 'USA', points: 4930},
+                {rank: 5, name: 'Novak Djokovic', country: 'SRB', points: 4800},
+                {rank: 6, name: 'Alex de Minaur', country: 'AUS', points: 4545},
+                {rank: 7, name: 'Ben Shelton', country: 'USA', points: 3705},
+                {rank: 8, name: 'Lorenzo Musetti', country: 'ITA', points: 3545},
+                {rank: 9, name: 'Casper Ruud', country: 'NOR', points: 3425},
+                {rank: 10, name: 'Felix Auger-Aliassime', country: 'CAN', points: 3155},
+                {rank: 11, name: 'Jack Draper', country: 'GBR', points: 2995},
+                {rank: 12, name: 'Holger Rune', country: 'DEN', points: 2890},
+                {rank: 13, name: 'Daniil Medvedev', country: 'RUS', points: 2780},
+                {rank: 14, name: 'Karen Khachanov', country: 'RUS', points: 2655},
+                {rank: 15, name: 'Alejandro Davidovich Fokina', country: 'ESP', points: 2540}
+            ];
+        }
+
+        // Default WTA rankings
+        function getDefaultWTARankings() {
+            return [
+                {rank: 1, name: 'Aryna Sabalenka', country: 'BLR', points: 10990},
+                {rank: 2, name: 'Iga Świątek', country: 'POL', points: 8328},
+                {rank: 3, name: 'Coco Gauff', country: 'USA', points: 6423},
+                {rank: 4, name: 'Amanda Anisimova', country: 'USA', points: 6320},
+                {rank: 5, name: 'Elena Rybakina', country: 'KAZ', points: 5850},
+                {rank: 6, name: 'Jessica Pegula', country: 'USA', points: 5453},
+                {rank: 7, name: 'Mirra Andreeva', country: 'RUS', points: 4731},
+                {rank: 8, name: 'Jasmine Paolini', country: 'ITA', points: 4267},
+                {rank: 9, name: 'Madison Keys', country: 'USA', points: 4111},
+                {rank: 10, name: 'Qinwen Zheng', country: 'CHN', points: 3990},
+                {rank: 11, name: 'Emma Navarro', country: 'USA', points: 3805},
+                {rank: 12, name: 'Elina Svitolina', country: 'UKR', points: 3687},
+                {rank: 13, name: 'Daria Kasatkina', country: 'RUS', points: 3545},
+                {rank: 14, name: 'Paula Badosa', country: 'ESP', points: 3340},
+                {rank: 15, name: 'Diana Shnaider', country: 'RUS', points: 3220}
+            ];
+        }
+
+        // Display AO schedule
+        function displayAOSchedule(schedule) {
+            const container = document.getElementById('ao-schedule-container');
+            if (!container) return;
+
+            let html = '';
+
+            // Men's matches
+            if (schedule.mens_matches && schedule.mens_matches.length > 0) {
+                html += '<h4 style="margin-bottom: 1.5rem; color: var(--court-green);">Men\'s Singles</h4>';
+                schedule.mens_matches.forEach(match => {
+                    const statusClass = match.status === 'Completed' ? 'completed' : '';
+                    html += `
+                        <div class="match-result ${statusClass}">
+                            <div class="match-players">
+                                <span class="player-name">(${match.seed1}) ${match.player1} vs (${match.seed2}) ${match.player2}</span>
+                                <span class="score">${match.time}</span>
+                            </div>
+                            ${match.note ? `<p style="color: #666; font-size: 0.9rem;">${match.note}</p>` : ''}
+                            ${match.winner ? `<p style="color: var(--gold); font-weight: 600;">Winner: ${match.winner}</p>` : ''}
+                        </div>
+                    `;
+                });
+            }
+
+            // Women's matches
+            if (schedule.womens_matches && schedule.womens_matches.length > 0) {
+                html += '<h4 style="margin: 2rem 0 1.5rem; color: var(--court-green);">Women\'s Singles</h4>';
+                schedule.womens_matches.forEach(match => {
+                    const statusClass = match.status === 'Completed' ? 'completed' : '';
+                    html += `
+                        <div class="match-result ${statusClass}">
+                            <div class="match-players">
+                                <span class="player-name">(${match.seed1}) ${match.player1} vs (${match.seed2}) ${match.player2}</span>
+                                <span class="score">${match.time}</span>
+                            </div>
+                            ${match.note ? `<p style="color: #666; font-size: 0.9rem;">${match.note}</p>` : ''}
+                            ${match.winner ? `<p style="color: var(--gold); font-weight: 600;">Winner: ${match.winner}</p>` : ''}
+                        </div>
+                    `;
+                });
+            }
+
+            container.innerHTML = html;
+        }
+
+        // Display rankings table
+        function displayRankings(rankings, containerId) {
+            const container = document.getElementById(containerId);
+            if (!container || !rankings) return;
+
+            let html = `
+                <table class="ranking-table">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                            <th>Country</th>
+                            <th>Points</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+            `;
+
+            rankings.forEach(player => {
+                const rankClass = player.rank <= 3 ? 'rank-number' : '';
+                const flag = countryFlags[player.country] || '';
+                html += `
+                    <tr>
+                        <td><span class="${rankClass}">${player.rank}</span></td>
+                        <td>${player.name}</td>
+                        <td>${flag} ${player.country}</td>
+                        <td>${player.points.toLocaleString()}</td>
+                    </tr>
+                `;
+            });
+
+            html += `
+                    </tbody>
+                </table>
+            `;
+
+            container.innerHTML = html;
+        }
+
+        // Initialize data loading
+        async function initializeLiveData() {
+            // Load AO schedule when on the Australian Open detail page
+            const aoContainer = document.getElementById('ao-schedule-container');
+            if (aoContainer) {
+                const schedule = await fetchAOSchedule();
+                displayAOSchedule(schedule);
+            }
+
+            // Load rankings when on rankings page
+            const atpContainer = document.getElementById('atp-rankings-container');
+            const wtaContainer = document.getElementById('wta-rankings-container');
+            
+            if (atpContainer) {
+                const atpRankings = await fetchATPRankings();
+                displayRankings(atpRankings, 'atp-rankings-container');
+            }
+            
+            if (wtaContainer) {
+                const wtaRankings = await fetchWTARankings();
+                displayRankings(wtaRankings, 'wta-rankings-container');
+            }
+        }
+
+        function showPage(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            const selectedPage = document.getElementById(pageId);
+            if (selectedPage) {
+                selectedPage.classList.add('active');
+                window.scrollTo(0, 0);
+
+                // Load live data when navigating to specific pages
+                if (pageId === 'australian-open-detail' || pageId === 'rankings') {
+                    initializeLiveData();
+                }
+            }
+        }
+
+        function showSlamDetail(slamId) {
+            const detailPageId = slamId + '-detail';
+            showPage(detailPageId);
+        }
+
+        // Add smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+            });
+        });
+
+        // Load initial data on page load
+        window.addEventListener('DOMContentLoaded', initializeLiveData);
+    </script>
+</body>
+</html>
