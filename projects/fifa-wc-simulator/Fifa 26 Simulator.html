@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FIFA 2026 Tournament Simulator</title>
+    <style>
+
+        :root {
+            --bg-light: #f8fafc;
+            --sidebar-white: #ffffff;
+            --fifa-purple: #592ff9;
+            --fifa-black: #000000;
+            --fifa-gold: #FFD700;
+            --fifa-gold-soft: rgba(255, 215, 0, 0.25);
+            --text-main: #1e293b;
+            --border-color: #cbd5e1;
+        }
+
+        body { margin: 0; font-family: 'Arial', sans-serif; background-color: var(--bg-light); color: var(--text-main); }
+       /* 1. Slimmer black bar to bring the tabs up */
+header { 
+    background: var(--fifa-black); 
+    height: 90px; /* Reduced from 100px */
+    display: flex; 
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 170px; 
+    position: sticky; 
+    top: 0; 
+    z-index: 100; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+
+/* 2. Position the logo so it hangs out of the 60px bar */
+.logo-container {
+    position: absolute;
+    top: 10px;
+    left: 40px;
+    background: white;
+    padding: 10px;
+    border-radius: 4px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    z-index: 110;
+
+    border: 1px solid #e5e7eb;
+
+}
+
+        .logo-container img {
+
+            height: 85px;
+
+            width: auto;
+
+            display: block;
+
+        }
+
+
+
+        .header-title { 
+
+            margin: 0; 
+
+            color: #ffffff; 
+
+            font-family: 'Arial Black', 'Arial', sans-serif;
+
+            font-weight: 900; 
+
+            text-transform: uppercase;
+
+            letter-spacing: -1.5px; 
+
+            font-size: 2rem; 
+
+            line-height: 1;
+
+        }
+
+
+
+        .header-subtitle {
+
+            color: #94a3b8;
+
+            font-size: 0.85rem;
+
+            font-weight: bold;
+
+            text-transform: uppercase;
+
+            letter-spacing: 2px;
+
+            margin-top: 5px;
+
+        }
+
+        
+
+        .app-container { 
+
+    display: flex; 
+
+    height: calc(100vh - 60px); 
+
+}
+
+       .sidebar { 
+
+    width: 280px; 
+
+    background: var(--sidebar-white); 
+
+    padding: 110px 20px 20px 20px; /* Heavy top padding to clear the logo */
+
+    border-right: 1px solid var(--border-color); 
+
+    flex-shrink: 0; 
+
+    overflow-y: auto; 
+
+    box-sizing: border-box;
+
+}
+
+
+
+.viewport { 
+
+    flex-grow: 1; 
+
+    padding: 20px; 
+
+    overflow-y: auto; 
+
+    background-color: var(--bg-light);
+
+}
+
+
+
+        .control-section { margin-bottom: 12px; }
+
+        .control-section label { display: block; font-size: 0.7rem; font-weight: bold; margin-bottom: 3px; color: var(--fifa-purple); text-transform: uppercase; }
+
+        select, input[type="range"], input[type="number"] { width: 100%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 5px; font-size: 0.8rem; box-sizing: border-box; }
+
+
+
+        .action-btn { width: 100%; padding: 12px; border: none; border-radius: 6px; background: var(--fifa-purple); color: white; font-weight: bold; cursor: pointer; transition: 0.2s; font-size: 0.85rem; margin-top: 10px; }
+
+        .action-btn:hover { background: #3700b3; }
+
+        .mc-btn { background: var(--fifa-gold); color: #000; margin-top: 5px; }
+
+        .mc-btn:hover { background: #e6c200; }
+
+
+
+        .viewport { flex-grow: 1; padding: 20px; overflow-x: auto; }
+
+        .tab-bar { display: flex; gap: 8px; margin-bottom: 20px; }
+
+        .tab-item { padding: 8px 16px; border-radius: 20px; background: #e2e8f0; cursor: pointer; font-weight: bold; font-size: 0.8rem; transition: 0.2s; }
+
+        .tab-item.active { background: var(--fifa-purple); color: white; }
+
+
+
+        .groups-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 15px; }
+
+        .group-card { background: white; border-radius: 10px; border: 1px solid var(--border-color); overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); }
+
+        .group-name { background: var(--fifa-purple); color: white; padding: 8px; text-align: center; font-weight: 800; font-size: 0.9rem; }
+
+
+
+        table { width: 100%; border-collapse: collapse; table-layout: fixed; }
+
+        th { background: #f1f5f9; padding: 6px 1px; font-size: 0.55rem; color: #64748b; text-align: center; border-bottom: 1px solid var(--border-color); }
+
+        td { padding: 6px 1px; border-bottom: 1px solid #f1f5f9; text-align: center; font-size: 0.75rem; }
+
+        
+
+        .row-team.advances { background-color: var(--fifa-gold-soft); font-weight: bold; }
+
+        
+
+        .team-identity { text-align: left; padding-left: 8px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 45%; }
+
+        .col-stat { width: 7.5%; }
+
+        .col-pts { width: 10%; font-weight: 900; }
+
+
+
+        .flag-icon { width: 16px; height: 11px; margin-right: 5px; border: 1px solid #eee; vertical-align: middle;}
+
+        
+
+        .matches-preview { padding: 8px; background: #f8fafc; border-top: 1px solid #eee; }
+
+        .match-card { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; padding: 5px 0; border-bottom: 1px dashed #e2e8f0; font-size: 0.7rem; }
+
+        .match-meta { width: 100%; font-size: 0.55rem; color: #94a3b8; text-align: center; margin-top: 1px; }
+
+        .match-score { font-weight: 900; color: var(--fifa-purple); width: 30px; text-align: center; }
+
+
+
+        .matrix-view { background: white; padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); }
+
+        .matrix-view table th { font-size: 0.7rem; padding: 10px; background: #f8fafc; }
+
+        .matrix-view table td { padding: 10px 5px; font-size: 0.8rem; border-bottom: 1px solid #f1f5f9; }
+
+        .matrix-team { text-align: left !important; padding-left: 15px !important; font-weight: bold; width: 20%; border-right: 2px solid #f1f5f9; }
+
+
+
+        .bracket-container { display: flex; gap: 25px; min-width: 1700px; padding: 10px 0; align-items: flex-start; }
+
+        .bracket-round { display: flex; flex-direction: column; justify-content: space-around; gap: 12px; }
+
+        .bracket-match { width: 220px; background: white; border: 1px solid var(--border-color); border-radius: 5px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+
+        .bracket-team { display: flex; align-items: center; padding: 6px 8px; font-size: 0.75rem; border-bottom: 1px solid #f1f5f9; }
+
+        .bracket-team.winner { background: var(--fifa-gold-soft); font-weight: bold; }
+
+        .bracket-team span.score { margin-left: auto; font-weight: 900; color: var(--fifa-purple); }
+
+        .round-title { font-size: 0.65rem; color: var(--fifa-purple); font-weight: bold; text-align: center; margin-bottom: 8px; text-transform: uppercase; background: #e2e8f0; padding: 4px; border-radius: 3px; }
+
+        .knockout-meta { background: #f1f5f9; font-size: 0.55rem; color: #64748b; padding: 3px 8px; border-top: 1px solid #eee; text-align: center; }
+
+
+
+        .hidden { display: none; }
+
+    </style>
+
+</head>
+
+<body>
+
+
+
+<header>
+
+    <div class="logo-container">
+
+        <img src="img/worldcuplogo.jpg" alt="FIFA 26">
+
+    </div>
+
+    <h1 class="header-title">FIFA World Cup 2026 Simulator</h1>
+
+    <div class="header-subtitle">Mexico, Canada & USA | 11 June - 19 July 2026 | &copy; Jose. J (2026)</div>
+
+</header>
+
+
+
+<div class="app-container">
+
+    <div class="sidebar">
+
+        <div id="playoffSelectors"></div>
+
+        <div class="control-section">
+
+            <label>Match Chaos</label>
+
+            <input type="range" id="chaosFactor" min="0" max="100" value="25">
+
+        </div>
+
+        
+
+        <button id="simTourneyBtn" class="action-btn" onclick="executeFullTournament()">SIMULATE TOURNAMENT</button>
+
+        
+
+        <div id="mcControlPanel" class="hidden">
+
+            <hr style="margin: 20px 0; border: 0; border-top: 1px solid #eee;">
+
+            <div class="control-section">
+
+                <label>MC Simulations</label>
+
+                <input type="number" id="mcCount" value="500" min="100" max="5000">
+
+            </div>
+
+            <button class="action-btn mc-btn" onclick="runMonteCarlo()">RUN PROBABILITIES</button>
+
+        </div>
+    </div>
+
+    <div class="viewport">
+        <div class="tab-bar">
+            <div id="tabGroups" class="tab-item active" onclick="navigate('groups')">Groups</div>
+            <div id="tabBracket" class="tab-item" onclick="navigate('bracket')">Knockouts</div>
+            <div id="tabMatrix" class="tab-item" onclick="navigate('matrix')">Monte Carlo Matrix</div>
+        </div>    
+
+        <div id="groupsDisplay" class="groups-container"></div>
+        <div id="bracketDisplay" class="hidden"><div class="bracket-container" id="bracketContent"></div></div>
+
+        
+
+        <div id="matrixDisplay" class="hidden">
+
+            <div class="matrix-view">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+
+                            <th class="matrix-team">Team</th>
+
+                            <th>R32 %</th>
+
+                            <th>R16 %</th>
+
+                            <th>QF %</th>
+
+                            <th>SF %</th>
+
+                            <th>Final %</th>
+
+                            <th style="border-left: 2px solid #eee;">Winner %</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="matrixBody">
+
+                        <tr><td colspan="7" style="text-align:center; color:#94a3b8; padding: 40px;">Run probabilities to see team rankings...</td></tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<script>
+    const TEAMS_CORE = [
+        { name: "Mexico", str: 79, grp: "A", flag: "mx", isHost: true }, { name: "South Africa", str: 68, grp: "A", flag: "za" }, { name: "Korea Republic", str: 75, grp: "A", flag: "kr" }, { name: "Path D", str: 76, grp: "A", pathRef: "pathD" },
+        { name: "Canada", str: 77, grp: "B", flag: "ca", isHost: true }, { name: "Switzerland", str: 81, grp: "B", flag: "ch" }, { name: "Qatar", str: 65, grp: "B", flag: "qa" }, { name: "Path A", str: 78, grp: "B", pathRef: "pathA" },
+        { name: "Brazil", str: 92, grp: "C", flag: "br" }, { name: "Morocco", str: 82, grp: "C", flag: "ma" }, { name: "Haiti", str: 60, grp: "C", flag: "ht" }, { name: "Scotland", str: 74, grp: "C", flag: "gb-sct" },
+        { name: "USA", str: 82, grp: "D", flag: "us", isHost: true }, { name: "Paraguay", str: 72, grp: "D", flag: "py" }, { name: "Australia", str: 74, grp: "D", flag: "au" }, { name: "Path C", str: 76, grp: "D", pathRef: "pathC" },
+        { name: "Germany", str: 88, grp: "E", flag: "de" }, { name: "Curaçao", str: 62, grp: "E", flag: "cw" }, { name: "Côte d'Ivoire", str: 78, grp: "E", flag: "ci" }, { name: "Ecuador", str: 79, grp: "E", flag: "ec" },
+        { name: "Netherlands", str: 87, grp: "F", flag: "nl" }, { name: "Japan", str: 81, grp: "F", flag: "jp" }, { name: "Tunisia", str: 71, grp: "F", flag: "tn" }, { name: "Path B", str: 78, grp: "F", pathRef: "pathB" },
+        { name: "Belgium", str: 86, grp: "G", flag: "be" }, { name: "Egypt", str: 74, grp: "G", flag: "eg" }, { name: "Iran", str: 73, grp: "G", flag: "ir" }, { name: "New Zealand", str: 67, grp: "G", flag: "nz" },
+        { name: "Spain", str: 90, grp: "H", flag: "es" }, { name: "Cabo Verde", str: 68, grp: "H", flag: "cv" }, { name: "Saudi Arabia", str: 68, grp: "H", flag: "sa" }, { name: "Uruguay", str: 84, grp: "H", flag: "uy" },
+        { name: "France", str: 91, grp: "I", flag: "fr" }, { name: "Senegal", str: 79, grp: "I", flag: "sn" }, { name: "Norway", str: 78, grp: "I", flag: "no" }, { name: "IC 2", str: 71, grp: "I", pathRef: "pathIC2" },
+        { name: "Argentina", str: 93, grp: "J", flag: "ar" }, { name: "Algeria", str: 76, grp: "J", flag: "dz" }, { name: "Austria", str: 80, grp: "J", flag: "at" }, { name: "Jordan", str: 64, grp: "J", flag: "jo" },
+        { name: "Portugal", str: 89, grp: "K", flag: "pt" }, { name: "Uzbekistan", str: 71, grp: "K", flag: "uz" }, { name: "Colombia", str: 82, grp: "K", flag: "co" }, { name: "IC 1", str: 72, grp: "K", pathRef: "pathIC1" },
+        { name: "England", str: 90, grp: "L", flag: "gb-eng" }, { name: "Croatia", str: 84, grp: "L", flag: "hr" }, { name: "Ghana", str: 75, grp: "L", flag: "gh" }, { name: "Panama", str: 71, grp: "L", flag: "pa" }
+    ];
+
+    const STADIUMS = ["Azteca", "SoFi", "MetLife", "AT&T", "BMO", "BC Place", "Mercedes-Benz", "Hard Rock", "Levi's", "Arrowhead"];
+    const DATES_GRP = ["11 Jun", "12 Jun", "15 Jun", "16 Jun", "20 Jun", "21 Jun"];
+    
+    // Exact structural mapping for the Knockout bracket UI
+    const KNOCKOUT_META = [
+        [ // R32 (Sequenced to perfectly fold into R16 pairings)
+            { m: 'Match 74', loc: 'Boston Stadium', date: '29 Jun' }, { m: 'Match 77', loc: 'New York New Jersey Stadium', date: '30 Jun' },
+            { m: 'Match 73', loc: 'Los Angeles Stadium', date: '28 Jun' }, { m: 'Match 75', loc: 'Estadio Monterrey', date: '29 Jun' },
+            { m: 'Match 83', loc: 'Toronto Stadium', date: '02 Jul' }, { m: 'Match 84', loc: 'Los Angeles Stadium', date: '02 Jul' },
+            { m: 'Match 81', loc: 'San Francisco Bay Area Stadium', date: '01 Jul' }, { m: 'Match 82', loc: 'Seattle Stadium', date: '01 Jul' },
+            { m: 'Match 76', loc: 'Houston Stadium', date: '29 Jun' }, { m: 'Match 78', loc: 'Dallas Stadium', date: '30 Jun' },
+            { m: 'Match 79', loc: 'Mexico City Stadium', date: '30 Jun' }, { m: 'Match 80', loc: 'Atlanta Stadium', date: '01 Jul' },
+            { m: 'Match 86', loc: 'Miami Stadium', date: '03 Jul' }, { m: 'Match 88', loc: 'Dallas Stadium', date: '03 Jul' },
+            { m: 'Match 85', loc: 'BC Place Vancouver', date: '02 Jul' }, { m: 'Match 87', loc: 'Kansas City Stadium', date: '03 Jul' }
+        ],
+        [ // R16
+            { m: 'Match 89', loc: 'Philadelphia Stadium', date: '04 Jul' }, { m: 'Match 90', loc: 'Houston Stadium', date: '04 Jul' },
+            { m: 'Match 93', loc: 'Dallas Stadium', date: '06 Jul' }, { m: 'Match 94', loc: 'Seattle Stadium', date: '06 Jul' },
+            { m: 'Match 91', loc: 'New York New Jersey Stadium', date: '05 Jul' }, { m: 'Match 92', loc: 'Mexico City Stadium', date: '05 Jul' },
+            { m: 'Match 95', loc: 'Atlanta Stadium', date: '07 Jul' }, { m: 'Match 96', loc: 'BC Place Vancouver', date: '07 Jul' }
+        ],
+        [ // QF
+            { m: 'Match 97', loc: 'Boston Stadium', date: '09 Jul' }, { m: 'Match 98', loc: 'Los Angeles Stadium', date: '10 Jul' },
+            { m: 'Match 99', loc: 'Miami Stadium', date: '11 Jul' }, { m: 'Match 100', loc: 'Kansas City Stadium', date: '11 Jul' }
+        ],
+        [ // SF
+            { m: 'Match 101', loc: 'Dallas Stadium', date: '14 Jul' }, { m: 'Match 102', loc: 'Atlanta Stadium', date: '15 Jul' }
+        ],
+        [ // Final
+            { m: 'Match 104', loc: 'New York New Jersey Stadium', date: '19 Jul' }
+        ]
+    ];
+
+    const ps = document.getElementById('playoffSelectors');
+    [
+        {id:'pathA', l:'Path A (Group B)', opt:[['Italy','it'],['Wales','gb-wls'],['Bosnia','ba'],['N. Ireland','gb-nir']]},
+        {id:'pathB', l:'Path B (Group F)', opt:[['Ukraine','ua'],['Sweden','se'],['Poland','pl'],['Albania','al']]},
+        {id:'pathC', l:'Path C (Group D)', opt:[['Turkey','tr'],['Romania','ro'],['Slovakia','sk'],['Kosovo','xk']]},
+        {id:'pathD', l:'Path D (Group A)', opt:[['Denmark','dk'],['Czech Rep.','cz'],['Ireland','ie'],['N. Macedonia','mk']]},
+        {id:'pathIC1', l:'IC 1 (Group K)', opt:[['Jamaica','jm'],['DR Congo','cd'],['New Caledonia','nc']]},
+        {id:'pathIC2', l:'IC 2 (Group I)', opt:[['Iraq','iq'],['Suriname','sr'],['Bolivia','bo']]}
+    ].forEach(p => {
+        ps.innerHTML += `<div class="control-section"><label>${p.l}</label><select id="${p.id}">${p.opt.map(o=>`<option value="${o[0]}" data-flag="${o[1]}">${o[0]}</option>`).join('')}</select></div>`;
+    });
+
+    function navigate(view) {
+        ['groupsDisplay', 'bracketDisplay', 'matrixDisplay'].forEach(id => document.getElementById(id).classList.add('hidden'));
+        ['tabGroups', 'tabBracket', 'tabMatrix'].forEach(id => document.getElementById(id).classList.remove('active'));
+        document.getElementById(view + 'Display').classList.remove('hidden');
+        document.getElementById('tab' + view.charAt(0).toUpperCase() + view.slice(1)).classList.add('active');
+        const mcPanel = document.getElementById('mcControlPanel');
+        const mainSimBtn = document.getElementById('simTourneyBtn');
+        if (view === 'matrix') { mcPanel.classList.remove('hidden'); mainSimBtn.classList.add('hidden'); }
+        else { mcPanel.classList.add('hidden'); mainSimBtn.classList.remove('hidden'); }
+    }
+
+    function simulateMatch(t1, t2, isKO = false) {
+        const chaos = document.getElementById('chaosFactor').value / 100;
+        const diff = t1.str - t2.str; 
+        let adv1 = Math.max(0, diff / 8);
+        let adv2 = Math.max(0, -diff / 8);
+        let blowout1 = (Math.random() < 0.25 && diff > 12) ? Math.floor(Math.random() * 4) : 0;
+        let blowout2 = (Math.random() < 0.25 && diff < -12) ? Math.floor(Math.random() * 4) : 0;
+        let g1 = Math.floor(Math.max(0, 1 + adv1 + blowout1) * (1 - chaos) + Math.random() * 5 * chaos);
+        let g2 = Math.floor(Math.max(0, 1 + adv2 + blowout2) * (1 - chaos) + Math.random() * 5 * chaos);
+        
+        if (isKO && g1 === g2) {
+            const edge = 0.5 + (diff / 40);
+            Math.random() < edge ? g1++ : g2++;
+        }
+        return [g1, g2];
+    }
+
+    function sortTeamsForGroup(teams, matches) {
+        return teams.sort((a, b) => {
+            if (a.pts !== b.pts) return b.pts - a.pts; 
+            let tiedTeams = teams.filter(t => t.pts === a.pts);
+            if (tiedTeams.length >= 3) {
+                const getH2H = (team) => {
+                    let hPts=0, hGd=0, hGf=0;
+                    matches.forEach(m => {
+                        if (tiedTeams.includes(m.h) && tiedTeams.includes(m.a)) {
+                            if (m.h === team) { hGf += m.hg; hGd += (m.hg-m.ag); if(m.hg>m.ag) hPts+=3; else if(m.hg===m.ag) hPts+=1; }
+                            if (m.a === team) { hGf += m.ag; hGd += (m.ag-m.hg); if(m.ag>m.hg) hPts+=3; else if(m.hg===m.ag) hPts+=1; }
+                        }
+                    });
+                    return {hPts, hGd, hGf};
+                };
+                let aStats = getH2H(a), bStats = getH2H(b);
+                if (aStats.hPts !== bStats.hPts) return bStats.hPts - aStats.hPts; 
+                if (aStats.hGd !== bStats.hGd) return bStats.hGd - aStats.hGd;     
+                if (aStats.hGf !== bStats.hGf) return bStats.hGf - aStats.hGf;     
+            }
+            if (a.gd !== b.gd) return b.gd - a.gd;   
+            if (a.gf !== b.gf) return b.gf - a.gf;   
+            if (a.fp !== b.fp) return b.fp - a.fp;   
+            return b.str - a.str;                    
+        });
+    }
+
+    function sortThirdPlaces(thirds) {
+        return thirds.sort((a,b) => b.pts - a.pts || b.gd - a.gd || b.gf - a.gf || b.fp - a.fp || b.str - a.str);
+    }
+
+    // NEW LOGIC: Allocates 3rd place slots safely and constructs the perfect binary tree
+    function buildKnockoutArray(teams, bestThirds) {
+        const getT = (grp, rank) => teams.find(t => t.grp === grp && t.rank === rank);
+
+        const thirdSlots = [
+            { id: 'M74', valid: ['A','B','C','D','F'] }, { id: 'M77', valid: ['C','D','F','G','H'] },
+            { id: 'M81', valid: ['B','E','F','I','J'] }, { id: 'M82', valid: ['A','E','H','I','J'] },
+            { id: 'M79', valid: ['C','E','F','H','I'] }, { id: 'M80', valid: ['E','H','I','J','K'] },
+            { id: 'M85', valid: ['E','F','G','I','J'] }, { id: 'M87', valid: ['D','E','I','J','L'] }
+        ];
+
+        // Backtracking algorithm to satisfy FIFA's strict geographic rules
+        function assignThirds(index, currentAssignment) {
+            if (index === 8) return currentAssignment;
+            const slot = thirdSlots[index];
+            for (let i = 0; i < 8; i++) {
+                const team = bestThirds[i];
+                if (!currentAssignment.teams.includes(team.name) && slot.valid.includes(team.grp)) {
+                    currentAssignment.slots[slot.id] = team;
+                    currentAssignment.teams.push(team.name);
+                    let res = assignThirds(index + 1, currentAssignment);
+                    if (res) return res;
+                    currentAssignment.teams.pop();
+                    delete currentAssignment.slots[slot.id];
+                }
+            }
+            return null;
+        }
+
+        const assignmentRes = assignThirds(0, { slots: {}, teams: [] });
+        let finalThirds = assignmentRes ? assignmentRes.slots : {};
+        
+        // Safety fallback 
+        if (!assignmentRes) {
+            let unassigned = [...bestThirds];
+            thirdSlots.forEach(slot => finalThirds[slot.id] = unassigned.shift());
+        }
+
+        // Ordered exactly to match your Q1, Q3, Q2, Q4 logic
+        return [
+            getT('E', 1), finalThirds['M74'], getT('I', 1), finalThirds['M77'], // Q1 Path
+            getT('A', 2), getT('B', 2),       getT('F', 1), getT('C', 2),
+            getT('K', 2), getT('L', 2),       getT('H', 1), getT('J', 2),       // Q3 Path
+            getT('D', 1), finalThirds['M81'], getT('G', 1), finalThirds['M82'],
+            getT('C', 1), getT('F', 2),       getT('E', 2), getT('I', 2),       // Q2 Path
+            getT('A', 1), finalThirds['M79'], getT('L', 1), finalThirds['M80'],
+            getT('J', 1), getT('H', 2),       getT('D', 2), getT('G', 2),       // Q4 Path
+            getT('B', 1), finalThirds['M85'], getT('K', 1), finalThirds['M87']
+        ];
+    }
+
+    function runFullSimInternal() {
+        const currentTeams = TEAMS_CORE.map(t => {
+            let n = t.name, f = t.flag;
+            if (t.pathRef) {
+                const opt = document.getElementById(t.pathRef).options[document.getElementById(t.pathRef).selectedIndex];
+                n = opt.value; f = opt.dataset.flag;
+            }
+            return { ...t, name:n, flag:f, pts:0, gf:0, ga:0, gd:0, fp:0 };
+        });
+
+        let allThirds = [];
+        "ABCDEFGHIJKL".split("").forEach(g => {
+            const gt = currentTeams.filter(t => t.grp === g);
+            const matches = [];
+            for(let i=0; i<4; i++) {
+                for(let j=i+1; j<4; j++) {
+                    const [g1, g2] = simulateMatch(gt[i], gt[j]);
+                    gt[i].gf += g1; gt[i].ga += g2; gt[i].gd += (g1-g2);
+                    gt[j].gf += g2; gt[j].ga += g1; gt[j].gd += (g2-g1);
+                    gt[i].fp -= Math.floor(Math.random()*3); gt[j].fp -= Math.floor(Math.random()*3);
+                    if(g1 > g2) gt[i].pts += 3; else if(g2 > g1) gt[j].pts += 3; else { gt[i].pts++; gt[j].pts++; }
+                    matches.push({ h: gt[i], a: gt[j], hg: g1, ag: g2 });
+                }
+            }
+            sortTeamsForGroup(gt, matches);
+            gt[0].rank = 1; gt[1].rank = 2; gt[2].rank = 3; gt[3].rank = 4; // Required for Bracket Builder
+            allThirds.push(gt[2]);
+        });
+        
+        const bestThirds = sortThirdPlaces(allThirds).slice(0, 8);
+        let ko = buildKnockoutArray(currentTeams, bestThirds);
+
+        let rounds = [[...ko]];
+        while(ko.length > 1) {
+            let next = [];
+            for(let i=0; i<ko.length; i+=2) {
+                const [s1, s2] = simulateMatch(ko[i], ko[i+1], true);
+                next.push(s1 > s2 ? ko[i] : ko[i+1]);
+            }
+            ko = next;
+            rounds.push([...ko]);
+        }
+        return rounds;
+    }
+
+    function executeFullTournament() {
+        const currentTeams = TEAMS_CORE.map(t => {
+            let n = t.name, f = t.flag;
+            if (t.pathRef) {
+                const opt = document.getElementById(t.pathRef).options[document.getElementById(t.pathRef).selectedIndex];
+                n = opt.value; f = opt.dataset.flag;
+            }
+            return { ...t, name:n, flag:f, p:0, w:0, d:0, l:0, gf:0, ga:0, gd:0, pts:0, fp:0, advances:false };
+        });
+        
+        const container = document.getElementById('groupsDisplay');
+        container.innerHTML = '';
+        
+        let allThirds = [], renderQueue = []; 
+        
+        "ABCDEFGHIJKL".split("").forEach(g => {
+            const grpTeams = currentTeams.filter(t => t.grp === g);
+            const matches = []; let mCount = 0;
+            
+            for(let i=0; i<4; i++) {
+                for(let j=i+1; j<4; j++) {
+                    const [g1, g2] = simulateMatch(grpTeams[i], grpTeams[j]);
+                    grpTeams[i].p++; grpTeams[j].p++; 
+                    grpTeams[i].gf += g1; grpTeams[i].ga += g2; grpTeams[i].gd += (g1-g2);
+                    grpTeams[j].gf += g2; grpTeams[j].ga += g1; grpTeams[j].gd += (g2-g1);
+                    grpTeams[i].fp -= Math.floor(Math.random()*3); grpTeams[j].fp -= Math.floor(Math.random()*3);
+                    if(g1 > g2) { grpTeams[i].w++; grpTeams[j].l++; grpTeams[i].pts += 3; }
+                    else if(g2 > g1) { grpTeams[j].w++; grpTeams[i].l++; grpTeams[j].pts += 3; }
+                    else { grpTeams[i].d++; grpTeams[j].d++; grpTeams[i].pts += 1; grpTeams[j].pts += 1; }
+                    
+                    let matchLocation = STADIUMS[Math.floor(Math.random()*STADIUMS.length)];
+                    matches.push({ h: grpTeams[i], a: grpTeams[j], hg: g1, ag: g2, date: DATES_GRP[mCount++], location: matchLocation });
+                }
+            }
+            
+            sortTeamsForGroup(grpTeams, matches);
+            grpTeams[0].rank = 1; grpTeams[1].rank = 2; grpTeams[2].rank = 3; grpTeams[3].rank = 4;
+            grpTeams[0].advances = true;
+            grpTeams[1].advances = true;
+            allThirds.push(grpTeams[2]);
+            
+            renderQueue.push({ id: g, teams: grpTeams, matches: matches });
+        });
+        
+        const bestThirds = sortThirdPlaces(allThirds).slice(0, 8);
+        bestThirds.forEach(t => t.advances = true);
+        
+        renderQueue.forEach(q => renderGroupCard(q.id, q.teams, q.matches));
+        
+        const initialKnockout = buildKnockoutArray(currentTeams, bestThirds);
+        renderKnockout(initialKnockout);
+    }
+
+    function renderGroupCard(id, teams, matches) {
+        const card = document.createElement('div'); card.className = 'group-card';
+        const rows = teams.map(t => {
+            const rowClass = t.advances ? 'row-team advances' : 'row-team';
+            const hostTag = t.isHost ? ` <i style="font-size:0.65rem; color:#64748b; font-weight:normal;">(Host)</i>` : '';
+            return `<tr class="${rowClass}"><td class="team-identity"><img src="https://flagcdn.com/w40/${t.flag}.png" class="flag-icon">${t.name}${hostTag}</td><td>${t.p}</td><td>${t.w}</td><td>${t.d}</td><td>${t.l}</td><td>${t.gd}</td><td class="col-pts">${t.pts}</td></tr>`;
+        }).join('');
+        
+        const mHtml = matches.map(m => `<div class="match-card"><span style="width:40%; text-align:left;"><img src="https://flagcdn.com/w40/${m.h.flag}.png" class="flag-icon"> ${m.h.name}</span><span class="match-score">${m.hg}-${m.ag}</span><span style="width:40%; text-align:right;">${m.a.name} <img src="https://flagcdn.com/w40/${m.a.flag}.png" class="flag-icon"></span><div class="match-meta">${m.date} | ${m.location}</div></div>`).join('');
+        
+        card.innerHTML = `<div class="group-name">GROUP ${id}</div><table><thead><tr><th style="text-align:left; padding-left:8px">Team</th><th class="col-stat">P</th><th class="col-stat">W</th><th class="col-stat">D</th><th class="col-stat">L</th><th class="col-stat">GD</th><th class="col-pts">Pts</th></tr></thead><tbody>${rows}</tbody></table><div class="matches-preview">${mHtml}</div>`;
+        document.getElementById('groupsDisplay').appendChild(card);
+    }
+
+    function renderKnockout(teams) {
+        const container = document.getElementById('bracketContent'); container.innerHTML = '';
+        const rounds = ["Round of 32", "Round of 16", "Quarter-Finals", "Semi-Finals", "Final"];
+        let current = [...teams];      
+
+        rounds.forEach((rn, idx) => {
+            const col = document.createElement('div'); col.className = 'bracket-round'; col.innerHTML = `<div class="round-title">${rn}</div>`;
+            let next = [];
+            let matchIdx = 0;
+            
+            for(let i=0; i < current.length; i += 2) {
+                const t1 = current[i], t2 = current[i+1];
+                if (!t1 || !t2) continue;
+                const [s1, s2] = simulateMatch(t1, t2, true);
+                const win = s1 > s2 ? t1 : t2; next.push(win);             
+                
+                const meta = KNOCKOUT_META[idx][matchIdx];
+                let location = meta ? meta.loc : "Stadium TBD";
+                let date = meta ? meta.date : "Date TBD";
+                let matchName = meta ? meta.m : "";
+
+                col.innerHTML += `<div class="bracket-match">
+                    <div style="font-size:0.55rem; color:#94a3b8; text-align:center; padding: 2px;">${matchName}</div>
+                    <div class="bracket-team ${win===t1?'winner':''}"><img src="https://flagcdn.com/w40/${t1.flag}.png" class="flag-icon"> ${t1.name} <span class="score">${s1}</span></div>
+                    <div class="bracket-team ${win===t2?'winner':''}"><img src="https://flagcdn.com/w40/${t2.flag}.png" class="flag-icon"> ${t2.name} <span class="score">${s2}</span></div>
+                    <div class="knockout-meta">${date} | ${location}</div>
+                </div>`;
+                matchIdx++;
+            }
+            container.appendChild(col); current = next;
+        });
+    }
+
+    function runMonteCarlo() {
+        const count = parseInt(document.getElementById('mcCount').value);
+        const body = document.getElementById('matrixBody');
+        body.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:40px;">Deep Simulation in progress...</td></tr>`;
+        
+        setTimeout(() => {
+            const stats = {};
+            TEAMS_CORE.forEach(t => {
+                let n = t.name, f = t.flag;
+                if (t.pathRef) {
+                    const opt = document.getElementById(t.pathRef).options[document.getElementById(t.pathRef).selectedIndex];
+                    n = opt.value; f = opt.dataset.flag;
+                }
+                stats[n] = { name: n, flag: f, r32:0, r16:0, qf:0, sf:0, f:0, w:0 };
+            });
+
+            for(let s=0; s<count; s++) {
+                const results = runFullSimInternal();
+                results[0].forEach(t => stats[t.name].r32++);
+                results[1].forEach(t => stats[t.name].r16++);
+                results[2].forEach(t => stats[t.name].qf++);
+                results[3].forEach(t => stats[t.name].sf++);
+                results[4].forEach(t => stats[t.name].f++);
+                stats[results[5][0].name].w++;
+            }
+
+            const sorted = Object.values(stats).sort((a,b) => 
+                b.w - a.w || 
+                b.sf - a.sf || 
+                b.qf - a.qf || 
+                b.r16 - a.r16 || 
+                b.r32 - a.r32
+            );
+
+            body.innerHTML = '';
+            sorted.forEach(s => {
+                const vals = [s.r32, s.r16, s.qf, s.sf, s.f, s.w];
+                const maxVal = Math.max(...vals);
+                const getCol = (v) => v === 0 ? '#fff' : `rgba(34, 197, 94, ${0.1 + (v/maxVal)*0.6})`;
+                
+                body.innerHTML += `<tr>
+                    <td class="matrix-team"><img src="https://flagcdn.com/w40/${s.flag}.png" class="flag-icon"> ${s.name}</td>
+                    <td style="background:${getCol(s.r32)}">${(s.r32/count*100).toFixed(1)}%</td>
+                    <td style="background:${getCol(s.r16)}">${(s.r16/count*100).toFixed(1)}%</td>
+                    <td style="background:${getCol(s.qf)}">${(s.qf/count*100).toFixed(1)}%</td>
+                    <td style="background:${getCol(s.sf)}">${(s.sf/count*100).toFixed(1)}%</td>
+                    <td style="background:${getCol(s.f)}">${(s.f/count*100).toFixed(1)}%</td>
+                    <td style="background:${getCol(s.w)}; font-weight:900; border-left: 2px solid #eee;">${(s.w/count*100).toFixed(1)}%</td>
+                </tr>`;
+            });
+        }, 50);
+    }
+</script>
+</body>
+
+</html>

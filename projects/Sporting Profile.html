@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sports Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            light: '#3b82f6',
+                            dark: '#1d4ed8'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-gray-100 transition-colors duration-300 h-screen overflow-hidden flex flex-col font-sans">
+
+    <header class="flex-none bg-white/70 dark:bg-gray-800/70 backdrop-blur-lg border-b border-gray-200 dark:border-gray-700 p-6 shadow-sm z-50 relative">
+        <div class="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            
+            <div class="flex-1">
+                <h1 class="text-4xl font-extrabold tracking-tight mb-1">SPORTS PORTFOLIO</h1>
+                <h2 class="text-xl font-medium text-gray-600 dark:text-gray-400 mb-2">A sample of projects completed by Jeffrey</h2>
+                <p class="text-sm md:text-base text-gray-700 dark:text-gray-300 max-w-2xl leading-relaxed">
+                    A random blurb about why I love sports and some other paragraph blah blah blah blah. A random blurb about why I love sports and some other paragraph blah blah blah blah. A random blurb about why I love sports and some other paragraph blah blah blah blah.
+                </p>
+            </div>
+
+            <div class="flex flex-col items-end gap-4 absolute top-6 right-6 md:relative md:top-0 md:right-0">
+                <button id="themeToggleBtn" aria-label="Toggle Dark Mode" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition duration-300">
+                    <svg id="themeIcon" class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20"></svg>
+                </button>
+            </div>
+            
+        </div>
+        
+        <div class="max-w-7xl mx-auto mt-6 flex justify-end relative z-40">
+            <div class="relative w-full max-w-xs md:max-w-xs flex justify-end" id="filterContainer">
+                
+                <button id="filterToggle" class="w-full bg-white dark:bg-gray-700 border-2 border-gray-900 dark:border-white px-4 py-2 flex justify-between items-center text-sm font-semibold rounded-none shadow-sm hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors">
+                    Filter by Sport
+                    <svg class="w-4 h-4 transform transition-transform duration-200" id="filterArrow" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                </button>
+
+                <div id="filterMenu" class="absolute top-full mt-1 w-full bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-xl rounded-md hidden flex-col z-50">
+                    <div class="p-3 grid grid-cols-1 gap-2 text-sm text-gray-700 dark:text-gray-200">
+                        
+                        <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 p-1 rounded transition-colors">
+                            <input type="checkbox" value="Football" class="sport-filter form-checkbox h-4 w-4 text-brand-light rounded border-gray-300 focus:ring-brand-light">
+                            <span>Football</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 p-1 rounded transition-colors">
+                            <input type="checkbox" value="Basketball" class="sport-filter form-checkbox h-4 w-4 text-brand-light rounded border-gray-300 focus:ring-brand-light">
+                            <span>Basketball</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 p-1 rounded transition-colors">
+                            <input type="checkbox" value="Tennis" class="sport-filter form-checkbox h-4 w-4 text-brand-light rounded border-gray-300 focus:ring-brand-light">
+                            <span>Tennis</span>
+                        </label>
+                        <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 p-1 rounded transition-colors">
+                            <input type="checkbox" value="Running" class="sport-filter form-checkbox h-4 w-4 text-brand-light rounded border-gray-300 focus:ring-brand-light">
+                            <span>Running</span>
+                        </label>
+                        </div>
+                </div>
+                
+            </div>
+        </div>
+    </header>
+
+
+    <main class="flex-grow overflow-y-auto w-full bg-gray-50 dark:bg-gray-900 pb-20 pt-10 px-6">
+        <div class="max-w-7xl mx-auto">
+            
+            <div id="projectGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <article class="project-card group h-[400px] w-full [perspective:1000px] cursor-pointer opacity-0 translate-y-10 transition-all duration-700" 
+                         data-sports="Football" 
+                         data-url="fifa-wc-simulator/Fifa%2026%20Simulator.html">
+                    <div class="relative w-full h-full transition-transform duration-[600ms] [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105">
+                        
+                        <div class="absolute inset-0 [backface-visibility:hidden] bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700">
+                            <img src="https://via.placeholder.com/300x400/1d4ed8/ffffff?text=FIFA+Simulator" alt="FIFA Simulator placeholder" class="w-full h-full object-cover">
+                        </div>
+                        
+                        <div class="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-blue-50 to-blue-200 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 flex flex-col justify-center items-center text-center border border-blue-200 dark:border-gray-700 shadow-inner">
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">2026 FIFA World Cup Simulator</h3>
+                            <span class="px-3 py-1 bg-brand-light text-white font-medium rounded-full text-xs uppercase tracking-wider mb-4 shadow-sm">Football</span>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-6 flex-grow leading-relaxed">
+                                A web-based model utilizing 10,000 Monte Carlo iterations and international team rating systems to predict tournament outcomes.
+                            </p>
+                            <div class="flex flex-wrap justify-center gap-2 mt-auto">
+                                <span class="text-xs font-semibold bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded">Python</span>
+                                <span class="text-xs font-semibold bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded">Flask</span>
+                                <span class="text-xs font-semibold bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded">Monte Carlo</span>
+                            </div>
+                        </div>
+                        
+                    </div>
+                </article>
+
+                <article class="project-card group h-[400px] w-full [perspective:1000px] cursor-pointer opacity-0 translate-y-10 transition-all duration-700" 
+                         data-sports="Football Tennis Basketball Running" 
+                         data-url="https://example.com/nlp">
+                    <div class="relative w-full h-full transition-transform duration-[600ms] [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105">
+                        <div class="absolute inset-0 [backface-visibility:hidden] bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700">
+                            <img src="https://via.placeholder.com/300x400/3b82f6/ffffff?text=Feedback+Analyzer" alt="Analyzer placeholder" class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-blue-50 to-blue-200 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 flex flex-col justify-center items-center text-center border border-blue-200 dark:border-gray-700 shadow-inner">
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">SickAssFeedbackAnalyzer</h3>
+                            <span class="px-3 py-1 bg-brand-light text-white font-medium rounded-full text-xs uppercase tracking-wider mb-4 shadow-sm">Cross-Sport Data</span>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-6 flex-grow leading-relaxed">
+                                A custom Natural Language Processing tool built to ingest, redact, and summarize large volumes of eForm sports feedback.
+                            </p>
+                            <div class="flex flex-wrap justify-center gap-2 mt-auto">
+                                <span class="text-xs font-semibold bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded">Python</span>
+                                <span class="text-xs font-semibold bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded">NLP</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card group h-[400px] w-full [perspective:1000px] cursor-pointer opacity-0 translate-y-10 transition-all duration-700" 
+                         data-sports="Basketball" 
+                         data-url="https://example.com/matrix">
+                    <div class="relative w-full h-full transition-transform duration-[600ms] [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105">
+                        <div class="absolute inset-0 [backface-visibility:hidden] bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700">
+                            <img src="https://via.placeholder.com/300x400/0ea5e9/ffffff?text=Matrix+Report" alt="Report placeholder" class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-blue-50 to-blue-200 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 flex flex-col justify-center items-center text-center border border-blue-200 dark:border-gray-700 shadow-inner">
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Service Channel Matrix</h3>
+                            <span class="px-3 py-1 bg-brand-light text-white font-medium rounded-full text-xs uppercase tracking-wider mb-4 shadow-sm">Basketball</span>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-6 flex-grow leading-relaxed">
+                                A raw SQL select solution providing dynamic month-over-month and YTD matrix reporting for team engagement channels.
+                            </p>
+                            <div class="flex flex-wrap justify-center gap-2 mt-auto">
+                                <span class="text-xs font-semibold bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded">SQL</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card group h-[400px] w-full [perspective:1000px] cursor-pointer opacity-0 translate-y-10 transition-all duration-700" 
+                         data-sports="Tennis" 
+                         data-url="https://example.com/powerbi">
+                    <div class="relative w-full h-full transition-transform duration-[600ms] [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105">
+                        <div class="absolute inset-0 [backface-visibility:hidden] bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700">
+                            <img src="https://via.placeholder.com/300x400/6366f1/ffffff?text=SLA+Dashboard" alt="Dashboard placeholder" class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-blue-50 to-blue-200 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 flex flex-col justify-center items-center text-center border border-blue-200 dark:border-gray-700 shadow-inner">
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">SLA Compliance Dashboard</h3>
+                            <span class="px-3 py-1 bg-brand-light text-white font-medium rounded-full text-xs uppercase tracking-wider mb-4 shadow-sm">Tennis</span>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-6 flex-grow leading-relaxed">
+                                A grid-based Power BI dashboard styled with HTML and CSS formatting to track critical SLA compliance metrics and requests.
+                            </p>
+                            <div class="flex flex-wrap justify-center gap-2 mt-auto">
+                                <span class="text-xs font-semibold bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded">Power BI</span>
+                                <span class="text-xs font-semibold bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded">DAX</span>
+                                <span class="text-xs font-semibold bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded">HTML/CSS</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="project-card group h-[400px] w-full [perspective:1000px] cursor-pointer opacity-0 translate-y-10 transition-all duration-700" 
+                         data-sports="Running" 
+                         data-url="https://example.com/running">
+                    <div class="relative w-full h-full transition-transform duration-[600ms] [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105">
+                        <div class="absolute inset-0 [backface-visibility:hidden] bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700">
+                            <img src="https://via.placeholder.com/300x400/10b981/ffffff?text=Running+App" alt="Running App placeholder" class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-blue-50 to-blue-200 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 flex flex-col justify-center items-center text-center border border-blue-200 dark:border-gray-700 shadow-inner">
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Marathon Pace Tracker</h3>
+                            <span class="px-3 py-1 bg-brand-light text-white font-medium rounded-full text-xs uppercase tracking-wider mb-4 shadow-sm">Running</span>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-6 flex-grow leading-relaxed">
+                                A progressive web app designed to track intervals and split times for long-distance marathon training.
+                            </p>
+                            <div class="flex flex-wrap justify-center gap-2 mt-auto">
+                                <span class="text-xs font-semibold bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded">JavaScript</span>
+                                <span class="text-xs font-semibold bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded">PWA</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+                
+                <article class="project-card group h-[400px] w-full [perspective:1000px] cursor-pointer opacity-0 translate-y-10 transition-all duration-700" 
+                         data-sports="Football Basketball" 
+                         data-url="https://example.com/team-mgmt">
+                    <div class="relative w-full h-full transition-transform duration-[600ms] [transform-style:preserve-3d] group-hover:[transform:rotateY(180deg)] rounded-2xl shadow-xl hover:shadow-2xl hover:scale-105">
+                        <div class="absolute inset-0 [backface-visibility:hidden] bg-white dark:bg-gray-800 rounded-2xl overflow-hidden border border-gray-100 dark:border-gray-700">
+                            <img src="https://via.placeholder.com/300x400/8b5cf6/ffffff?text=Team+Manager" alt="Team Manager placeholder" class="w-full h-full object-cover">
+                        </div>
+                        <div class="absolute inset-0 [backface-visibility:hidden] [transform:rotateY(180deg)] bg-gradient-to-br from-blue-50 to-blue-200 dark:from-gray-800 dark:to-gray-900 rounded-2xl p-6 flex flex-col justify-center items-center text-center border border-blue-200 dark:border-gray-700 shadow-inner">
+                            <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">Multi-Sport Roster UI</h3>
+                            <span class="px-3 py-1 bg-brand-light text-white font-medium rounded-full text-xs uppercase tracking-wider mb-4 shadow-sm">Hybrid</span>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-6 flex-grow leading-relaxed">
+                                A drag-and-drop dashboard for managing player rosters across seasonal sports leagues.
+                            </p>
+                            <div class="flex flex-wrap justify-center gap-2 mt-auto">
+                                <span class="text-xs font-semibold bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded">React</span>
+                                <span class="text-xs font-semibold bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-2 py-1 rounded">Tailwind</span>
+                            </div>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+
+            <footer class="mt-20 border-t border-gray-200 dark:border-gray-700 pt-8 pb-4 flex justify-center w-full">
+                <p class="italic text-gray-400 dark:text-gray-500 text-sm">© Jose.J (2026)</p>
+            </footer>
+
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            
+            // --- 1. DARK MODE TOGGLE ---
+            const themeToggleBtn = document.getElementById('themeToggleBtn');
+            const themeIcon = document.getElementById('themeIcon');
+            
+            // SVG Icons definition
+            const sunIcon = `<path fill-rule="evenodd" d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4.22 2.32a1 1 0 011.415 0l.708.707a1 1 0 01-1.415 1.415l-.708-.707a1 1 0 010-1.415zM18 10a1 1 0 01-1 1h-1a1 1 0 110-2h1a1 1 0 011 1zm-3.1 4.38a1 1 0 010 1.415l-.707.707a1 1 0 01-1.415-1.415l.707-.707a1 1 0 011.415 0zM10 16a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zm-4.38-3.1a1 1 0 011.415 0l.707.707a1 1 0 01-1.415 1.415l-.707-.707a1 1 0 010-1.415zM4 10a1 1 0 01-1 1H2a1 1 0 110-2h1a1 1 0 011 1zm2.32-4.22a1 1 0 010-1.415l.707-.707a1 1 0 011.415 1.415L7.737 6.49A1 1 0 016.32 5.78zM10 5a5 5 0 100 10 5 5 0 000-10z" clip-rule="evenodd" />`;
+            const moonIcon = `<path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />`;
+
+            function setTheme(isDark) {
+                if (isDark) {
+                    document.documentElement.classList.add('dark');
+                    localStorage.setItem('theme', 'dark');
+                    themeIcon.innerHTML = sunIcon;
+                } else {
+                    document.documentElement.classList.remove('dark');
+                    localStorage.setItem('theme', 'light');
+                    themeIcon.innerHTML = moonIcon;
+                }
+            }
+
+            // Check Initial State from localStorage or OS Preference
+            const isDarkMode = localStorage.getItem('theme') === 'dark' || 
+                (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+            setTheme(isDarkMode);
+
+            // Toggle Event Listener
+            themeToggleBtn.addEventListener('click', () => {
+                const isDark = !document.documentElement.classList.contains('dark');
+                setTheme(isDark);
+            });
+
+
+            // --- 2. FILTER DROPDOWN LOGIC ---
+            const filterToggle = document.getElementById('filterToggle');
+            const filterMenu = document.getElementById('filterMenu');
+            const filterArrow = document.getElementById('filterArrow');
+
+            // Open/Close Dropdown
+            filterToggle.addEventListener('click', (e) => {
+                e.stopPropagation();
+                filterMenu.classList.toggle('hidden');
+                filterMenu.classList.toggle('flex');
+                filterArrow.classList.toggle('rotate-180');
+            });
+
+            // Close when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!filterToggle.contains(e.target) && !filterMenu.contains(e.target)) {
+                    filterMenu.classList.add('hidden');
+                    filterMenu.classList.remove('flex');
+                    filterArrow.classList.remove('rotate-180');
+                }
+            });
+
+
+            // --- 3. FILTERING CARDS LOGIC ---
+            const filterCheckboxes = document.querySelectorAll('.sport-filter');
+            const projectCards = document.querySelectorAll('.project-card');
+
+            // HOW TO UPDATE FILTER DROPDOWN OPTIONS:
+            // When a checkbox is changed, this loop evaluates which ones are active
+            // and filters the cards matching the data-sports tags.
+            filterCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', () => {
+                    
+                    // Get all currently checked values
+                    const activeFilters = Array.from(filterCheckboxes)
+                        .filter(cb => cb.checked)
+                        .map(cb => cb.value.toLowerCase());
+
+                    projectCards.forEach(card => {
+                        // Extract sport tags tied to this card (split by space)
+                        const cardSports = card.getAttribute('data-sports').toLowerCase().split(' ');
+                        
+                        // Logic: if no filters checked, show all. 
+                        // If filters checked, show if the card has ANY matching tag.
+                        if (activeFilters.length === 0) {
+                            card.style.display = 'block';
+                            // Re-trigger animation gracefully
+                            setTimeout(() => { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }, 50);
+                        } else {
+                            const isMatch = activeFilters.some(filter => cardSports.includes(filter));
+                            if (isMatch) {
+                                card.style.display = 'block';
+                                setTimeout(() => { card.style.opacity = '1'; card.style.transform = 'translateY(0)'; }, 50);
+                            } else {
+                                card.style.opacity = '0';
+                                card.style.transform = 'translateY(10px)';
+                                setTimeout(() => { card.style.display = 'none'; }, 300); // Wait for fade out
+                            }
+                        }
+                    });
+                });
+            });
+
+
+            // --- 4. CARD CLICK NAVIGATION & FADE-IN ANIMATION ---
+            
+            // Fade-in effect on load (staggered)
+            projectCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.classList.remove('opacity-0', 'translate-y-10');
+                    card.classList.add('opacity-100', 'translate-y-0');
+                }, index * 150); // Stagger by 150ms
+
+                // Click event to navigate (since it's an article tag acting as a button)
+                card.addEventListener('click', function() {
+                    const url = this.getAttribute('data-url');
+                    if(url && url !== "#") {
+                        window.open(url, '_blank', 'noopener,noreferrer');
+                    }
+                });
+            });
+
+        });
+    </script>
+</body>
+</html>
