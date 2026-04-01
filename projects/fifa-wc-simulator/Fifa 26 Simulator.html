@@ -364,20 +364,19 @@ header {
 
 <script>
     const TEAMS_CORE = [
-        { name: "Mexico", str: 79, grp: "A", flag: "mx", isHost: true }, { name: "South Africa", str: 68, grp: "A", flag: "za" }, { name: "Korea Republic", str: 75, grp: "A", flag: "kr" }, { name: "Path D", str: 76, grp: "A", pathRef: "pathD" },
-        { name: "Canada", str: 77, grp: "B", flag: "ca", isHost: true }, { name: "Switzerland", str: 81, grp: "B", flag: "ch" }, { name: "Qatar", str: 65, grp: "B", flag: "qa" }, { name: "Path A", str: 78, grp: "B", pathRef: "pathA" },
-        { name: "Brazil", str: 92, grp: "C", flag: "br" }, { name: "Morocco", str: 82, grp: "C", flag: "ma" }, { name: "Haiti", str: 60, grp: "C", flag: "ht" }, { name: "Scotland", str: 74, grp: "C", flag: "gb-sct" },
-        { name: "USA", str: 82, grp: "D", flag: "us", isHost: true }, { name: "Paraguay", str: 72, grp: "D", flag: "py" }, { name: "Australia", str: 74, grp: "D", flag: "au" }, { name: "Path C", str: 76, grp: "D", pathRef: "pathC" },
-        { name: "Germany", str: 88, grp: "E", flag: "de" }, { name: "Curaçao", str: 62, grp: "E", flag: "cw" }, { name: "Côte d'Ivoire", str: 78, grp: "E", flag: "ci" }, { name: "Ecuador", str: 79, grp: "E", flag: "ec" },
-        { name: "Netherlands", str: 87, grp: "F", flag: "nl" }, { name: "Japan", str: 81, grp: "F", flag: "jp" }, { name: "Tunisia", str: 71, grp: "F", flag: "tn" }, { name: "Path B", str: 78, grp: "F", pathRef: "pathB" },
-        { name: "Belgium", str: 86, grp: "G", flag: "be" }, { name: "Egypt", str: 74, grp: "G", flag: "eg" }, { name: "Iran", str: 73, grp: "G", flag: "ir" }, { name: "New Zealand", str: 67, grp: "G", flag: "nz" },
-        { name: "Spain", str: 90, grp: "H", flag: "es" }, { name: "Cabo Verde", str: 68, grp: "H", flag: "cv" }, { name: "Saudi Arabia", str: 68, grp: "H", flag: "sa" }, { name: "Uruguay", str: 84, grp: "H", flag: "uy" },
-        { name: "France", str: 91, grp: "I", flag: "fr" }, { name: "Senegal", str: 79, grp: "I", flag: "sn" }, { name: "Norway", str: 78, grp: "I", flag: "no" }, { name: "IC 2", str: 71, grp: "I", pathRef: "pathIC2" },
-        { name: "Argentina", str: 93, grp: "J", flag: "ar" }, { name: "Algeria", str: 76, grp: "J", flag: "dz" }, { name: "Austria", str: 80, grp: "J", flag: "at" }, { name: "Jordan", str: 64, grp: "J", flag: "jo" },
-        { name: "Portugal", str: 89, grp: "K", flag: "pt" }, { name: "Uzbekistan", str: 71, grp: "K", flag: "uz" }, { name: "Colombia", str: 82, grp: "K", flag: "co" }, { name: "IC 1", str: 72, grp: "K", pathRef: "pathIC1" },
-        { name: "England", str: 90, grp: "L", flag: "gb-eng" }, { name: "Croatia", str: 84, grp: "L", flag: "hr" }, { name: "Ghana", str: 75, grp: "L", flag: "gh" }, { name: "Panama", str: 71, grp: "L", flag: "pa" }
-    ];
-
+    { name: "Mexico", str: 79, grp: "A", flag: "mx", isHost: true }, { name: "South Africa", str: 72, grp: "A", flag: "za" }, { name: "Korea Republic", str: 77, grp: "A", flag: "kr" }, { name: "Czech Republic", str: 76, grp: "A", flag: "cz" },
+    { name: "Canada", str: 78, grp: "B", flag: "ca", isHost: true }, { name: "Switzerland", str: 81, grp: "B", flag: "ch" }, { name: "Qatar", str: 68, grp: "B", flag: "qa" }, { name: "Bosnia", str: 73, grp: "B", flag: "ba" },
+    { name: "Brazil", str: 89, grp: "C", flag: "br" }, { name: "Morocco", str: 83, grp: "C", flag: "ma" }, { name: "Haiti", str: 63, grp: "C", flag: "ht" }, { name: "Scotland", str: 74, grp: "C", flag: "gb-sct" },
+    { name: "USA", str: 81, grp: "D", flag: "us", isHost: true }, { name: "Paraguay", str: 74, grp: "D", flag: "py" }, { name: "Australia", str: 75, grp: "D", flag: "au" }, { name: "Turkey", str: 79, grp: "D", flag: "tr" },
+    { name: "Germany", str: 88, grp: "E", flag: "de" }, { name: "Curaçao", str: 65, grp: "E", flag: "cw" }, { name: "Côte d'Ivoire", str: 78, grp: "E", flag: "ci" }, { name: "Ecuador", str: 80, grp: "E", flag: "ec" },
+    { name: "Netherlands", str: 86, grp: "F", flag: "nl" }, { name: "Japan", str: 82, grp: "F", flag: "jp" }, { name: "Tunisia", str: 72, grp: "F", flag: "tn" }, { name: "Sweden", str: 77, grp: "F", flag: "se" },
+    { name: "Belgium", str: 84, grp: "G", flag: "be" }, { name: "Egypt", str: 75, grp: "G", flag: "eg" }, { name: "Iran", str: 75, grp: "G", flag: "ir" }, { name: "New Zealand", str: 69, grp: "G", flag: "nz" },
+    { name: "Spain", str: 90, grp: "H", flag: "es" }, { name: "Cabo Verde", str: 71, grp: "H", flag: "cv" }, { name: "Saudi Arabia", str: 71, grp: "H", flag: "sa" }, { name: "Uruguay", str: 86, grp: "H", flag: "uy" },
+    { name: "France", str: 93, grp: "I", flag: "fr" }, { name: "Senegal", str: 79, grp: "I", flag: "sn" }, { name: "Norway", str: 78, grp: "I", flag: "no" }, { name: "Iraq", str: 71, grp: "I", flag: "iq" },
+    { name: "Argentina", str: 94, grp: "J", flag: "ar" }, { name: "Algeria", str: 76, grp: "J", flag: "dz" }, { name: "Austria", str: 81, grp: "J", flag: "at" }, { name: "Jordan", str: 72, grp: "J", flag: "jo" },
+    { name: "Portugal", str: 89, grp: "K", flag: "pt" }, { name: "Uzbekistan", str: 73, grp: "K", flag: "uz" }, { name: "Colombia", str: 85, grp: "K", flag: "co" }, { name: "DR Congo", str: 72, grp: "K", flag: "cd" },
+    { name: "England", str: 91, grp: "L", flag: "gb-eng" }, { name: "Croatia", str: 82, grp: "L", flag: "hr" }, { name: "Ghana", str: 74, grp: "L", flag: "gh" }, { name: "Panama", str: 73, grp: "L", flag: "pa" }
+];
     const STADIUMS = ["Azteca", "SoFi", "MetLife", "AT&T", "BMO", "BC Place", "Mercedes-Benz", "Hard Rock", "Levi's", "Arrowhead"];
     const DATES_GRP = ["11 Jun", "12 Jun", "15 Jun", "16 Jun", "20 Jun", "21 Jun"];
     
@@ -410,18 +409,6 @@ header {
             { m: 'Match 104', loc: 'New York New Jersey Stadium', date: '19 Jul' }
         ]
     ];
-
-    const ps = document.getElementById('playoffSelectors');
-    [
-        {id:'pathA', l:'Path A (Group B)', opt:[['Italy','it'],['Wales','gb-wls'],['Bosnia','ba'],['N. Ireland','gb-nir']]},
-        {id:'pathB', l:'Path B (Group F)', opt:[['Ukraine','ua'],['Sweden','se'],['Poland','pl'],['Albania','al']]},
-        {id:'pathC', l:'Path C (Group D)', opt:[['Turkey','tr'],['Romania','ro'],['Slovakia','sk'],['Kosovo','xk']]},
-        {id:'pathD', l:'Path D (Group A)', opt:[['Denmark','dk'],['Czech Rep.','cz'],['Ireland','ie'],['N. Macedonia','mk']]},
-        {id:'pathIC1', l:'IC 1 (Group K)', opt:[['Jamaica','jm'],['DR Congo','cd'],['New Caledonia','nc']]},
-        {id:'pathIC2', l:'IC 2 (Group I)', opt:[['Iraq','iq'],['Suriname','sr'],['Bolivia','bo']]}
-    ].forEach(p => {
-        ps.innerHTML += `<div class="control-section"><label>${p.l}</label><select id="${p.id}">${p.opt.map(o=>`<option value="${o[0]}" data-flag="${o[1]}">${o[0]}</option>`).join('')}</select></div>`;
-    });
 
     function navigate(view) {
         ['groupsDisplay', 'bracketDisplay', 'matrixDisplay'].forEach(id => document.getElementById(id).classList.add('hidden'));
@@ -533,32 +520,90 @@ header {
         ];
     }
 
+    // Exact Schedule Matrix (Match Num, Home Idx, Away Idx, Date, Time, Location)
+    const SCHEDULE_DATA = {
+        'A': [
+            { num: 1, h: 0, a: 3, d: '11 Jun', t: '21:00', l: 'Mexico City' }, { num: 2, h: 2, a: 1, d: '12 Jun', t: '19:00', l: 'Guadalajara' },
+            { num: 25, h: 0, a: 2, d: '17 Jun', t: '18:00', l: 'Mexico City' }, { num: 26, h: 1, a: 3, d: '17 Jun', t: '18:00', l: 'Guadalajara' },
+            { num: 49, h: 1, a: 0, d: '24 Jun', t: '21:00', l: 'Mexico City' }, { num: 50, h: 3, a: 2, d: '24 Jun', t: '21:00', l: 'Monterrey' }
+        ],
+        'B': [
+            { num: 3, h: 0, a: 3, d: '12 Jun', t: '21:00', l: 'Toronto' }, { num: 4, h: 1, a: 2, d: '13 Jun', t: '18:00', l: 'San Francisco Bay Area' },
+            { num: 27, h: 0, a: 1, d: '18 Jun', t: '18:00', l: 'Vancouver' }, { num: 28, h: 3, a: 2, d: '18 Jun', t: '18:00', l: 'Seattle' },
+            { num: 51, h: 2, a: 0, d: '25 Jun', t: '18:00', l: 'Vancouver' }, { num: 52, h: 3, a: 1, d: '25 Jun', t: '18:00', l: 'Seattle' }
+        ],
+        'C': [
+            { num: 5, h: 0, a: 1, d: '13 Jun', t: '18:00', l: 'New York/New Jersey' }, { num: 6, h: 3, a: 2, d: '14 Jun', t: '15:00', l: 'Boston' },
+            { num: 29, h: 0, a: 3, d: '19 Jun', t: '18:00', l: 'Boston' }, { num: 30, h: 1, a: 2, d: '19 Jun', t: '18:00', l: 'Philadelphia' },
+            { num: 53, h: 2, a: 0, d: '24 Jun', t: '21:00', l: 'Miami' }, { num: 54, h: 1, a: 3, d: '24 Jun', t: '21:00', l: 'Atlanta' }
+        ],
+        'D': [
+            { num: 7, h: 0, a: 1, d: '13 Jun', t: '18:00', l: 'Los Angeles' }, { num: 8, h: 2, a: 3, d: '14 Jun', t: '18:00', l: 'Vancouver' },
+            { num: 31, h: 0, a: 2, d: '19 Jun', t: '21:00', l: 'Seattle' }, { num: 32, h: 1, a: 3, d: '19 Jun', t: '21:00', l: 'San Francisco Bay Area' },
+            { num: 55, h: 3, a: 0, d: '25 Jun', t: '18:00', l: 'Los Angeles' }, { num: 56, h: 1, a: 2, d: '25 Jun', t: '18:00', l: 'San Francisco Bay Area' }
+        ],
+        'E': [
+            { num: 9, h: 0, a: 1, d: '14 Jun', t: '18:00', l: 'Houston' }, { num: 10, h: 2, a: 3, d: '15 Jun', t: '15:00', l: 'Philadelphia' },
+            { num: 33, h: 0, a: 2, d: '20 Jun', t: '18:00', l: 'New York/New Jersey' }, { num: 34, h: 1, a: 3, d: '20 Jun', t: '18:00', l: 'Toronto' },
+            { num: 57, h: 3, a: 0, d: '26 Jun', t: '21:00', l: 'Boston' }, { num: 58, h: 1, a: 2, d: '26 Jun', t: '21:00', l: 'New York/New Jersey' }
+        ],
+        'F': [
+            { num: 11, h: 0, a: 1, d: '14 Jun', t: '21:00', l: 'Dallas' }, { num: 12, h: 3, a: 2, d: '15 Jun', t: '18:00', l: 'Monterrey' },
+            { num: 35, h: 0, a: 3, d: '20 Jun', t: '21:00', l: 'Houston' }, { num: 36, h: 1, a: 2, d: '20 Jun', t: '21:00', l: 'Monterrey' },
+            { num: 59, h: 2, a: 0, d: '26 Jun', t: '21:00', l: 'Houston' }, { num: 60, h: 1, a: 3, d: '26 Jun', t: '21:00', l: 'Philadelphia' }
+        ],
+        'G': [
+            { num: 13, h: 0, a: 1, d: '15 Jun', t: '18:00', l: 'Miami' }, { num: 14, h: 2, a: 3, d: '16 Jun', t: '18:00', l: 'Los Angeles' },
+            { num: 37, h: 0, a: 2, d: '21 Jun', t: '18:00', l: 'Dallas' }, { num: 38, h: 1, a: 3, d: '21 Jun', t: '21:00', l: 'Los Angeles' },
+            { num: 61, h: 3, a: 0, d: '27 Jun', t: '15:00', l: 'Dallas' }, { num: 62, h: 1, a: 2, d: '27 Jun', t: '15:00', l: 'Kansas City' }
+        ],
+        'H': [
+            { num: 15, h: 0, a: 1, d: '15 Jun', t: '21:00', l: 'Atlanta' }, { num: 16, h: 2, a: 3, d: '16 Jun', t: '18:00', l: 'Miami' },
+            { num: 39, h: 0, a: 2, d: '21 Jun', t: '18:00', l: 'Miami' }, { num: 40, h: 1, a: 3, d: '21 Jun', t: '21:00', l: 'Atlanta' },
+            { num: 63, h: 3, a: 0, d: '27 Jun', t: '18:00', l: 'Miami' }, { num: 64, h: 1, a: 2, d: '27 Jun', t: '18:00', l: 'Atlanta' }
+        ],
+        'I': [
+            { num: 17, h: 0, a: 1, d: '16 Jun', t: '21:00', l: 'New York/New Jersey' }, { num: 18, h: 3, a: 2, d: '17 Jun', t: '15:00', l: 'Boston' },
+            { num: 41, h: 0, a: 3, d: '22 Jun', t: '18:00', l: 'Philadelphia' }, { num: 42, h: 1, a: 2, d: '22 Jun', t: '18:00', l: 'New York/New Jersey' },
+            { num: 65, h: 2, a: 0, d: '27 Jun', t: '21:00', l: 'Philadelphia' }, { num: 66, h: 1, a: 3, d: '27 Jun', t: '21:00', l: 'Kansas City' }
+        ],
+        'J': [
+            { num: 19, h: 0, a: 1, d: '16 Jun', t: '18:00', l: 'Kansas City' }, { num: 20, h: 2, a: 3, d: '17 Jun', t: '15:00', l: 'San Francisco Bay Area' },
+            { num: 43, h: 0, a: 2, d: '22 Jun', t: '21:00', l: 'Dallas' }, { num: 44, h: 1, a: 3, d: '22 Jun', t: '21:00', l: 'Kansas City' },
+            { num: 67, h: 3, a: 0, d: '28 Jun', t: '15:00', l: 'Dallas' }, { num: 68, h: 1, a: 2, d: '28 Jun', t: '15:00', l: 'New York/New Jersey' }
+        ],
+        'K': [
+            { num: 21, h: 0, a: 3, d: '17 Jun', t: '18:00', l: 'Houston' }, { num: 22, h: 1, a: 2, d: '18 Jun', t: '15:00', l: 'Mexico City' },
+            { num: 45, h: 0, a: 1, d: '23 Jun', t: '18:00', l: 'Houston' }, { num: 46, h: 3, a: 2, d: '23 Jun', t: '21:00', l: 'Miami' },
+            { num: 69, h: 2, a: 0, d: '28 Jun', t: '18:00', l: 'Guadalajara' }, { num: 70, h: 3, a: 1, d: '28 Jun', t: '18:00', l: 'Monterrey' }
+        ],
+        'L': [
+            { num: 23, h: 0, a: 1, d: '17 Jun', t: '21:00', l: 'Dallas' }, { num: 24, h: 2, a: 3, d: '18 Jun', t: '18:00', l: 'Toronto' },
+            { num: 47, h: 0, a: 2, d: '23 Jun', t: '18:00', l: 'Boston' }, { num: 48, h: 1, a: 3, d: '23 Jun', t: '18:00', l: 'New York/New Jersey' },
+            { num: 71, h: 3, a: 0, d: '28 Jun', t: '21:00', l: 'Boston' }, { num: 72, h: 1, a: 2, d: '28 Jun', t: '21:00', l: 'Philadelphia' }
+        ]
+    };
+
     function runFullSimInternal() {
-        const currentTeams = TEAMS_CORE.map(t => {
-            let n = t.name, f = t.flag;
-            if (t.pathRef) {
-                const opt = document.getElementById(t.pathRef).options[document.getElementById(t.pathRef).selectedIndex];
-                n = opt.value; f = opt.dataset.flag;
-            }
-            return { ...t, name:n, flag:f, pts:0, gf:0, ga:0, gd:0, fp:0 };
-        });
+        const currentTeams = TEAMS_CORE.map(t => ({ ...t, pts:0, gf:0, ga:0, gd:0, fp:0 }));
 
         let allThirds = [];
         "ABCDEFGHIJKL".split("").forEach(g => {
             const gt = currentTeams.filter(t => t.grp === g);
             const matches = [];
-            for(let i=0; i<4; i++) {
-                for(let j=i+1; j<4; j++) {
-                    const [g1, g2] = simulateMatch(gt[i], gt[j]);
-                    gt[i].gf += g1; gt[i].ga += g2; gt[i].gd += (g1-g2);
-                    gt[j].gf += g2; gt[j].ga += g1; gt[j].gd += (g2-g1);
-                    gt[i].fp -= Math.floor(Math.random()*3); gt[j].fp -= Math.floor(Math.random()*3);
-                    if(g1 > g2) gt[i].pts += 3; else if(g2 > g1) gt[j].pts += 3; else { gt[i].pts++; gt[j].pts++; }
-                    matches.push({ h: gt[i], a: gt[j], hg: g1, ag: g2 });
-                }
-            }
+            
+            SCHEDULE_DATA[g].forEach(md => {
+                const t1 = gt[md.h], t2 = gt[md.a];
+                const [g1, g2] = simulateMatch(t1, t2);
+                t1.gf += g1; t1.ga += g2; t1.gd += (g1-g2);
+                t2.gf += g2; t2.ga += g1; t2.gd += (g2-g1);
+                t1.fp -= Math.floor(Math.random()*3); t2.fp -= Math.floor(Math.random()*3);
+                if(g1 > g2) t1.pts += 3; else if(g2 > g1) t2.pts += 3; else { t1.pts++; t2.pts++; }
+                matches.push({ h: t1, a: t2, hg: g1, ag: g2 });
+            });
+            
             sortTeamsForGroup(gt, matches);
-            gt[0].rank = 1; gt[1].rank = 2; gt[2].rank = 3; gt[3].rank = 4; // Required for Bracket Builder
+            gt[0].rank = 1; gt[1].rank = 2; gt[2].rank = 3; gt[3].rank = 4;
             allThirds.push(gt[2]);
         });
         
@@ -579,14 +624,7 @@ header {
     }
 
     function executeFullTournament() {
-        const currentTeams = TEAMS_CORE.map(t => {
-            let n = t.name, f = t.flag;
-            if (t.pathRef) {
-                const opt = document.getElementById(t.pathRef).options[document.getElementById(t.pathRef).selectedIndex];
-                n = opt.value; f = opt.dataset.flag;
-            }
-            return { ...t, name:n, flag:f, p:0, w:0, d:0, l:0, gf:0, ga:0, gd:0, pts:0, fp:0, advances:false };
-        });
+        const currentTeams = TEAMS_CORE.map(t => ({ ...t, p:0, w:0, d:0, l:0, gf:0, ga:0, gd:0, pts:0, fp:0, advances:false }));
         
         const container = document.getElementById('groupsDisplay');
         container.innerHTML = '';
@@ -595,23 +633,23 @@ header {
         
         "ABCDEFGHIJKL".split("").forEach(g => {
             const grpTeams = currentTeams.filter(t => t.grp === g);
-            const matches = []; let mCount = 0;
+            const matches = [];
             
-            for(let i=0; i<4; i++) {
-                for(let j=i+1; j<4; j++) {
-                    const [g1, g2] = simulateMatch(grpTeams[i], grpTeams[j]);
-                    grpTeams[i].p++; grpTeams[j].p++; 
-                    grpTeams[i].gf += g1; grpTeams[i].ga += g2; grpTeams[i].gd += (g1-g2);
-                    grpTeams[j].gf += g2; grpTeams[j].ga += g1; grpTeams[j].gd += (g2-g1);
-                    grpTeams[i].fp -= Math.floor(Math.random()*3); grpTeams[j].fp -= Math.floor(Math.random()*3);
-                    if(g1 > g2) { grpTeams[i].w++; grpTeams[j].l++; grpTeams[i].pts += 3; }
-                    else if(g2 > g1) { grpTeams[j].w++; grpTeams[i].l++; grpTeams[j].pts += 3; }
-                    else { grpTeams[i].d++; grpTeams[j].d++; grpTeams[i].pts += 1; grpTeams[j].pts += 1; }
-                    
-                    let matchLocation = STADIUMS[Math.floor(Math.random()*STADIUMS.length)];
-                    matches.push({ h: grpTeams[i], a: grpTeams[j], hg: g1, ag: g2, date: DATES_GRP[mCount++], location: matchLocation });
-                }
-            }
+            SCHEDULE_DATA[g].forEach(md => {
+                const t1 = grpTeams[md.h], t2 = grpTeams[md.a];
+                const [g1, g2] = simulateMatch(t1, t2);
+                
+                t1.p++; t2.p++; 
+                t1.gf += g1; t1.ga += g2; t1.gd += (g1-g2);
+                t2.gf += g2; t2.ga += g1; t2.gd += (g2-g1);
+                t1.fp -= Math.floor(Math.random()*3); t2.fp -= Math.floor(Math.random()*3);
+                
+                if(g1 > g2) { t1.w++; t2.l++; t1.pts += 3; }
+                else if(g2 > g1) { t2.w++; t1.l++; t2.pts += 3; }
+                else { t1.d++; t2.d++; t1.pts += 1; t2.pts += 1; }
+                
+                matches.push({ num: md.num, h: t1, a: t2, hg: g1, ag: g2, date: `${md.d} - ${md.t} ET`, location: md.l });
+            });
             
             sortTeamsForGroup(grpTeams, matches);
             grpTeams[0].rank = 1; grpTeams[1].rank = 2; grpTeams[2].rank = 3; grpTeams[3].rank = 4;
@@ -639,12 +677,18 @@ header {
             return `<tr class="${rowClass}"><td class="team-identity"><img src="https://flagcdn.com/w40/${t.flag}.png" class="flag-icon">${t.name}${hostTag}</td><td>${t.p}</td><td>${t.w}</td><td>${t.d}</td><td>${t.l}</td><td>${t.gd}</td><td class="col-pts">${t.pts}</td></tr>`;
         }).join('');
         
-        const mHtml = matches.map(m => `<div class="match-card"><span style="width:40%; text-align:left;"><img src="https://flagcdn.com/w40/${m.h.flag}.png" class="flag-icon"> ${m.h.name}</span><span class="match-score">${m.hg}-${m.ag}</span><span style="width:40%; text-align:right;">${m.a.name} <img src="https://flagcdn.com/w40/${m.a.flag}.png" class="flag-icon"></span><div class="match-meta">${m.date} | ${m.location}</div></div>`).join('');
+        const mHtml = matches.map(m => `<div class="match-card">
+            <div style="width:100%; text-align:center; font-size: 0.55rem; color: #94a3b8; font-weight: bold; margin-bottom: 3px; background: #e2e8f0; border-radius: 3px; padding: 2px;">Match ${m.num}</div>
+            <span style="width:40%; text-align:left;"><img src="https://flagcdn.com/w40/${m.h.flag}.png" class="flag-icon"> ${m.h.name}</span>
+            <span class="match-score">${m.hg}-${m.ag}</span>
+            <span style="width:40%; text-align:right;">${m.a.name} <img src="https://flagcdn.com/w40/${m.a.flag}.png" class="flag-icon"></span>
+            <div class="match-meta" style="margin-top:4px;">${m.date} | ${m.location}</div>
+        </div>`).join('');
         
         card.innerHTML = `<div class="group-name">GROUP ${id}</div><table><thead><tr><th style="text-align:left; padding-left:8px">Team</th><th class="col-stat">P</th><th class="col-stat">W</th><th class="col-stat">D</th><th class="col-stat">L</th><th class="col-stat">GD</th><th class="col-pts">Pts</th></tr></thead><tbody>${rows}</tbody></table><div class="matches-preview">${mHtml}</div>`;
         document.getElementById('groupsDisplay').appendChild(card);
     }
-
+    
     function renderKnockout(teams) {
         const container = document.getElementById('bracketContent'); container.innerHTML = '';
         const rounds = ["Round of 32", "Round of 16", "Quarter-Finals", "Semi-Finals", "Final"];
