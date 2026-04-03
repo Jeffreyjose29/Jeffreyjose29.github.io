@@ -4,32 +4,54 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FIFA 2026 Tournament Simulator</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+
     <style>
         :root {
-            --bg-light: #f1f5f9;
+            /* New 2026 Color Palette */
+            --fifa-green: #3CAC3B;
+            --fifa-blue: #2A398D;
+            --fifa-red: #E61D25;
+            --fifa-light-grey: #D1D4D1;
+            --fifa-dark-grey: #474A4A;
+            
+            --bg-light: #f8fafc;
             --sidebar-white: #ffffff;
-            --fifa-purple: #0f172a;
-            --fifa-purple-hover: #4324bc;
-            --fifa-black: #0f172a;
-            --fifa-gold: #FFD700;
-            --fifa-gold-soft: rgba(255, 215, 0, 0.25);
-            --text-main: #1e293b;
-            --border-color: #cbd5e1;
+            --fifa-green-soft: rgba(60, 172, 59, 0.15);
+            --text-main: var(--fifa-dark-grey);
+            --border-color: var(--fifa-light-grey);
+            
+            /* Leaflet Map specific colors */
+            --region-west: var(--fifa-green);
+            --region-central: #5ab2ff; /* Light blue as requested */
+            --region-east: var(--fifa-red);
         }
 
-        body { margin: 0; font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: var(--bg-light); color: var(--text-main); }
+        /* Base Typography (Req 3: Raleway light weight) */
+        body { 
+            margin: 0; 
+            font-family: 'Raleway', sans-serif; 
+            font-weight: 400; 
+            background-color: var(--bg-light); 
+            color: var(--text-main); 
+        }
         
         /* HEADER */
         header { 
-            background: var(--fifa-black); 
+            background: var(--fifa-blue); 
             height: 80px; 
             display: flex; 
-            flex-direction: column;
-            justify-content: center;
-            padding-left: 170px; 
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 40px 0 170px; 
             position: sticky; 
             top: 0; 
-            z-index: 100; 
+            z-index: 1000; /* Higher than map */
             box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
 
@@ -41,22 +63,40 @@
             padding: 8px;
             border-radius: 8px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            z-index: 110;
-            border: 1px solid #e5e7eb;
+            z-index: 1100;
+            border: 1px solid var(--border-color);
             transition: transform 0.3s ease;
+            cursor: pointer;
         }
         .logo-container:hover { transform: scale(1.05); }
-
         .logo-container img { height: 75px; width: auto; display: block; }
 
+        .header-left { display: flex; flex-direction: column; justify-content: center; }
+
+        /* Excluded from Raleway, kept as impact font */
         .header-title { 
-            margin: 0; color: #ffffff; font-family: 'Arial Black', sans-serif;
+            margin: 0; color: #ffffff; font-family: 'Arial Black', Impact, sans-serif;
             font-weight: 900; text-transform: uppercase; letter-spacing: -1px; 
             font-size: 1.8rem; line-height: 1; text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
         }
 
-        .header-subtitle { color: #94a3b8; font-size: 0.8rem; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; margin-top: 5px; }
+        .header-subtitle { color: var(--fifa-light-grey); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-top: 5px; }
         
+        /* Cool Feature: Countdown Timer */
+        .countdown-container {
+            background: rgba(0,0,0,0.2);
+            padding: 10px 20px;
+            border-radius: 8px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            color: white;
+            display: flex;
+            gap: 15px;
+        }
+        .cd-box { display: flex; flex-direction: column; align-items: center; }
+        .cd-val { font-size: 1.4rem; font-weight: 800; color: var(--fifa-green); font-family: monospace; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+        .cd-lbl { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; color: var(--fifa-light-grey); font-weight: 600; }
+
         /* LAYOUT */
         .app-container { display: flex; height: calc(100vh - 80px); overflow: hidden; }
 
@@ -73,33 +113,33 @@
 
         /* CONTROLS */
         .control-section { margin-bottom: 20px; }
-        .control-section label { display: block; font-size: 0.75rem; font-weight: 800; margin-bottom: 6px; color: var(--fifa-purple); text-transform: uppercase; letter-spacing: 1px; }
-        input[type="range"], input[type="number"] { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.9rem; box-sizing: border-box; background: #f8fafc; transition: border 0.3s; }
-        input[type="range"]:focus, input[type="number"]:focus { outline: none; border-color: var(--fifa-purple); }
+        .control-section label { display: block; font-size: 0.8rem; font-weight: 800; margin-bottom: 6px; color: var(--fifa-blue); text-transform: uppercase; letter-spacing: 1px; }
+        input[type="range"], input[type="number"], select { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 0.9rem; box-sizing: border-box; background: #f8fafc; transition: border 0.3s; font-family: 'Raleway', sans-serif;}
+        input[type="range"]:focus, input[type="number"]:focus, select:focus { outline: none; border-color: var(--fifa-blue); }
 
         .action-btn { 
             width: 100%; padding: 14px; border: none; border-radius: 8px; 
-            background: var(--fifa-purple); color: white; font-weight: 800; 
+            background: var(--fifa-blue); color: white; font-weight: 800; font-family: 'Raleway', sans-serif;
             cursor: pointer; transition: all 0.2s ease; font-size: 0.9rem; 
             margin-top: 10px; text-transform: uppercase; letter-spacing: 1px;
-            box-shadow: 0 4px 6px rgba(89, 47, 249, 0.2);
+            box-shadow: 0 4px 6px rgba(42, 57, 141, 0.2);
         }
-        .action-btn:hover { background: var(--fifa-purple-hover); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(89, 47, 249, 0.3); }
+        .action-btn:hover { background: var(--fifa-green); transform: translateY(-2px); box-shadow: 0 6px 12px rgba(60, 172, 59, 0.3); }
         .action-btn:active { transform: translateY(0); }
         
-        .mc-btn { background: var(--fifa-gold); color: #000; box-shadow: 0 4px 6px rgba(255, 215, 0, 0.2); }
-        .mc-btn:hover { background: #e6c200; box-shadow: 0 6px 12px rgba(255, 215, 0, 0.3); }
+        .mc-btn { background: var(--fifa-dark-grey); color: white; box-shadow: 0 4px 6px rgba(71, 74, 74, 0.2); }
+        .mc-btn:hover { background: var(--fifa-red); box-shadow: 0 6px 12px rgba(230, 29, 37, 0.3); }
 
         /* TABS */
         .tab-bar { display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap; }
         .tab-item { 
             padding: 10px 20px; border-radius: 30px; background: white; 
-            cursor: pointer; font-weight: 800; font-size: 0.85rem; 
+            cursor: pointer; font-weight: 700; font-size: 0.85rem; 
             transition: all 0.3s ease; border: 1px solid var(--border-color);
-            color: #64748b; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            color: var(--fifa-dark-grey); box-shadow: 0 2px 4px rgba(0,0,0,0.02);
         }
-        .tab-item:hover { border-color: var(--fifa-purple); color: var(--fifa-purple); }
-        .tab-item.active { background: var(--fifa-purple); color: white; border-color: var(--fifa-purple); box-shadow: 0 4px 10px rgba(89, 47, 249, 0.3); }
+        .tab-item:hover { border-color: var(--fifa-green); color: var(--fifa-green); }
+        .tab-item.active { background: var(--fifa-blue); color: white; border-color: var(--fifa-blue); box-shadow: 0 4px 10px rgba(42, 57, 141, 0.3); }
 
         /* GROUPS & TABLES */
         .groups-container { display: grid; grid-template-columns: repeat(auto-fill, minmax(360px, 1fr)); gap: 20px; }
@@ -110,25 +150,25 @@
             animation: fadeIn 0.4s ease-out backwards;
         }
         .group-card:hover { transform: translateY(-4px); box-shadow: 0 8px 20px rgba(0,0,0,0.08); }
-        .group-name { background: var(--fifa-purple); color: white; padding: 10px; text-align: center; font-weight: 900; font-size: 1rem; letter-spacing: 1px; }
+        .group-name { background: var(--fifa-blue); color: white; padding: 10px; text-align: center; font-weight: 800; font-size: 1rem; letter-spacing: 1px; }
 
         table { width: 100%; border-collapse: collapse; table-layout: fixed; }
-        th { background: #f8fafc; padding: 10px 4px; font-size: 0.65rem; color: #64748b; text-align: center; border-bottom: 2px solid #e2e8f0; text-transform: uppercase; }
-        td { padding: 8px 4px; border-bottom: 1px solid #f1f5f9; text-align: center; font-size: 0.8rem; font-weight: 500; }
+        th { background: #f8fafc; padding: 10px 4px; font-size: 0.65rem; color: var(--fifa-dark-grey); text-align: center; border-bottom: 2px solid var(--border-color); text-transform: uppercase; font-weight: 800;}
+        td { padding: 8px 4px; border-bottom: 1px solid #f1f5f9; text-align: center; font-size: 0.8rem; font-weight: 600; }
         
-        .row-team.advances { background-color: var(--fifa-gold-soft); font-weight: 800; border-left: 3px solid var(--fifa-gold); }
+        .row-team.advances { background-color: var(--fifa-green-soft); font-weight: 800; border-left: 4px solid var(--fifa-green); }
         
-        .team-identity { text-align: left; padding-left: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 45%; font-weight: bold; }
+        .team-identity { text-align: left; padding-left: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; width: 45%; font-weight: 700; }
         .col-stat { width: 8%; }
-        .col-pts { width: 12%; font-weight: 900; color: var(--fifa-purple); font-size: 0.9rem;}
+        .col-pts { width: 12%; font-weight: 900; color: var(--fifa-blue); font-size: 0.9rem;}
         
         .team-logo { width: 22px; height: 22px; object-fit: contain; vertical-align: middle; margin-right: 8px; filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2)); }
         
-        .matches-preview { padding: 10px; background: #f8fafc; border-top: 1px solid #e2e8f0; }
-        .match-card { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px dashed #cbd5e1; font-size: 0.75rem; }
+        .matches-preview { padding: 10px; background: #f8fafc; border-top: 1px solid var(--border-color); }
+        .match-card { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; padding: 6px 0; border-bottom: 1px dashed var(--border-color); font-size: 0.75rem; }
         .match-card:last-child { border-bottom: none; }
-        .match-meta { width: 100%; font-size: 0.6rem; color: #94a3b8; text-align: center; margin-top: 3px; }
-        .match-score { font-weight: 900; color: white; background: var(--fifa-purple); padding: 2px 8px; border-radius: 12px; width: auto; min-width: 30px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .match-meta { width: 100%; font-size: 0.65rem; color: var(--fifa-dark-grey); text-align: center; margin-top: 3px; font-weight: 600; }
+        .match-score { font-weight: 900; color: white; background: var(--fifa-dark-grey); padding: 2px 8px; border-radius: 12px; width: auto; min-width: 30px; text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
 
         /* BRACKET */
         .bracket-wrapper { overflow-x: auto; padding-bottom: 20px; }
@@ -140,52 +180,91 @@
             transition: transform 0.2s; 
         }
         .bracket-match:hover { transform: scale(1.02); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
-        .bracket-team { display: flex; align-items: center; padding: 8px 12px; font-size: 0.8rem; font-weight: 600; border-bottom: 1px solid #f1f5f9; }
-        .bracket-team.winner { background: var(--fifa-gold-soft); font-weight: 800; }
-        .bracket-team span.score { margin-left: auto; font-weight: 900; font-size: 0.9rem; color: var(--fifa-purple); }
-        .round-title { font-size: 0.75rem; color: white; background: var(--fifa-purple); font-weight: 900; text-align: center; margin-bottom: 10px; text-transform: uppercase; padding: 6px; border-radius: 5px; letter-spacing: 1px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .knockout-meta { background: #f8fafc; font-size: 0.6rem; color: #64748b; padding: 5px 8px; border-top: 1px solid #e2e8f0; text-align: center; font-weight: bold; }
+        .bracket-team { display: flex; align-items: center; padding: 8px 12px; font-size: 0.8rem; font-weight: 700; border-bottom: 1px solid #f1f5f9; }
+        .bracket-team.winner { background: var(--fifa-green-soft); font-weight: 800; border-left: 3px solid var(--fifa-green); }
+        .bracket-team span.score { margin-left: auto; font-weight: 900; font-size: 0.9rem; color: var(--fifa-blue); }
+        .round-title { font-size: 0.75rem; color: white; background: var(--fifa-blue); font-weight: 800; text-align: center; margin-bottom: 10px; text-transform: uppercase; padding: 6px; border-radius: 5px; letter-spacing: 1px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .knockout-meta { background: #f8fafc; font-size: 0.65rem; color: var(--fifa-dark-grey); padding: 5px 8px; border-top: 1px solid var(--border-color); text-align: center; font-weight: 700; }
         
-        /* GRAND FINAL & THIRD PLACE SPECIAL STYLING */
-        .final-match { border: 2px solid var(--fifa-gold); box-shadow: 0 0 20px rgba(255, 215, 0, 0.4); transform: scale(1.08); margin-bottom: 15px; }
+        .final-match { border: 2px solid var(--fifa-green); box-shadow: 0 0 20px rgba(60, 172, 59, 0.3); transform: scale(1.08); margin-bottom: 15px; }
         .final-match:hover { transform: scale(1.1); }
-        .final-match .round-title { background: var(--fifa-gold); color: #000; }
-        .third-place-title { background: #94a3b8 !important; margin-top: 15px; }
+        .final-match .round-title { background: var(--fifa-green); color: white; }
+        .third-place-title { background: var(--fifa-dark-grey) !important; margin-top: 15px; }
 
         /* MATRIX */
         .matrix-wrapper { overflow-x: auto; }
         .matrix-view { background: white; padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0,0,0,0.03); min-width: 800px; }
         .matrix-view table th { font-size: 0.75rem; padding: 12px; background: #f8fafc; }
         .matrix-view table td { padding: 0; font-size: 0.85rem; border-bottom: 1px solid #f1f5f9; position: relative; height: 35px; }
-        .matrix-team { text-align: left !important; padding-left: 15px !important; font-weight: 800; width: 22%; border-right: 2px solid #f1f5f9; }
-        
-        /* Progress bar inside matrix cell */
+        .matrix-team { text-align: left !important; padding-left: 15px !important; font-weight: 800; width: 22%; border-right: 2px solid var(--border-color); }
         .pct-bar { position: absolute; left: 0; top: 0; bottom: 0; z-index: 1; transition: width 0.5s ease; border-radius: 0 4px 4px 0; }
-        .pct-text { position: relative; z-index: 2; font-weight: 600; text-shadow: 1px 1px 0px rgba(255,255,255,0.7); }
+        
+        /* Updated Percentage Text for high contrast and readability */
+        .pct-text { 
+            position: relative; 
+            z-index: 2; 
+            font-weight: 700; 
+            color: var(--fifa-dark-grey); 
+            background: rgba(255, 255, 255, 0.85); 
+            padding: 2px 6px; 
+            border-radius: 4px; 
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); 
+            display: inline-block; 
+            font-size: 0.75rem;
+        }
+        .winner-text {
+            color: var(--fifa-blue);
+            font-weight: 900;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid var(--fifa-green-soft);
+        }
+
+        /* TEAMS TAB */
+        .teams-wrapper { display: flex; flex-direction: column; gap: 30px; }
+        .team-group-section { background: white; padding: 20px; border-radius: 12px; border: 1px solid var(--border-color); }
+        .team-group-header { font-size: 1.2rem; font-weight: 800; color: var(--fifa-blue); margin-bottom: 15px; border-bottom: 2px solid var(--fifa-light-grey); padding-bottom: 5px; }
+        .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px; }
+        .team-box-link { text-decoration: none; color: inherit; }
+        .team-box { 
+            display: flex; align-items: center; gap: 15px; padding: 15px; 
+            background: var(--bg-light); border: 1px solid var(--border-color); 
+            border-radius: 8px; transition: all 0.2s ease; cursor: pointer;
+        }
+        .team-box:hover { border-color: var(--fifa-green); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); background: white; }
+        .team-box img { width: 40px; height: 40px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
+        .team-box-info { display: flex; flex-direction: column; }
+        .team-box-name { font-weight: 800; font-size: 1rem; color: var(--text-main); }
+        .team-box-grp { font-size: 0.75rem; color: var(--fifa-dark-grey); font-weight: 600; text-transform: uppercase; }
+
+        /* VENUES TAB */
+        .venues-wrapper { display: flex; flex-direction: column; height: 100%; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-color); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        #map { width: 100%; height: 600px; background: #e0e7ee; z-index: 1; }
+        .leaflet-popup-content-wrapper { border-radius: 8px; font-family: 'Raleway', sans-serif; border: 2px solid var(--fifa-blue); }
+        .leaflet-popup-content { margin: 15px; }
+        .popup-title { font-size: 1.1rem; font-weight: 800; color: var(--fifa-blue); margin-bottom: 5px; }
+        .popup-location { font-size: 0.8rem; font-weight: 700; color: var(--fifa-dark-grey); margin-bottom: 10px; }
+        .popup-desc { font-size: 0.85rem; margin-bottom: 10px; line-height: 1.4; }
+        .popup-stat { font-size: 0.8rem; font-weight: 600; background: var(--bg-light); padding: 5px; border-radius: 4px; display: inline-block; margin-bottom: 10px; border: 1px solid var(--border-color);}
+        .popup-matches { max-height: 100px; overflow-y: auto; font-size: 0.75rem; border-top: 1px dashed var(--border-color); padding-top: 5px; color: var(--fifa-dark-grey); font-weight: 600; }
+        
+        /* Custom Map Marker styles */
+        .custom-marker { border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.5); width: 20px; height: 20px; transition: transform 0.2s; }
+        .custom-marker:hover { transform: scale(1.3); }
 
         .hidden { display: none !important; }
 
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
 
-        /* =========================================
-           RESPONSIVE MEDIA QUERIES (Mobile & Tablet)
-           ========================================= */
         @media (max-width: 900px) {
-            header { padding-left: 20px; height: auto; padding: 15px; align-items: center; position: relative; }
-            .logo-container { position: relative; top: 0; left: 0; margin-bottom: 10px; width: 65px; display: flex; justify-content: center; }
-            .logo-container img { height: 60px; }
-            .header-title { font-size: 1.4rem; text-align: center; }
-            .header-subtitle { font-size: 0.65rem; text-align: center; }
+            header { padding: 15px 20px; height: auto; flex-direction: column; align-items: center; text-align: center; gap: 15px; }
+            .logo-container { position: relative; top: 0; left: 0; display: inline-block; }
+            .header-left { align-items: center; }
+            .countdown-container { width: 100%; justify-content: center; }
             
-            .app-container { flex-direction: column; overflow-y: auto; height: auto; }
-            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); padding: 20px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); z-index: 5; }
-            .viewport { overflow-y: visible; padding: 15px; }
-            
-            .groups-container { grid-template-columns: 1fr; }
-            .bracket-container { gap: 20px; padding: 10px 0; }
-            .bracket-match { width: 200px; }
-            
-            .tab-bar { justify-content: center; position: sticky; top: 0; background: var(--bg-light); padding: 10px 0; z-index: 10; }
+            .app-container { flex-direction: column; height: auto; overflow-y: auto; }
+            .sidebar { width: 100%; border-right: none; border-bottom: 1px solid var(--border-color); }
+            .viewport { overflow-y: visible; }
+            #map { height: 400px; }
         }
     </style>
 </head>
@@ -193,30 +272,55 @@
 <body>
 
 <header>
-    <div class="logo-container">
+    <a href="https://www.fifa.com/en/tournaments/mens/worldcup/canadamexicousa2026" target="_blank" class="logo-container" title="Visit Official FIFA 26 Website">
         <img src="img/worldcuplogo.jpg" alt="FIFA 26">
+    </a>
+    <div class="header-left">
+        <h1 class="header-title">FIFA World Cup 2026 Simulator</h1>
+        <div class="header-subtitle">Mexico, Canada & USA | 11 June - 19 July 2026</div>
     </div>
-    <h1 class="header-title">FIFA World Cup 2026 Simulator</h1>
-    <div class="header-subtitle">Mexico, Canada & USA | 11 June - 19 July 2026</div>
+    <div class="countdown-container" id="countdownTimer">
+        <div class="cd-box"><span class="cd-val" id="cd-days">000</span><span class="cd-lbl">Days</span></div>
+        <div class="cd-box"><span class="cd-val" id="cd-hours">00</span><span class="cd-lbl">Hours</span></div>
+        <div class="cd-box"><span class="cd-val" id="cd-mins">00</span><span class="cd-lbl">Mins</span></div>
+        <div class="cd-box"><span class="cd-val" id="cd-secs">00</span><span class="cd-lbl">Secs</span></div>
+    </div>
 </header>
 
 <div class="app-container">
     <div class="sidebar">
-        <div id="playoffSelectors"></div>
-        <div class="control-section">
-            <label>Match Chaos Factor</label>
-            <input type="range" id="chaosFactor" min="0" max="100" value="25">
+        <div id="simControlPanel">
+            <div class="control-section">
+                <label>Match Chaos Factor</label>
+                <input type="range" id="chaosFactor" min="0" max="100" value="25">
+            </div>
+            <button id="simTourneyBtn" class="action-btn" onclick="executeFullTournament()">SIMULATE TOURNAMENT</button>
         </div>
         
-        <button id="simTourneyBtn" class="action-btn" onclick="executeFullTournament()">SIMULATE TOURNAMENT</button>
-        
         <div id="mcControlPanel" class="hidden">
-            <hr style="margin: 20px 0; border: 0; border-top: 2px dashed #e2e8f0;">
+            <hr style="margin: 20px 0; border: 0; border-top: 2px dashed var(--border-color);">
             <div class="control-section">
                 <label>Monte Carlo Simulations</label>
                 <input type="number" id="mcCount" value="500" min="100" max="5000">
             </div>
             <button class="action-btn mc-btn" onclick="runMonteCarlo()">RUN PROBABILITIES</button>
+        </div>
+
+        <div id="venueControlPanel" class="hidden">
+            <div class="control-section">
+                <label>Filter by Host Country</label>
+                <select id="countryFilter" onchange="filterMapVenues()">
+                    <option value="All">All Countries</option>
+                    <option value="USA">United States</option>
+                    <option value="Mexico">Mexico</option>
+                    <option value="Canada">Canada</option>
+                </select>
+            </div>
+            <div style="margin-top: 20px; font-size: 0.75rem; font-weight: 700;">
+                <div style="margin-bottom:8px;"><span style="display:inline-block; width:12px; height:12px; border-radius:50%; background:var(--region-west); margin-right:5px; vertical-align:middle;"></span> Western Region</div>
+                <div style="margin-bottom:8px;"><span style="display:inline-block; width:12px; height:12px; border-radius:50%; background:var(--region-central); margin-right:5px; vertical-align:middle;"></span> Central Region</div>
+                <div><span style="display:inline-block; width:12px; height:12px; border-radius:50%; background:var(--region-east); margin-right:5px; vertical-align:middle;"></span> Eastern Region</div>
+            </div>
         </div>
     </div>
 
@@ -224,7 +328,9 @@
         <div class="tab-bar">
             <div id="tabGroups" class="tab-item active" onclick="navigate('groups')">Groups</div>
             <div id="tabBracket" class="tab-item" onclick="navigate('bracket')">Knockouts</div>
-            <div id="tabMatrix" class="tab-item" onclick="navigate('matrix')">Monte Carlo Matrix</div>
+            <div id="tabMatrix" class="tab-item" onclick="navigate('matrix')">Monte Carlo</div>
+            <div id="tabTeams" class="tab-item" onclick="navigate('teams')">Teams</div>
+            <div id="tabVenues" class="tab-item" onclick="navigate('venues')">Venues Map</div>
         </div>    
 
         <div id="groupsDisplay" class="groups-container"></div>
@@ -244,20 +350,28 @@
                             <th>Quarter-Final</th>
                             <th>Semi-Final</th>
                             <th>Grand Final</th>
-                            <th style="border-left: 2px solid #e2e8f0; color: var(--fifa-purple);">WINNER</th>
+                            <th style="border-left: 2px solid var(--border-color); color: var(--fifa-blue);">WINNER</th>
                         </tr>
                     </thead>
                     <tbody id="matrixBody">
-                        <tr><td colspan="7" style="text-align:center; color:#94a3b8; padding: 60px; font-weight: bold;">Run probabilities to generate team ranking heat-map...</td></tr>
+                        <tr><td colspan="7" style="text-align:center; color:var(--fifa-dark-grey); padding: 60px; font-weight: 800;">Run probabilities to generate team ranking heat-map...</td></tr>
                     </tbody>
                 </table>
             </div>
         </div>
+
+        <div id="teamsDisplay" class="teams-wrapper hidden"></div>
+
+        <div id="venuesDisplay" class="venues-wrapper hidden">
+            <div id="map"></div>
+        </div>
     </div>
 </div>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
 <script>
-    // Robust local SVG path generator
+    // Logo Generator
     function getTeamLogoSrc(teamName) {
         const normalized = teamName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
         const formattedName = normalized.toLowerCase()
@@ -282,48 +396,239 @@
         { name: "Portugal", str: 89, grp: "K" }, { name: "Uzbekistan", str: 73, grp: "K" }, { name: "Colombia", str: 85, grp: "K" }, { name: "Congo DR", str: 72, grp: "K" },
         { name: "England", str: 91, grp: "L" }, { name: "Croatia", str: 82, grp: "L" }, { name: "Ghana", str: 74, grp: "L" }, { name: "Panama", str: 73, grp: "L" }
     ];
-    
+
+    // Venue Data for Map
+    const VENUES_DATA = [
+        { id: "Vancouver", name: "BC Place", city: "Vancouver", country: "Canada", lat: 49.2768, lng: -123.1120, capacity: "54,500", region: "West", color: "var(--region-west)", desc: "A multipurpose stadium in Canada with a retractable roof." },
+        { id: "Seattle", name: "Lumen Field", city: "Seattle", country: "USA", lat: 47.5952, lng: -122.3316, capacity: "69,000", region: "West", color: "var(--region-west)", desc: "Known for its outstanding atmosphere and loud fanbase." },
+        { id: "San Francisco", name: "Levi's Stadium", city: "San Francisco Bay Area", country: "USA", lat: 37.4032, lng: -121.9698, capacity: "70,909", region: "West", color: "var(--region-west)", desc: "High-tech, eco-friendly stadium located in Santa Clara." },
+        { id: "Los Angeles", name: "SoFi Stadium", city: "Los Angeles", country: "USA", lat: 33.9534, lng: -118.3387, capacity: "70,240", region: "West", color: "var(--region-west)", desc: "State-of-the-art entertainment complex in Inglewood." },
+        { id: "Kansas City", name: "Arrowhead Stadium", city: "Kansas City", country: "USA", lat: 39.0489, lng: -94.4839, capacity: "76,640", region: "Central", color: "var(--region-central)", desc: "One of the most iconic and loudest stadiums in the USA." },
+        { id: "Dallas", name: "AT&T Stadium", city: "Dallas", country: "USA", lat: 32.7473, lng: -97.0945, capacity: "92,967", region: "Central", color: "var(--region-central)", desc: "Massive domed stadium known for its gigantic center-hung HD video board." },
+        { id: "Houston", name: "NRG Stadium", city: "Houston", country: "USA", lat: 29.6847, lng: -95.4107, capacity: "72,220", region: "Central", color: "var(--region-central)", desc: "The first NFL facility to have a retractable roof." },
+        { id: "Monterrey", name: "Estadio BBVA", city: "Monterrey", country: "Mexico", lat: 25.6667, lng: -100.2265, capacity: "53,460", region: "Central", color: "var(--region-central)", desc: "Nicknamed 'El Gigante de Acero', offering stunning mountain views." },
+        { id: "Guadalajara", name: "Estadio Akron", city: "Guadalajara", country: "Mexico", lat: 20.6816, lng: -103.4627, capacity: "48,071", region: "Central", color: "var(--region-central)", desc: "Unique volcano-like design blending into the landscape." },
+        { id: "Mexico City", name: "Estadio Azteca", city: "Mexico City", country: "Mexico", lat: 19.3029, lng: -99.1505, capacity: "87,523", region: "Central", color: "var(--region-central)", desc: "Legendary stadium, hosted finals in 1970 and 1986." },
+        { id: "Toronto", name: "BMO Field", city: "Toronto", country: "Canada", lat: 43.6332, lng: -79.4186, capacity: "45,736", region: "East", color: "var(--region-east)", desc: "Canada's first soccer-specific stadium, located at Exhibition Place." },
+        { id: "Boston", name: "Gillette Stadium", city: "Boston", country: "USA", lat: 42.0909, lng: -71.2643, capacity: "70,000", region: "East", color: "var(--region-east)", desc: "Located in Foxborough, home to legendary sports franchises." },
+        { id: "New York/NJ", name: "MetLife Stadium", city: "New York / New Jersey", country: "USA", lat: 40.8128, lng: -74.0745, capacity: "87,157", region: "East", color: "var(--region-east)", desc: "One of the largest stadiums in the NFL, selected for the Grand Final." },
+        { id: "Philadelphia", name: "Lincoln Financial Field", city: "Philadelphia", country: "USA", lat: 39.9008, lng: -75.1675, capacity: "69,328", region: "East", color: "var(--region-east)", desc: "Renowned for its passionate fanbase and eco-friendly operations." },
+        { id: "Atlanta", name: "Mercedes-Benz Stadium", city: "Atlanta", country: "USA", lat: 33.7554, lng: -84.4006, capacity: "75,000", region: "East", color: "var(--region-east)", desc: "Features a highly unique retractable roof and a 360-degree halo board." },
+        { id: "Miami", name: "Hard Rock Stadium", city: "Miami", country: "USA", lat: 25.9580, lng: -80.2389, capacity: "67,518", region: "East", color: "var(--region-east)", desc: "A global entertainment destination in beautiful South Florida." }
+    ];
+
     const KNOCKOUT_META = [
         [ 
-            { m: 'Match 74', loc: 'Boston Stadium', date: '29 Jun' }, { m: 'Match 77', loc: 'New York New Jersey Stadium', date: '30 Jun' },
-            { m: 'Match 73', loc: 'Los Angeles Stadium', date: '28 Jun' }, { m: 'Match 75', loc: 'Estadio Monterrey', date: '29 Jun' },
-            { m: 'Match 83', loc: 'Toronto Stadium', date: '02 Jul' }, { m: 'Match 84', loc: 'Los Angeles Stadium', date: '02 Jul' },
-            { m: 'Match 81', loc: 'San Francisco Bay Area Stadium', date: '01 Jul' }, { m: 'Match 82', loc: 'Seattle Stadium', date: '01 Jul' },
-            { m: 'Match 76', loc: 'Houston Stadium', date: '29 Jun' }, { m: 'Match 78', loc: 'Dallas Stadium', date: '30 Jun' },
-            { m: 'Match 79', loc: 'Mexico City Stadium', date: '30 Jun' }, { m: 'Match 80', loc: 'Atlanta Stadium', date: '01 Jul' },
-            { m: 'Match 86', loc: 'Miami Stadium', date: '03 Jul' }, { m: 'Match 88', loc: 'Dallas Stadium', date: '03 Jul' },
-            { m: 'Match 85', loc: 'BC Place Vancouver', date: '02 Jul' }, { m: 'Match 87', loc: 'Kansas City Stadium', date: '03 Jul' }
+            { m: 'Match 74', loc: 'Boston', date: '29 Jun' }, { m: 'Match 77', loc: 'New York/NJ', date: '30 Jun' },
+            { m: 'Match 73', loc: 'Los Angeles', date: '28 Jun' }, { m: 'Match 75', loc: 'Monterrey', date: '29 Jun' },
+            { m: 'Match 83', loc: 'Toronto', date: '02 Jul' }, { m: 'Match 84', loc: 'Los Angeles', date: '02 Jul' },
+            { m: 'Match 81', loc: 'San Francisco', date: '01 Jul' }, { m: 'Match 82', loc: 'Seattle', date: '01 Jul' },
+            { m: 'Match 76', loc: 'Houston', date: '29 Jun' }, { m: 'Match 78', loc: 'Dallas', date: '30 Jun' },
+            { m: 'Match 79', loc: 'Mexico City', date: '30 Jun' }, { m: 'Match 80', loc: 'Atlanta', date: '01 Jul' },
+            { m: 'Match 86', loc: 'Miami', date: '03 Jul' }, { m: 'Match 88', loc: 'Dallas', date: '03 Jul' },
+            { m: 'Match 85', loc: 'Vancouver', date: '02 Jul' }, { m: 'Match 87', loc: 'Kansas City', date: '03 Jul' }
         ],
         [ 
-            { m: 'Match 89', loc: 'Philadelphia Stadium', date: '04 Jul' }, { m: 'Match 90', loc: 'Houston Stadium', date: '04 Jul' },
-            { m: 'Match 93', loc: 'Dallas Stadium', date: '06 Jul' }, { m: 'Match 94', loc: 'Seattle Stadium', date: '06 Jul' },
-            { m: 'Match 91', loc: 'New York New Jersey Stadium', date: '05 Jul' }, { m: 'Match 92', loc: 'Mexico City Stadium', date: '05 Jul' },
-            { m: 'Match 95', loc: 'Atlanta Stadium', date: '07 Jul' }, { m: 'Match 96', loc: 'BC Place Vancouver', date: '07 Jul' }
+            { m: 'Match 89', loc: 'Philadelphia', date: '04 Jul' }, { m: 'Match 90', loc: 'Houston', date: '04 Jul' },
+            { m: 'Match 93', loc: 'Dallas', date: '06 Jul' }, { m: 'Match 94', loc: 'Seattle', date: '06 Jul' },
+            { m: 'Match 91', loc: 'New York/NJ', date: '05 Jul' }, { m: 'Match 92', loc: 'Mexico City', date: '05 Jul' },
+            { m: 'Match 95', loc: 'Atlanta', date: '07 Jul' }, { m: 'Match 96', loc: 'Vancouver', date: '07 Jul' }
         ],
         [ 
-            { m: 'Match 97', loc: 'Boston Stadium', date: '09 Jul' }, { m: 'Match 98', loc: 'Los Angeles Stadium', date: '10 Jul' },
-            { m: 'Match 99', loc: 'Miami Stadium', date: '11 Jul' }, { m: 'Match 100', loc: 'Kansas City Stadium', date: '11 Jul' }
+            { m: 'Match 97', loc: 'Boston', date: '09 Jul' }, { m: 'Match 98', loc: 'Los Angeles', date: '10 Jul' },
+            { m: 'Match 99', loc: 'Miami', date: '11 Jul' }, { m: 'Match 100', loc: 'Kansas City', date: '11 Jul' }
         ],
         [ 
-            { m: 'Match 101', loc: 'Dallas Stadium', date: '14 Jul' }, { m: 'Match 102', loc: 'Atlanta Stadium', date: '15 Jul' }
+            { m: 'Match 101', loc: 'Dallas', date: '14 Jul' }, { m: 'Match 102', loc: 'Atlanta', date: '15 Jul' }
         ],
         [ 
-            { m: 'Match 104 (Final)', loc: 'New York New Jersey Stadium', date: '19 Jul' }
+            { m: 'Match 104 (Final)', loc: 'New York/NJ', date: '19 Jul' }
         ]
     ];
 
-    function navigate(view) {
-        ['groupsDisplay', 'bracketDisplay', 'matrixDisplay'].forEach(id => document.getElementById(id).classList.add('hidden'));
-        ['tabGroups', 'tabBracket', 'tabMatrix'].forEach(id => document.getElementById(id).classList.remove('active'));
-        document.getElementById(view + 'Display').classList.remove('hidden');
-        document.getElementById('tab' + view.charAt(0).toUpperCase() + view.slice(1)).classList.add('active');
+    const SCHEDULE_DATA = {
+        'A': [{ num: 1, h: 0, a: 3, d: '11 Jun', t: '21:00', l: 'Mexico City' }, { num: 2, h: 2, a: 1, d: '12 Jun', t: '19:00', l: 'Guadalajara' }, { num: 25, h: 0, a: 2, d: '17 Jun', t: '18:00', l: 'Mexico City' }, { num: 26, h: 1, a: 3, d: '17 Jun', t: '18:00', l: 'Guadalajara' }, { num: 49, h: 1, a: 0, d: '24 Jun', t: '21:00', l: 'Mexico City' }, { num: 50, h: 3, a: 2, d: '24 Jun', t: '21:00', l: 'Monterrey' }],
+        'B': [{ num: 3, h: 0, a: 3, d: '12 Jun', t: '21:00', l: 'Toronto' }, { num: 4, h: 1, a: 2, d: '13 Jun', t: '18:00', l: 'San Francisco' }, { num: 27, h: 0, a: 1, d: '18 Jun', t: '18:00', l: 'Vancouver' }, { num: 28, h: 3, a: 2, d: '18 Jun', t: '18:00', l: 'Seattle' }, { num: 51, h: 2, a: 0, d: '25 Jun', t: '18:00', l: 'Vancouver' }, { num: 52, h: 3, a: 1, d: '25 Jun', t: '18:00', l: 'Seattle' }],
+        'C': [{ num: 5, h: 0, a: 1, d: '13 Jun', t: '18:00', l: 'New York/NJ' }, { num: 6, h: 3, a: 2, d: '14 Jun', t: '15:00', l: 'Boston' }, { num: 29, h: 0, a: 3, d: '19 Jun', t: '18:00', l: 'Boston' }, { num: 30, h: 1, a: 2, d: '19 Jun', t: '18:00', l: 'Philadelphia' }, { num: 53, h: 2, a: 0, d: '24 Jun', t: '21:00', l: 'Miami' }, { num: 54, h: 1, a: 3, d: '24 Jun', t: '21:00', l: 'Atlanta' }],
+        'D': [{ num: 7, h: 0, a: 1, d: '13 Jun', t: '18:00', l: 'Los Angeles' }, { num: 8, h: 2, a: 3, d: '14 Jun', t: '18:00', l: 'Vancouver' }, { num: 31, h: 0, a: 2, d: '19 Jun', t: '21:00', l: 'Seattle' }, { num: 32, h: 1, a: 3, d: '19 Jun', t: '21:00', l: 'San Francisco' }, { num: 55, h: 3, a: 0, d: '25 Jun', t: '18:00', l: 'Los Angeles' }, { num: 56, h: 1, a: 2, d: '25 Jun', t: '18:00', l: 'San Francisco' }],
+        'E': [{ num: 9, h: 0, a: 1, d: '14 Jun', t: '18:00', l: 'Houston' }, { num: 10, h: 2, a: 3, d: '15 Jun', t: '15:00', l: 'Philadelphia' }, { num: 33, h: 0, a: 2, d: '20 Jun', t: '18:00', l: 'New York/NJ' }, { num: 34, h: 1, a: 3, d: '20 Jun', t: '18:00', l: 'Toronto' }, { num: 57, h: 3, a: 0, d: '26 Jun', t: '21:00', l: 'Boston' }, { num: 58, h: 1, a: 2, d: '26 Jun', t: '21:00', l: 'New York/NJ' }],
+        'F': [{ num: 11, h: 0, a: 1, d: '14 Jun', t: '21:00', l: 'Dallas' }, { num: 12, h: 3, a: 2, d: '15 Jun', t: '18:00', l: 'Monterrey' }, { num: 35, h: 0, a: 3, d: '20 Jun', t: '21:00', l: 'Houston' }, { num: 36, h: 1, a: 2, d: '20 Jun', t: '21:00', l: 'Monterrey' }, { num: 59, h: 2, a: 0, d: '26 Jun', t: '21:00', l: 'Houston' }, { num: 60, h: 1, a: 3, d: '26 Jun', t: '21:00', l: 'Philadelphia' }],
+        'G': [{ num: 13, h: 0, a: 1, d: '15 Jun', t: '18:00', l: 'Miami' }, { num: 14, h: 2, a: 3, d: '16 Jun', t: '18:00', l: 'Los Angeles' }, { num: 37, h: 0, a: 2, d: '21 Jun', t: '18:00', l: 'Dallas' }, { num: 38, h: 1, a: 3, d: '21 Jun', t: '21:00', l: 'Los Angeles' }, { num: 61, h: 3, a: 0, d: '27 Jun', t: '15:00', l: 'Dallas' }, { num: 62, h: 1, a: 2, d: '27 Jun', t: '15:00', l: 'Kansas City' }],
+        'H': [{ num: 15, h: 0, a: 1, d: '15 Jun', t: '21:00', l: 'Atlanta' }, { num: 16, h: 2, a: 3, d: '16 Jun', t: '18:00', l: 'Miami' }, { num: 39, h: 0, a: 2, d: '21 Jun', t: '18:00', l: 'Miami' }, { num: 40, h: 1, a: 3, d: '21 Jun', t: '21:00', l: 'Atlanta' }, { num: 63, h: 3, a: 0, d: '27 Jun', t: '18:00', l: 'Miami' }, { num: 64, h: 1, a: 2, d: '27 Jun', t: '18:00', l: 'Atlanta' }],
+        'I': [{ num: 17, h: 0, a: 1, d: '16 Jun', t: '21:00', l: 'New York/NJ' }, { num: 18, h: 3, a: 2, d: '17 Jun', t: '15:00', l: 'Boston' }, { num: 41, h: 0, a: 3, d: '22 Jun', t: '18:00', l: 'Philadelphia' }, { num: 42, h: 1, a: 2, d: '22 Jun', t: '18:00', l: 'New York/NJ' }, { num: 65, h: 2, a: 0, d: '27 Jun', t: '21:00', l: 'Philadelphia' }, { num: 66, h: 1, a: 3, d: '27 Jun', t: '21:00', l: 'Kansas City' }],
+        'J': [{ num: 19, h: 0, a: 1, d: '16 Jun', t: '18:00', l: 'Kansas City' }, { num: 20, h: 2, a: 3, d: '17 Jun', t: '15:00', l: 'San Francisco' }, { num: 43, h: 0, a: 2, d: '22 Jun', t: '21:00', l: 'Dallas' }, { num: 44, h: 1, a: 3, d: '22 Jun', t: '21:00', l: 'Kansas City' }, { num: 67, h: 3, a: 0, d: '28 Jun', t: '15:00', l: 'Dallas' }, { num: 68, h: 1, a: 2, d: '28 Jun', t: '15:00', l: 'New York/NJ' }],
+        'K': [{ num: 21, h: 0, a: 3, d: '17 Jun', t: '18:00', l: 'Houston' }, { num: 22, h: 1, a: 2, d: '18 Jun', t: '15:00', l: 'Mexico City' }, { num: 45, h: 0, a: 1, d: '23 Jun', t: '18:00', l: 'Houston' }, { num: 46, h: 3, a: 2, d: '23 Jun', t: '21:00', l: 'Miami' }, { num: 69, h: 2, a: 0, d: '28 Jun', t: '18:00', l: 'Guadalajara' }, { num: 70, h: 3, a: 1, d: '28 Jun', t: '18:00', l: 'Monterrey' }],
+        'L': [{ num: 23, h: 0, a: 1, d: '17 Jun', t: '21:00', l: 'Dallas' }, { num: 24, h: 2, a: 3, d: '18 Jun', t: '18:00', l: 'Toronto' }, { num: 47, h: 0, a: 2, d: '23 Jun', t: '18:00', l: 'Boston' }, { num: 48, h: 1, a: 3, d: '23 Jun', t: '18:00', l: 'New York/NJ' }, { num: 71, h: 3, a: 0, d: '28 Jun', t: '21:00', l: 'Boston' }, { num: 72, h: 1, a: 2, d: '28 Jun', t: '21:00', l: 'Philadelphia' }]
+    };
+
+    // Initialize Countdown Timer
+    function initCountdown() {
+        const targetDate = new Date("2026-06-11T00:00:00Z").getTime();
         
-        const mcPanel = document.getElementById('mcControlPanel');
-        const mainSimBtn = document.getElementById('simTourneyBtn');
-        if (view === 'matrix') { mcPanel.classList.remove('hidden'); mainSimBtn.classList.add('hidden'); }
-        else { mcPanel.classList.add('hidden'); mainSimBtn.classList.remove('hidden'); }
+        setInterval(() => {
+            const now = new Date().getTime();
+            const distance = targetDate - now;
+
+            if (distance < 0) {
+                document.getElementById("countdownTimer").innerHTML = "TOURNAMENT HAS BEGUN!";
+                return;
+            }
+
+            document.getElementById("cd-days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(3, '0');
+            document.getElementById("cd-hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
+            document.getElementById("cd-mins").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
+            document.getElementById("cd-secs").innerText = Math.floor((distance % (1000 * 60)) / 1000).toString().padStart(2, '0');
+        }, 1000);
     }
 
+    // Initialize Teams Tab
+    function initTeamsTab() {
+        const container = document.getElementById('teamsDisplay');
+        container.innerHTML = '';
+        
+        "ABCDEFGHIJKL".split("").forEach(g => {
+            const grpTeams = TEAMS_CORE.filter(t => t.grp === g);
+            let gridHtml = '';
+            grpTeams.forEach(t => {
+                const safeUrl = `https://example.com/team/${t.name.toLowerCase().replace(/\s+/g, '-')}`;
+                gridHtml += `
+                    <a href="${safeUrl}" target="_blank" class="team-box-link">
+                        <div class="team-box">
+                            <img src="${getTeamLogoSrc(t.name)}" alt="${t.name}">
+                            <div class="team-box-info">
+                                <span class="team-box-name">${t.name}</span>
+                                <span class="team-box-grp">Group ${g}</span>
+                            </div>
+                        </div>
+                    </a>
+                `;
+            });
+            
+            container.innerHTML += `
+                <div class="team-group-section">
+                    <div class="team-group-header">Group ${g}</div>
+                    <div class="team-grid">${gridHtml}</div>
+                </div>
+            `;
+        });
+    }
+
+    // Leaflet Map logic
+    let map;
+    let markersLayer;
+    let isMapInitialized = false;
+
+    function buildMatchesListForCity(cityId) {
+        let matches = [];
+        // Extract Group Stage matches
+        Object.values(SCHEDULE_DATA).forEach(grpMatches => {
+            grpMatches.forEach(m => {
+                if(m.l.includes(cityId)) matches.push(`Match ${m.num} (${m.d}) - Group Stage`);
+            });
+        });
+        // Extract Knockout matches
+        KNOCKOUT_META.forEach(round => {
+            round.forEach(m => {
+                if(m.loc.includes(cityId)) matches.push(`${m.m} (${m.date}) - Knockouts`);
+            });
+        });
+        return matches;
+    }
+
+    function initMap() {
+        if (isMapInitialized) {
+            map.invalidateSize();
+            return;
+        }
+        
+        map = L.map('map').setView([40.0, -95.0], 4); // Center of NA
+        
+        // Use a professional, clean map tile style (CartoDB Positron)
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
+            subdomains: 'abcd',
+            maxZoom: 10
+        }).addTo(map);
+
+        markersLayer = L.layerGroup().addTo(map);
+        renderMapMarkers('All');
+        
+        isMapInitialized = true;
+        // Trigger resize just in case tab rendering issues
+        setTimeout(() => map.invalidateSize(), 300);
+    }
+
+    function renderMapMarkers(filterCountry) {
+        markersLayer.clearLayers();
+        
+        VENUES_DATA.forEach(v => {
+            if(filterCountry !== 'All' && v.country !== filterCountry) return;
+            
+            const matchHtml = buildMatchesListForCity(v.id).map(m => `<div>${m}</div>`).join('');
+            
+            const customIcon = L.divIcon({
+                className: 'custom-icon',
+                html: `<div class="custom-marker" style="background-color: ${v.color};"></div>`,
+                iconSize: [20, 20],
+                iconAnchor: [10, 10]
+            });
+
+            const marker = L.marker([v.lat, v.lng], { icon: customIcon });
+            
+            const popupContent = `
+                <div class="popup-title">${v.name}</div>
+                <div class="popup-location">${v.city}, ${v.country}</div>
+                <div class="popup-stat">Capacity: ${v.capacity}</div>
+                <div class="popup-desc">${v.desc}</div>
+                <div class="popup-matches">
+                    <strong>Matches Hosted:</strong><br>
+                    ${matchHtml.length > 0 ? matchHtml : '<i>TBD</i>'}
+                </div>
+            `;
+            
+            marker.bindPopup(popupContent);
+            markersLayer.addLayer(marker);
+        });
+    }
+
+    function filterMapVenues() {
+        const selected = document.getElementById('countryFilter').value;
+        renderMapMarkers(selected);
+    }
+
+    // Navigation and Logic
+    function navigate(view) {
+        // Hide all views
+        ['groupsDisplay', 'bracketDisplay', 'matrixDisplay', 'teamsDisplay', 'venuesDisplay'].forEach(id => document.getElementById(id).classList.add('hidden'));
+        
+        // Remove active state from tabs
+        ['tabGroups', 'tabBracket', 'tabMatrix', 'tabTeams', 'tabVenues'].forEach(id => document.getElementById(id).classList.remove('active'));
+        
+        // Show target view & set active
+        const targetViewId = view + 'Display';
+        document.getElementById(targetViewId).classList.remove('hidden');
+        document.getElementById('tab' + view.charAt(0).toUpperCase() + view.slice(1)).classList.add('active');
+        
+        // Manage Sidebar Controls
+        const mcPanel = document.getElementById('mcControlPanel');
+        const simPanel = document.getElementById('simControlPanel');
+        const venuePanel = document.getElementById('venueControlPanel');
+        
+        mcPanel.classList.add('hidden');
+        simPanel.classList.add('hidden');
+        venuePanel.classList.add('hidden');
+
+        if (view === 'matrix') { 
+            mcPanel.classList.remove('hidden'); 
+        } else if (view === 'venues') {
+            venuePanel.classList.remove('hidden');
+            initMap(); // Initialize/resize map on tab switch
+        } else if (view === 'groups' || view === 'bracket') {
+            simPanel.classList.remove('hidden');
+        }
+    }
+
+    // Simulation Engine Functions
     function simulateMatch(t1, t2, isKO = false) {
         const chaos = document.getElementById('chaosFactor').value / 100;
         const diff = t1.str - t2.str; 
@@ -417,21 +722,6 @@
         ];
     }
 
-    const SCHEDULE_DATA = {
-        'A': [{ num: 1, h: 0, a: 3, d: '11 Jun', t: '21:00', l: 'Mexico City' }, { num: 2, h: 2, a: 1, d: '12 Jun', t: '19:00', l: 'Guadalajara' }, { num: 25, h: 0, a: 2, d: '17 Jun', t: '18:00', l: 'Mexico City' }, { num: 26, h: 1, a: 3, d: '17 Jun', t: '18:00', l: 'Guadalajara' }, { num: 49, h: 1, a: 0, d: '24 Jun', t: '21:00', l: 'Mexico City' }, { num: 50, h: 3, a: 2, d: '24 Jun', t: '21:00', l: 'Monterrey' }],
-        'B': [{ num: 3, h: 0, a: 3, d: '12 Jun', t: '21:00', l: 'Toronto' }, { num: 4, h: 1, a: 2, d: '13 Jun', t: '18:00', l: 'San Francisco' }, { num: 27, h: 0, a: 1, d: '18 Jun', t: '18:00', l: 'Vancouver' }, { num: 28, h: 3, a: 2, d: '18 Jun', t: '18:00', l: 'Seattle' }, { num: 51, h: 2, a: 0, d: '25 Jun', t: '18:00', l: 'Vancouver' }, { num: 52, h: 3, a: 1, d: '25 Jun', t: '18:00', l: 'Seattle' }],
-        'C': [{ num: 5, h: 0, a: 1, d: '13 Jun', t: '18:00', l: 'New York/NJ' }, { num: 6, h: 3, a: 2, d: '14 Jun', t: '15:00', l: 'Boston' }, { num: 29, h: 0, a: 3, d: '19 Jun', t: '18:00', l: 'Boston' }, { num: 30, h: 1, a: 2, d: '19 Jun', t: '18:00', l: 'Philadelphia' }, { num: 53, h: 2, a: 0, d: '24 Jun', t: '21:00', l: 'Miami' }, { num: 54, h: 1, a: 3, d: '24 Jun', t: '21:00', l: 'Atlanta' }],
-        'D': [{ num: 7, h: 0, a: 1, d: '13 Jun', t: '18:00', l: 'Los Angeles' }, { num: 8, h: 2, a: 3, d: '14 Jun', t: '18:00', l: 'Vancouver' }, { num: 31, h: 0, a: 2, d: '19 Jun', t: '21:00', l: 'Seattle' }, { num: 32, h: 1, a: 3, d: '19 Jun', t: '21:00', l: 'San Francisco' }, { num: 55, h: 3, a: 0, d: '25 Jun', t: '18:00', l: 'Los Angeles' }, { num: 56, h: 1, a: 2, d: '25 Jun', t: '18:00', l: 'San Francisco' }],
-        'E': [{ num: 9, h: 0, a: 1, d: '14 Jun', t: '18:00', l: 'Houston' }, { num: 10, h: 2, a: 3, d: '15 Jun', t: '15:00', l: 'Philadelphia' }, { num: 33, h: 0, a: 2, d: '20 Jun', t: '18:00', l: 'New York/NJ' }, { num: 34, h: 1, a: 3, d: '20 Jun', t: '18:00', l: 'Toronto' }, { num: 57, h: 3, a: 0, d: '26 Jun', t: '21:00', l: 'Boston' }, { num: 58, h: 1, a: 2, d: '26 Jun', t: '21:00', l: 'New York/NJ' }],
-        'F': [{ num: 11, h: 0, a: 1, d: '14 Jun', t: '21:00', l: 'Dallas' }, { num: 12, h: 3, a: 2, d: '15 Jun', t: '18:00', l: 'Monterrey' }, { num: 35, h: 0, a: 3, d: '20 Jun', t: '21:00', l: 'Houston' }, { num: 36, h: 1, a: 2, d: '20 Jun', t: '21:00', l: 'Monterrey' }, { num: 59, h: 2, a: 0, d: '26 Jun', t: '21:00', l: 'Houston' }, { num: 60, h: 1, a: 3, d: '26 Jun', t: '21:00', l: 'Philadelphia' }],
-        'G': [{ num: 13, h: 0, a: 1, d: '15 Jun', t: '18:00', l: 'Miami' }, { num: 14, h: 2, a: 3, d: '16 Jun', t: '18:00', l: 'Los Angeles' }, { num: 37, h: 0, a: 2, d: '21 Jun', t: '18:00', l: 'Dallas' }, { num: 38, h: 1, a: 3, d: '21 Jun', t: '21:00', l: 'Los Angeles' }, { num: 61, h: 3, a: 0, d: '27 Jun', t: '15:00', l: 'Dallas' }, { num: 62, h: 1, a: 2, d: '27 Jun', t: '15:00', l: 'Kansas City' }],
-        'H': [{ num: 15, h: 0, a: 1, d: '15 Jun', t: '21:00', l: 'Atlanta' }, { num: 16, h: 2, a: 3, d: '16 Jun', t: '18:00', l: 'Miami' }, { num: 39, h: 0, a: 2, d: '21 Jun', t: '18:00', l: 'Miami' }, { num: 40, h: 1, a: 3, d: '21 Jun', t: '21:00', l: 'Atlanta' }, { num: 63, h: 3, a: 0, d: '27 Jun', t: '18:00', l: 'Miami' }, { num: 64, h: 1, a: 2, d: '27 Jun', t: '18:00', l: 'Atlanta' }],
-        'I': [{ num: 17, h: 0, a: 1, d: '16 Jun', t: '21:00', l: 'New York/NJ' }, { num: 18, h: 3, a: 2, d: '17 Jun', t: '15:00', l: 'Boston' }, { num: 41, h: 0, a: 3, d: '22 Jun', t: '18:00', l: 'Philadelphia' }, { num: 42, h: 1, a: 2, d: '22 Jun', t: '18:00', l: 'New York/NJ' }, { num: 65, h: 2, a: 0, d: '27 Jun', t: '21:00', l: 'Philadelphia' }, { num: 66, h: 1, a: 3, d: '27 Jun', t: '21:00', l: 'Kansas City' }],
-        'J': [{ num: 19, h: 0, a: 1, d: '16 Jun', t: '18:00', l: 'Kansas City' }, { num: 20, h: 2, a: 3, d: '17 Jun', t: '15:00', l: 'San Francisco' }, { num: 43, h: 0, a: 2, d: '22 Jun', t: '21:00', l: 'Dallas' }, { num: 44, h: 1, a: 3, d: '22 Jun', t: '21:00', l: 'Kansas City' }, { num: 67, h: 3, a: 0, d: '28 Jun', t: '15:00', l: 'Dallas' }, { num: 68, h: 1, a: 2, d: '28 Jun', t: '15:00', l: 'New York/NJ' }],
-        'K': [{ num: 21, h: 0, a: 3, d: '17 Jun', t: '18:00', l: 'Houston' }, { num: 22, h: 1, a: 2, d: '18 Jun', t: '15:00', l: 'Mexico City' }, { num: 45, h: 0, a: 1, d: '23 Jun', t: '18:00', l: 'Houston' }, { num: 46, h: 3, a: 2, d: '23 Jun', t: '21:00', l: 'Miami' }, { num: 69, h: 2, a: 0, d: '28 Jun', t: '18:00', l: 'Guadalajara' }, { num: 70, h: 3, a: 1, d: '28 Jun', t: '18:00', l: 'Monterrey' }],
-        'L': [{ num: 23, h: 0, a: 1, d: '17 Jun', t: '21:00', l: 'Dallas' }, { num: 24, h: 2, a: 3, d: '18 Jun', t: '18:00', l: 'Toronto' }, { num: 47, h: 0, a: 2, d: '23 Jun', t: '18:00', l: 'Boston' }, { num: 48, h: 1, a: 3, d: '23 Jun', t: '18:00', l: 'New York/NJ' }, { num: 71, h: 3, a: 0, d: '28 Jun', t: '21:00', l: 'Boston' }, { num: 72, h: 1, a: 2, d: '28 Jun', t: '21:00', l: 'Philadelphia' }]
-    };
-
     function runFullSimInternal() {
         const currentTeams = TEAMS_CORE.map(t => ({ ...t, pts:0, gf:0, ga:0, gd:0, fp:0 }));
 
@@ -524,12 +814,12 @@
         
         const rows = teams.map(t => {
             const rowClass = t.advances ? 'row-team advances' : 'row-team';
-            const hostTag = t.isHost ? ` <i style="font-size:0.6rem; color:#64748b; font-weight:normal;">(Host)</i>` : '';
+            const hostTag = t.isHost ? ` <i style="font-size:0.6rem; color:var(--fifa-dark-grey); font-weight:normal;">(Host)</i>` : '';
             return `<tr class="${rowClass}"><td class="team-identity"><img src="${getTeamLogoSrc(t.name)}" class="team-logo" alt="${t.name}"> ${t.name}${hostTag}</td><td>${t.p}</td><td>${t.w}</td><td>${t.d}</td><td>${t.l}</td><td>${t.gd}</td><td class="col-pts">${t.pts}</td></tr>`;
         }).join('');
         
         const mHtml = matches.map(m => `<div class="match-card">
-            <div style="width:100%; text-align:center; font-size: 0.6rem; color: #64748b; font-weight: 800; margin-bottom: 5px; text-transform: uppercase;">Match ${m.num}</div>
+            <div style="width:100%; text-align:center; font-size: 0.6rem; color: var(--fifa-dark-grey); font-weight: 800; margin-bottom: 5px; text-transform: uppercase;">Match ${m.num}</div>
             <span style="width:40%; text-align:left; font-weight:bold;"><img src="${getTeamLogoSrc(m.h.name)}" class="team-logo" alt="${m.h.name}"> ${m.h.name}</span>
             <span class="match-score">${m.hg}-${m.ag}</span>
             <span style="width:40%; text-align:right; font-weight:bold;">${m.a.name} <img src="${getTeamLogoSrc(m.a.name)}" class="team-logo" alt="${m.a.name}"></span>
@@ -545,7 +835,7 @@
         container.innerHTML = '';
         const rounds = ["Round of 32", "Round of 16", "Quarter-Finals", "Semi-Finals", "Grand Final"];
         let current = [...teams];      
-        let sfLosers = []; // Track 3rd place teams
+        let sfLosers = []; 
 
         rounds.forEach((rn, idx) => {
             const col = document.createElement('div'); 
@@ -563,7 +853,6 @@
                 const win = s1 > s2 ? t1 : t2; 
                 next.push(win);             
                 
-                // If this is the semi-final (idx 3), save the loser
                 if (idx === 3) {
                     sfLosers.push(win === t1 ? t2 : t1);
                 }
@@ -576,27 +865,25 @@
                 let matchClasses = isFinal ? 'bracket-match final-match' : 'bracket-match';
 
                 col.innerHTML += `<div class="${matchClasses}">
-                    <div style="font-size:0.6rem; color:#94a3b8; text-align:center; padding: 4px; font-weight: bold;">${matchName}</div>
-                    <div class="bracket-team ${win===t1?'winner':''}"><img src="${getTeamLogoSrc(t1.name)}" class="team-logo" alt="${t1.name}"> <span class="${isFinal && win===t1 ? 'champion-text' : ''}">${t1.name}</span> <span class="score">${s1}</span></div>
-                    <div class="bracket-team ${win===t2?'winner':''}"><img src="${getTeamLogoSrc(t2.name)}" class="team-logo" alt="${t2.name}"> <span class="${isFinal && win===t2 ? 'champion-text' : ''}">${t2.name}</span> <span class="score">${s2}</span></div>
+                    <div style="font-size:0.6rem; color:var(--fifa-dark-grey); text-align:center; padding: 4px; font-weight: bold;">${matchName}</div>
+                    <div class="bracket-team ${win===t1?'winner':''}"><img src="${getTeamLogoSrc(t1.name)}" class="team-logo" alt="${t1.name}"> <span>${t1.name}</span> <span class="score">${s1}</span></div>
+                    <div class="bracket-team ${win===t2?'winner':''}"><img src="${getTeamLogoSrc(t2.name)}" class="team-logo" alt="${t2.name}"> <span>${t2.name}</span> <span class="score">${s2}</span></div>
                     <div class="knockout-meta">${date} <br> ${location}</div>
                 </div>`;
                 matchIdx++;
             }
             
-            // Render Third Place match immediately under the Grand Final
             if (isFinal && sfLosers.length === 2) {
-                // sfLosers[0] is the loser of Match 101 (Home Team)
                 const [tp1, tp2] = simulateMatch(sfLosers[0], sfLosers[1], true);
                 const tpWin = tp1 > tp2 ? sfLosers[0] : sfLosers[1];
                 
                 col.innerHTML += `
                     <div class="round-title third-place-title">Third Place Match</div>
-                    <div class="bracket-match" style="border: 2px solid #cbd5e1;">
-                        <div style="font-size:0.6rem; color:#94a3b8; text-align:center; padding: 4px; font-weight: bold;">Match 103</div>
+                    <div class="bracket-match" style="border: 2px solid var(--border-color);">
+                        <div style="font-size:0.6rem; color:var(--fifa-dark-grey); text-align:center; padding: 4px; font-weight: bold;">Match 103</div>
                         <div class="bracket-team ${tpWin===sfLosers[0]?'winner':''}"><img src="${getTeamLogoSrc(sfLosers[0].name)}" class="team-logo"> ${sfLosers[0].name} <span class="score">${tp1}</span></div>
                         <div class="bracket-team ${tpWin===sfLosers[1]?'winner':''}"><img src="${getTeamLogoSrc(sfLosers[1].name)}" class="team-logo"> ${sfLosers[1].name} <span class="score">${tp2}</span></div>
-                        <div class="knockout-meta">18 Jul <br> Miami Stadium</div>
+                        <div class="knockout-meta">18 Jul <br> Miami</div>
                     </div>
                 `;
             }
@@ -609,7 +896,7 @@
     function runMonteCarlo() {
         const count = parseInt(document.getElementById('mcCount').value);
         const body = document.getElementById('matrixBody');
-        body.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:60px; font-weight: bold; color: var(--fifa-purple);">Deep Simulation in progress. Running ${count} alternate realities...</td></tr>`;
+        body.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:60px; font-weight: bold; color: var(--fifa-blue);">Deep Simulation in progress. Running ${count} alternate realities...</td></tr>`;
         
         setTimeout(() => {
             const stats = {};
@@ -633,9 +920,8 @@
             body.innerHTML = '';
             sorted.forEach(s => {
                 const v = [s.r32, s.r16, s.qf, s.sf, s.f, s.w].map(x => (x/count)*100);
-                // Background color maps
-                const getCol = (val) => val === 0 ? 'transparent' : `rgba(34, 197, 94, ${0.1 + (val/100)*0.7})`;
-                const getGold = (val) => val === 0 ? 'transparent' : `rgba(255, 215, 0, ${0.1 + (val/100)*0.8})`;
+                const getCol = (val) => val === 0 ? 'transparent' : `rgba(42, 57, 141, ${0.05 + (val/100)*0.8})`;
+                const getGold = (val) => val === 0 ? 'transparent' : `rgba(60, 172, 59, ${0.1 + (val/100)*0.8})`; // Using green for win highlight
                 
                 body.innerHTML += `<tr>
                     <td class="matrix-team"><img src="${getTeamLogoSrc(s.name)}" class="team-logo" alt="${s.name}"> ${s.name}</td>
@@ -644,11 +930,18 @@
                     <td><div class="pct-bar" style="width:${v[2]}%; background:${getCol(v[2])}"></div><span class="pct-text">${v[2].toFixed(1)}%</span></td>
                     <td><div class="pct-bar" style="width:${v[3]}%; background:${getCol(v[3])}"></div><span class="pct-text">${v[3].toFixed(1)}%</span></td>
                     <td><div class="pct-bar" style="width:${v[4]}%; background:${getCol(v[4])}"></div><span class="pct-text">${v[4].toFixed(1)}%</span></td>
-                    <td style="border-left: 2px solid #e2e8f0;"><div class="pct-bar" style="width:${v[5]}%; background:${getGold(v[5])}"></div><span class="pct-text" style="color:var(--fifa-purple); font-weight:900;">${v[5].toFixed(1)}%</span></td>
+                    <td style="border-left: 2px solid var(--border-color);"><div class="pct-bar" style="width:${v[5]}%; background:${getGold(v[5])}"></div><span class="pct-text winner-text">${v[5].toFixed(1)}%</span></td>
                 </tr>`;
             });
         }, 100);
     }
+
+    // App Initialization
+    document.addEventListener("DOMContentLoaded", () => {
+        initCountdown();
+        initTeamsTab();
+    });
+
 </script>
 </body>
 </html>
