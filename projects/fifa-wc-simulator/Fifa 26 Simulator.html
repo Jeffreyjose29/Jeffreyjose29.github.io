@@ -32,7 +32,7 @@
             --region-east: var(--fifa-red);
         }
 
-        /* Base Typography (Req 3: Raleway light weight) */
+        /* Base Typography */
         body { 
             margin: 0; 
             font-family: 'Raleway', sans-serif; 
@@ -51,7 +51,7 @@
             padding: 0 40px 0 170px; 
             position: sticky; 
             top: 0; 
-            z-index: 1000; /* Higher than map */
+            z-index: 1000; 
             box-shadow: 0 4px 15px rgba(0,0,0,0.4);
         }
 
@@ -73,7 +73,6 @@
 
         .header-left { display: flex; flex-direction: column; justify-content: center; }
 
-        /* Excluded from Raleway, kept as impact font */
         .header-title { 
             margin: 0; color: #ffffff; font-family: 'Arial Black', Impact, sans-serif;
             font-weight: 900; text-transform: uppercase; letter-spacing: -1px; 
@@ -82,7 +81,7 @@
 
         .header-subtitle { color: var(--fifa-light-grey); font-size: 0.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; margin-top: 5px; }
         
-        /* Cool Feature: Countdown Timer */
+        /* Countdown Timer */
         .countdown-container {
             background: rgba(0,0,0,0.2);
             padding: 10px 20px;
@@ -172,17 +171,20 @@
 
         /* BRACKET */
         .bracket-wrapper { overflow-x: auto; padding-bottom: 20px; }
-        .bracket-container { display: flex; gap: 30px; min-width: max-content; padding: 10px; align-items: flex-start; }
+        .bracket-container { display: flex; gap: 40px; min-width: max-content; padding: 10px; align-items: flex-start; position: relative; z-index: 1; }
+        #bracketLines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         .bracket-round { display: flex; flex-direction: column; justify-content: space-around; gap: 15px; }
         .bracket-match { 
             width: 230px; background: white; border: 1px solid var(--border-color); 
             border-radius: 8px; overflow: hidden; box-shadow: 0 4px 10px rgba(0,0,0,0.04); 
-            transition: transform 0.2s; 
+            transition: transform 0.2s; position: relative; z-index: 2;
         }
         .bracket-match:hover { transform: scale(1.02); box-shadow: 0 6px 15px rgba(0,0,0,0.1); }
         .bracket-team { display: flex; align-items: center; padding: 8px 12px; font-size: 0.8rem; font-weight: 700; border-bottom: 1px solid #f1f5f9; }
         .bracket-team.winner { background: var(--fifa-green-soft); font-weight: 800; border-left: 3px solid var(--fifa-green); }
-        .bracket-team span.score { margin-left: auto; font-weight: 900; font-size: 0.9rem; color: var(--fifa-blue); }
+        .bracket-team span.score { margin-left: auto; font-weight: 900; font-size: 0.9rem; color: var(--fifa-blue); display: flex; align-items: center; gap: 4px; }
+        .pen-score { font-size: 0.65rem; color: var(--fifa-dark-grey); font-weight: 800; }
+        
         .round-title { font-size: 0.75rem; color: white; background: var(--fifa-blue); font-weight: 800; text-align: center; margin-bottom: 10px; text-transform: uppercase; padding: 6px; border-radius: 5px; letter-spacing: 1px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
         .knockout-meta { background: #f8fafc; font-size: 0.65rem; color: var(--fifa-dark-grey); padding: 5px 8px; border-top: 1px solid var(--border-color); text-align: center; font-weight: 700; }
         
@@ -199,7 +201,6 @@
         .matrix-team { text-align: left !important; padding-left: 15px !important; font-weight: 800; width: 22%; border-right: 2px solid var(--border-color); }
         .pct-bar { position: absolute; left: 0; top: 0; bottom: 0; z-index: 1; transition: width 0.5s ease; border-radius: 0 4px 4px 0; }
         
-        /* Updated Percentage Text for high contrast and readability */
         .pct-text { 
             position: relative; 
             z-index: 2; 
@@ -231,7 +232,16 @@
             border-radius: 8px; transition: all 0.2s ease; cursor: pointer;
         }
         .team-box:hover { border-color: var(--fifa-green); transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); background: white; }
-        .team-box img { width: 40px; height: 40px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
+        .team-box img.team-crest { width: 40px; height: 40px; object-fit: contain; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
+       .team-box img.team-flag { 
+    width: 18px; 
+    height: 13px; 
+    object-fit: cover; 
+    border-radius: 2px; 
+    border: 1px solid var(--border-color); 
+    filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1)); 
+    margin-top: 4px;
+}
         .team-box-info { display: flex; flex-direction: column; }
         .team-box-name { font-weight: 800; font-size: 1rem; color: var(--text-main); }
         .team-box-grp { font-size: 0.75rem; color: var(--fifa-dark-grey); font-weight: 600; text-transform: uppercase; }
@@ -247,7 +257,6 @@
         .popup-stat { font-size: 0.8rem; font-weight: 600; background: var(--bg-light); padding: 5px; border-radius: 4px; display: inline-block; margin-bottom: 10px; border: 1px solid var(--border-color);}
         .popup-matches { max-height: 100px; overflow-y: auto; font-size: 0.75rem; border-top: 1px dashed var(--border-color); padding-top: 5px; color: var(--fifa-dark-grey); font-weight: 600; }
         
-        /* Custom Map Marker styles */
         .custom-marker { border-radius: 50%; border: 3px solid white; box-shadow: 0 0 10px rgba(0,0,0,0.5); width: 20px; height: 20px; transition: transform 0.2s; }
         .custom-marker:hover { transform: scale(1.3); }
 
@@ -336,7 +345,9 @@
         <div id="groupsDisplay" class="groups-container"></div>
         
         <div id="bracketDisplay" class="bracket-wrapper hidden">
-            <div class="bracket-container" id="bracketContent"></div>
+            <div class="bracket-container" id="bracketContent">
+                <svg id="bracketLines"></svg>
+            </div>
         </div>
 
         <div id="matrixDisplay" class="matrix-wrapper hidden">
@@ -371,14 +382,24 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 
 <script>
-    // Logo Generator
+    const FLAG_CODES = {
+        "Mexico": "mx", "South Africa": "za", "Korea Republic": "kr", "Czech Republic": "cz",
+        "Canada": "ca", "Switzerland": "ch", "Qatar": "qa", "Bosnia and Herzegovina": "ba",
+        "Brazil": "br", "Morocco": "ma", "Haiti": "ht", "Scotland": "gb-sct",
+        "USA": "us", "Paraguay": "py", "Australia": "au", "Turkey": "tr",
+        "Germany": "de", "Curaçao": "cw", "Côte d'Ivoire": "ci", "Ecuador": "ec",
+        "Netherlands": "nl", "Japan": "jp", "Tunisia": "tn", "Sweden": "se",
+        "Belgium": "be", "Egypt": "eg", "Iran": "ir", "New Zealand": "nz",
+        "Spain": "es", "Cabo Verde": "cv", "Saudi Arabia": "sa", "Uruguay": "uy",
+        "France": "fr", "Senegal": "sn", "Norway": "no", "Iraq": "iq",
+        "Argentina": "ar", "Algeria": "dz", "Austria": "at", "Jordan": "jo",
+        "Portugal": "pt", "Uzbekistan": "uz", "Colombia": "co", "Congo DR": "cd",
+        "England": "gb-eng", "Croatia": "hr", "Ghana": "gh", "Panama": "pa"
+    };
+
     function getTeamLogoSrc(teamName) {
         const normalized = teamName.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        const formattedName = normalized.toLowerCase()
-            .trim()
-            .replace(/[']/g, '')     
-            .replace(/[\s_]+/g, '-') 
-            .replace(/[^a-z0-9-]/g, ''); 
+        const formattedName = normalized.toLowerCase().trim().replace(/[']/g, '').replace(/[\s_]+/g, '-').replace(/[^a-z0-9-]/g, ''); 
         return `img/wc_logo/${formattedName}-national-team.football-logos.cc.svg`;
     }
 
@@ -397,7 +418,6 @@
         { name: "England", str: 91, grp: "L" }, { name: "Croatia", str: 82, grp: "L" }, { name: "Ghana", str: 74, grp: "L" }, { name: "Panama", str: 73, grp: "L" }
     ];
 
-    // Venue Data for Map
     const VENUES_DATA = [
         { id: "Vancouver", name: "BC Place", city: "Vancouver", country: "Canada", lat: 49.2768, lng: -123.1120, capacity: "54,500", region: "West", color: "var(--region-west)", desc: "A multipurpose stadium in Canada with a retractable roof." },
         { id: "Seattle", name: "Lumen Field", city: "Seattle", country: "USA", lat: 47.5952, lng: -122.3316, capacity: "69,000", region: "West", color: "var(--region-west)", desc: "Known for its outstanding atmosphere and loud fanbase." },
@@ -418,32 +438,11 @@
     ];
 
     const KNOCKOUT_META = [
-        [ 
-            { m: 'Match 74', loc: 'Boston', date: '29 Jun' }, { m: 'Match 77', loc: 'New York/NJ', date: '30 Jun' },
-            { m: 'Match 73', loc: 'Los Angeles', date: '28 Jun' }, { m: 'Match 75', loc: 'Monterrey', date: '29 Jun' },
-            { m: 'Match 83', loc: 'Toronto', date: '02 Jul' }, { m: 'Match 84', loc: 'Los Angeles', date: '02 Jul' },
-            { m: 'Match 81', loc: 'San Francisco', date: '01 Jul' }, { m: 'Match 82', loc: 'Seattle', date: '01 Jul' },
-            { m: 'Match 76', loc: 'Houston', date: '29 Jun' }, { m: 'Match 78', loc: 'Dallas', date: '30 Jun' },
-            { m: 'Match 79', loc: 'Mexico City', date: '30 Jun' }, { m: 'Match 80', loc: 'Atlanta', date: '01 Jul' },
-            { m: 'Match 86', loc: 'Miami', date: '03 Jul' }, { m: 'Match 88', loc: 'Dallas', date: '03 Jul' },
-            { m: 'Match 85', loc: 'Vancouver', date: '02 Jul' }, { m: 'Match 87', loc: 'Kansas City', date: '03 Jul' }
-        ],
-        [ 
-            { m: 'Match 89', loc: 'Philadelphia', date: '04 Jul' }, { m: 'Match 90', loc: 'Houston', date: '04 Jul' },
-            { m: 'Match 93', loc: 'Dallas', date: '06 Jul' }, { m: 'Match 94', loc: 'Seattle', date: '06 Jul' },
-            { m: 'Match 91', loc: 'New York/NJ', date: '05 Jul' }, { m: 'Match 92', loc: 'Mexico City', date: '05 Jul' },
-            { m: 'Match 95', loc: 'Atlanta', date: '07 Jul' }, { m: 'Match 96', loc: 'Vancouver', date: '07 Jul' }
-        ],
-        [ 
-            { m: 'Match 97', loc: 'Boston', date: '09 Jul' }, { m: 'Match 98', loc: 'Los Angeles', date: '10 Jul' },
-            { m: 'Match 99', loc: 'Miami', date: '11 Jul' }, { m: 'Match 100', loc: 'Kansas City', date: '11 Jul' }
-        ],
-        [ 
-            { m: 'Match 101', loc: 'Dallas', date: '14 Jul' }, { m: 'Match 102', loc: 'Atlanta', date: '15 Jul' }
-        ],
-        [ 
-            { m: 'Match 104 (Final)', loc: 'New York/NJ', date: '19 Jul' }
-        ]
+        [ { m: 'Match 74', loc: 'Boston', date: '29 Jun' }, { m: 'Match 77', loc: 'New York/NJ', date: '30 Jun' }, { m: 'Match 73', loc: 'Los Angeles', date: '28 Jun' }, { m: 'Match 75', loc: 'Monterrey', date: '29 Jun' }, { m: 'Match 83', loc: 'Toronto', date: '02 Jul' }, { m: 'Match 84', loc: 'Los Angeles', date: '02 Jul' }, { m: 'Match 81', loc: 'San Francisco', date: '01 Jul' }, { m: 'Match 82', loc: 'Seattle', date: '01 Jul' }, { m: 'Match 76', loc: 'Houston', date: '29 Jun' }, { m: 'Match 78', loc: 'Dallas', date: '30 Jun' }, { m: 'Match 79', loc: 'Mexico City', date: '30 Jun' }, { m: 'Match 80', loc: 'Atlanta', date: '01 Jul' }, { m: 'Match 86', loc: 'Miami', date: '03 Jul' }, { m: 'Match 88', loc: 'Dallas', date: '03 Jul' }, { m: 'Match 85', loc: 'Vancouver', date: '02 Jul' }, { m: 'Match 87', loc: 'Kansas City', date: '03 Jul' } ],
+        [ { m: 'Match 89', loc: 'Philadelphia', date: '04 Jul' }, { m: 'Match 90', loc: 'Houston', date: '04 Jul' }, { m: 'Match 93', loc: 'Dallas', date: '06 Jul' }, { m: 'Match 94', loc: 'Seattle', date: '06 Jul' }, { m: 'Match 91', loc: 'New York/NJ', date: '05 Jul' }, { m: 'Match 92', loc: 'Mexico City', date: '05 Jul' }, { m: 'Match 95', loc: 'Atlanta', date: '07 Jul' }, { m: 'Match 96', loc: 'Vancouver', date: '07 Jul' } ],
+        [ { m: 'Match 97', loc: 'Boston', date: '09 Jul' }, { m: 'Match 98', loc: 'Los Angeles', date: '10 Jul' }, { m: 'Match 99', loc: 'Miami', date: '11 Jul' }, { m: 'Match 100', loc: 'Kansas City', date: '11 Jul' } ],
+        [ { m: 'Match 101', loc: 'Dallas', date: '14 Jul' }, { m: 'Match 102', loc: 'Atlanta', date: '15 Jul' } ],
+        [ { m: 'Match 104 (Final)', loc: 'New York/NJ', date: '19 Jul' } ]
     ];
 
     const SCHEDULE_DATA = {
@@ -461,19 +460,11 @@
         'L': [{ num: 23, h: 0, a: 1, d: '17 Jun', t: '21:00', l: 'Dallas' }, { num: 24, h: 2, a: 3, d: '18 Jun', t: '18:00', l: 'Toronto' }, { num: 47, h: 0, a: 2, d: '23 Jun', t: '18:00', l: 'Boston' }, { num: 48, h: 1, a: 3, d: '23 Jun', t: '18:00', l: 'New York/NJ' }, { num: 71, h: 3, a: 0, d: '28 Jun', t: '21:00', l: 'Boston' }, { num: 72, h: 1, a: 2, d: '28 Jun', t: '21:00', l: 'Philadelphia' }]
     };
 
-    // Initialize Countdown Timer
     function initCountdown() {
         const targetDate = new Date("2026-06-11T00:00:00Z").getTime();
-        
         setInterval(() => {
-            const now = new Date().getTime();
-            const distance = targetDate - now;
-
-            if (distance < 0) {
-                document.getElementById("countdownTimer").innerHTML = "TOURNAMENT HAS BEGUN!";
-                return;
-            }
-
+            const distance = targetDate - new Date().getTime();
+            if (distance < 0) { document.getElementById("countdownTimer").innerHTML = "TOURNAMENT HAS BEGUN!"; return; }
             document.getElementById("cd-days").innerText = Math.floor(distance / (1000 * 60 * 60 * 24)).toString().padStart(3, '0');
             document.getElementById("cd-hours").innerText = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)).toString().padStart(2, '0');
             document.getElementById("cd-mins").innerText = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)).toString().padStart(2, '0');
@@ -481,170 +472,191 @@
         }, 1000);
     }
 
-    // Initialize Teams Tab
     function initTeamsTab() {
         const container = document.getElementById('teamsDisplay');
         container.innerHTML = '';
-        
         "ABCDEFGHIJKL".split("").forEach(g => {
             const grpTeams = TEAMS_CORE.filter(t => t.grp === g);
-            let gridHtml = '';
-            grpTeams.forEach(t => {
-                const safeUrl = `https://example.com/team/${t.name.toLowerCase().replace(/\s+/g, '-')}`;
-                gridHtml += `
-                    <a href="${safeUrl}" target="_blank" class="team-box-link">
-                        <div class="team-box">
-                            <img src="${getTeamLogoSrc(t.name)}" alt="${t.name}">
-                            <div class="team-box-info">
-                                <span class="team-box-name">${t.name}</span>
-                                <span class="team-box-grp">Group ${g}</span>
-                            </div>
+            let gridHtml = grpTeams.map(t => `
+                <a href="https://example.com/team/${t.name.toLowerCase().replace(/\s+/g, '-')}" target="_blank" class="team-box-link">
+                    <div class="team-box">
+                        <img src="${getTeamLogoSrc(t.name)}" alt="${t.name}" class="team-crest">
+                        <div class="team-box-info">
+                            <span class="team-box-name">${t.name}</span>
+                            <img src="https://flagcdn.com/w40/${FLAG_CODES[t.name]}.png" alt="${t.name} flag" class="team-flag" style="margin-top:4px;">
                         </div>
-                    </a>
-                `;
-            });
+                    </div>
+                </a>
+            `).join('');
             
-            container.innerHTML += `
-                <div class="team-group-section">
-                    <div class="team-group-header">Group ${g}</div>
-                    <div class="team-grid">${gridHtml}</div>
-                </div>
-            `;
+            container.innerHTML += `<div class="team-group-section"><div class="team-group-header">Group ${g}</div><div class="team-grid">${gridHtml}</div></div>`;
         });
     }
 
-    // Leaflet Map logic
     let map;
     let markersLayer;
     let isMapInitialized = false;
 
     function buildMatchesListForCity(cityId) {
         let matches = [];
-        // Extract Group Stage matches
-        Object.values(SCHEDULE_DATA).forEach(grpMatches => {
-            grpMatches.forEach(m => {
-                if(m.l.includes(cityId)) matches.push(`Match ${m.num} (${m.d}) - Group Stage`);
-            });
-        });
-        // Extract Knockout matches
-        KNOCKOUT_META.forEach(round => {
-            round.forEach(m => {
-                if(m.loc.includes(cityId)) matches.push(`${m.m} (${m.date}) - Knockouts`);
-            });
-        });
+        Object.values(SCHEDULE_DATA).forEach(grpMatches => { grpMatches.forEach(m => { if(m.l.includes(cityId)) matches.push(`Match ${m.num} (${m.d}) - Group Stage`); }); });
+        KNOCKOUT_META.forEach(round => { round.forEach(m => { if(m.loc.includes(cityId)) matches.push(`${m.m} (${m.date}) - Knockouts`); }); });
         return matches;
     }
 
     function initMap() {
-        if (isMapInitialized) {
-            map.invalidateSize();
-            return;
-        }
-        
-        map = L.map('map').setView([40.0, -95.0], 4); // Center of NA
-        
-        // Use a professional, clean map tile style (CartoDB Positron)
-        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
-            attribution: '&copy; OpenStreetMap contributors &copy; CARTO',
-            subdomains: 'abcd',
-            maxZoom: 10
-        }).addTo(map);
-
+        if (isMapInitialized) { map.invalidateSize(); return; }
+        map = L.map('map').setView([40.0, -95.0], 4); 
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution: '&copy; OpenStreetMap contributors &copy; CARTO', subdomains: 'abcd', maxZoom: 10 }).addTo(map);
         markersLayer = L.layerGroup().addTo(map);
         renderMapMarkers('All');
-        
         isMapInitialized = true;
-        // Trigger resize just in case tab rendering issues
         setTimeout(() => map.invalidateSize(), 300);
     }
 
     function renderMapMarkers(filterCountry) {
         markersLayer.clearLayers();
-        
         VENUES_DATA.forEach(v => {
             if(filterCountry !== 'All' && v.country !== filterCountry) return;
-            
             const matchHtml = buildMatchesListForCity(v.id).map(m => `<div>${m}</div>`).join('');
-            
-            const customIcon = L.divIcon({
-                className: 'custom-icon',
-                html: `<div class="custom-marker" style="background-color: ${v.color};"></div>`,
-                iconSize: [20, 20],
-                iconAnchor: [10, 10]
-            });
-
+            const customIcon = L.divIcon({ className: 'custom-icon', html: `<div class="custom-marker" style="background-color: ${v.color};"></div>`, iconSize: [20, 20], iconAnchor: [10, 10] });
             const marker = L.marker([v.lat, v.lng], { icon: customIcon });
-            
-            const popupContent = `
-                <div class="popup-title">${v.name}</div>
-                <div class="popup-location">${v.city}, ${v.country}</div>
-                <div class="popup-stat">Capacity: ${v.capacity}</div>
-                <div class="popup-desc">${v.desc}</div>
-                <div class="popup-matches">
-                    <strong>Matches Hosted:</strong><br>
-                    ${matchHtml.length > 0 ? matchHtml : '<i>TBD</i>'}
-                </div>
-            `;
-            
-            marker.bindPopup(popupContent);
+            marker.bindPopup(`<div class="popup-title">${v.name}</div><div class="popup-location">${v.city}, ${v.country}</div><div class="popup-stat">Capacity: ${v.capacity}</div><div class="popup-desc">${v.desc}</div><div class="popup-matches"><strong>Matches Hosted:</strong><br>${matchHtml.length > 0 ? matchHtml : '<i>TBD</i>'}</div>`);
             markersLayer.addLayer(marker);
         });
     }
 
-    function filterMapVenues() {
-        const selected = document.getElementById('countryFilter').value;
-        renderMapMarkers(selected);
+    function filterMapVenues() { renderMapMarkers(document.getElementById('countryFilter').value); }
+
+    function drawBracketLines() {
+        const svg = document.getElementById('bracketLines');
+        if (!svg) return;
+        svg.innerHTML = '';
+        const container = document.getElementById('bracketContent');
+        const containerRect = container.getBoundingClientRect();
+        
+        const matches = Array.from(document.querySelectorAll('.bracket-match[id^="ko-m-"]'));
+        const roundsData = [];
+        
+        matches.forEach(m => {
+            const rIdx = parseInt(m.id.split('-')[2]);
+            if (!roundsData[rIdx]) roundsData[rIdx] = [];
+            roundsData[rIdx].push(m);
+        });
+        
+        for (let i = 0; i < roundsData.length - 1; i++) {
+            const currentRound = roundsData[i];
+            const nextRound = roundsData[i+1];
+            if (!currentRound || !nextRound) continue;
+            
+            currentRound.forEach((matchEl, j) => {
+                const nextMatchEl = nextRound[Math.floor(j / 2)];
+                if (!nextMatchEl || matchEl.classList.contains('third-place')) return;
+                
+                const r1 = matchEl.getBoundingClientRect();
+                const r2 = nextMatchEl.getBoundingClientRect();
+                
+                const x1 = r1.right - containerRect.left + container.scrollLeft;
+                const y1 = r1.top + r1.height / 2 - containerRect.top + container.scrollTop;
+                const x2 = r2.left - containerRect.left + container.scrollLeft;
+                const y2 = r2.top + r2.height / 2 - containerRect.top + container.scrollTop;
+                
+                const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+                const d = `M ${x1} ${y1} C ${x1 + 30} ${y1}, ${x2 - 30} ${y2}, ${x2} ${y2}`;
+                path.setAttribute('d', d);
+                path.setAttribute('stroke', 'var(--border-color)');
+                path.setAttribute('stroke-width', '2');
+                path.setAttribute('fill', 'none');
+                svg.appendChild(path);
+            });
+        }
     }
 
-    // Navigation and Logic
     function navigate(view) {
-        // Hide all views
         ['groupsDisplay', 'bracketDisplay', 'matrixDisplay', 'teamsDisplay', 'venuesDisplay'].forEach(id => document.getElementById(id).classList.add('hidden'));
-        
-        // Remove active state from tabs
         ['tabGroups', 'tabBracket', 'tabMatrix', 'tabTeams', 'tabVenues'].forEach(id => document.getElementById(id).classList.remove('active'));
         
-        // Show target view & set active
-        const targetViewId = view + 'Display';
-        document.getElementById(targetViewId).classList.remove('hidden');
+        document.getElementById(view + 'Display').classList.remove('hidden');
         document.getElementById('tab' + view.charAt(0).toUpperCase() + view.slice(1)).classList.add('active');
         
-        // Manage Sidebar Controls
         const mcPanel = document.getElementById('mcControlPanel');
         const simPanel = document.getElementById('simControlPanel');
         const venuePanel = document.getElementById('venueControlPanel');
         
-        mcPanel.classList.add('hidden');
-        simPanel.classList.add('hidden');
-        venuePanel.classList.add('hidden');
+        mcPanel.classList.add('hidden'); simPanel.classList.add('hidden'); venuePanel.classList.add('hidden');
 
-        if (view === 'matrix') { 
-            mcPanel.classList.remove('hidden'); 
-        } else if (view === 'venues') {
-            venuePanel.classList.remove('hidden');
-            initMap(); // Initialize/resize map on tab switch
-        } else if (view === 'groups' || view === 'bracket') {
-            simPanel.classList.remove('hidden');
-        }
-    }
-
-    // Simulation Engine Functions
-    function simulateMatch(t1, t2, isKO = false) {
-        const chaos = document.getElementById('chaosFactor').value / 100;
-        const diff = t1.str - t2.str; 
-        let adv1 = Math.max(0, diff / 8);
-        let adv2 = Math.max(0, -diff / 8);
-        let blowout1 = (Math.random() < 0.25 && diff > 12) ? Math.floor(Math.random() * 4) : 0;
-        let blowout2 = (Math.random() < 0.25 && diff < -12) ? Math.floor(Math.random() * 4) : 0;
-        let g1 = Math.floor(Math.max(0, 1 + adv1 + blowout1) * (1 - chaos) + Math.random() * 5 * chaos);
-        let g2 = Math.floor(Math.max(0, 1 + adv2 + blowout2) * (1 - chaos) + Math.random() * 5 * chaos);
+        if (view === 'matrix') { mcPanel.classList.remove('hidden'); } 
+        else if (view === 'venues') { venuePanel.classList.remove('hidden'); initMap(); } 
+        else if (view === 'groups' || view === 'bracket') { simPanel.classList.remove('hidden'); }
         
-        if (isKO && g1 === g2) {
-            const edge = 0.5 + (diff / 40);
-            Math.random() < edge ? g1++ : g2++;
-        }
-        return [g1, g2];
+        if (view === 'bracket') { setTimeout(drawBracketLines, 50); }
     }
+
+    // Mathematical Poisson generator
+function getPoisson(lambda) {
+    let L = Math.exp(-lambda);
+    let p = 1.0;
+    let k = 0;
+    do {
+        k++;
+        p *= Math.random();
+    } while (p > L);
+    return k - 1;
+}
+
+function simulateMatch(t1, t2, isKO = false) {
+    const chaos = document.getElementById('chaosFactor').value / 100;
+    const diff = t1.str - t2.str; 
+    
+    // Calculate Expected Goals (xG)
+    // Base xG for an average match is roughly 1.2 goals per team.
+    // Every 15 rating points of difference shifts the xG by 1 goal.
+    let lambda1 = Math.max(0.1, 1.2 + (diff / 15));
+    let lambda2 = Math.max(0.1, 1.2 - (diff / 15));
+
+    // Introduce chaos: Blend true xG with a highly randomized xG (between 0.5 and 2.5)
+    const randomVariance1 = 0.5 + (Math.random() * 2);
+    const randomVariance2 = 0.5 + (Math.random() * 2);
+    
+    lambda1 = (lambda1 * (1 - chaos)) + (randomVariance1 * chaos);
+    lambda2 = (lambda2 * (1 - chaos)) + (randomVariance2 * chaos);
+
+    // Roll the actual goals using the Poisson distribution
+    let g1 = getPoisson(lambda1);
+    let g2 = getPoisson(lambda2);
+    
+    let p1, p2;
+    
+    // Knockout Logic (Extra Time & Penalties)
+    if (isKO && g1 === g2) {
+        // Extra Time: Re-roll with roughly 1/3rd of the expected goals
+        g1 += getPoisson(lambda1 * 0.33);
+        g2 += getPoisson(lambda2 * 0.33);
+        
+        // Penalties
+        if (g1 === g2) {
+            p1 = 0; p2 = 0;
+            let t1Taken = 0, t2Taken = 0;
+            
+            for(let i = 0; i < 5; i++) {
+                p1 += Math.random() < 0.75 ? 1 : 0; t1Taken++;
+                if (p1 > p2 + (5 - t2Taken)) break;
+                if (p2 > p1 + (5 - t1Taken)) break;
+                
+                p2 += Math.random() < 0.75 ? 1 : 0; t2Taken++;
+                if (p1 > p2 + (5 - t2Taken)) break;
+                if (p2 > p1 + (5 - t1Taken)) break;
+            }
+            
+            // Sudden Death
+            while (p1 === p2) {
+                p1 += Math.random() < 0.75 ? 1 : 0;
+                p2 += Math.random() < 0.75 ? 1 : 0;
+            }
+        }
+    }
+    return [g1, g2, p1, p2];
+}
 
     function sortTeamsForGroup(teams, matches) {
         return teams.sort((a, b) => {
@@ -679,12 +691,7 @@
 
     function buildKnockoutArray(teams, bestThirds) {
         const getT = (grp, rank) => teams.find(t => t.grp === grp && t.rank === rank);
-        const thirdSlots = [
-            { id: 'M74', valid: ['A','B','C','D','F'] }, { id: 'M77', valid: ['C','D','F','G','H'] },
-            { id: 'M81', valid: ['B','E','F','I','J'] }, { id: 'M82', valid: ['A','E','H','I','J'] },
-            { id: 'M79', valid: ['C','E','F','H','I'] }, { id: 'M80', valid: ['E','H','I','J','K'] },
-            { id: 'M85', valid: ['E','F','G','I','J'] }, { id: 'M87', valid: ['D','E','I','J','L'] }
-        ];
+        const thirdSlots = [ { id: 'M74', valid: ['A','B','C','D','F'] }, { id: 'M77', valid: ['C','D','F','G','H'] }, { id: 'M81', valid: ['B','E','F','I','J'] }, { id: 'M82', valid: ['A','E','H','I','J'] }, { id: 'M79', valid: ['C','E','F','H','I'] }, { id: 'M80', valid: ['E','H','I','J','K'] }, { id: 'M85', valid: ['E','F','G','I','J'] }, { id: 'M87', valid: ['D','E','I','J','L'] } ];
 
         function assignThirds(index, currentAssignment) {
             if (index === 8) return currentAssignment;
@@ -711,35 +718,27 @@
         }
 
         return [
-            getT('E', 1), finalThirds['M74'], getT('I', 1), finalThirds['M77'], 
-            getT('A', 2), getT('B', 2),       getT('F', 1), getT('C', 2),
-            getT('K', 2), getT('L', 2),       getT('H', 1), getT('J', 2),       
-            getT('D', 1), finalThirds['M81'], getT('G', 1), finalThirds['M82'],
-            getT('C', 1), getT('F', 2),       getT('E', 2), getT('I', 2),       
-            getT('A', 1), finalThirds['M79'], getT('L', 1), finalThirds['M80'],
-            getT('J', 1), getT('H', 2),       getT('D', 2), getT('G', 2),       
-            getT('B', 1), finalThirds['M85'], getT('K', 1), finalThirds['M87']
+            getT('E', 1), finalThirds['M74'], getT('I', 1), finalThirds['M77'], getT('A', 2), getT('B', 2), getT('F', 1), getT('C', 2),
+            getT('K', 2), getT('L', 2), getT('H', 1), getT('J', 2), getT('D', 1), finalThirds['M81'], getT('G', 1), finalThirds['M82'],
+            getT('C', 1), getT('F', 2), getT('E', 2), getT('I', 2), getT('A', 1), finalThirds['M79'], getT('L', 1), finalThirds['M80'],
+            getT('J', 1), getT('H', 2), getT('D', 2), getT('G', 2), getT('B', 1), finalThirds['M85'], getT('K', 1), finalThirds['M87']
         ];
     }
 
     function runFullSimInternal() {
         const currentTeams = TEAMS_CORE.map(t => ({ ...t, pts:0, gf:0, ga:0, gd:0, fp:0 }));
-
         let allThirds = [];
         "ABCDEFGHIJKL".split("").forEach(g => {
             const gt = currentTeams.filter(t => t.grp === g);
             const matches = [];
-            
             SCHEDULE_DATA[g].forEach(md => {
                 const t1 = gt[md.h], t2 = gt[md.a];
                 const [g1, g2] = simulateMatch(t1, t2);
-                t1.gf += g1; t1.ga += g2; t1.gd += (g1-g2);
-                t2.gf += g2; t2.ga += g1; t2.gd += (g2-g1);
+                t1.gf += g1; t1.ga += g2; t1.gd += (g1-g2); t2.gf += g2; t2.ga += g1; t2.gd += (g2-g1);
                 t1.fp -= Math.floor(Math.random()*3); t2.fp -= Math.floor(Math.random()*3);
                 if(g1 > g2) t1.pts += 3; else if(g2 > g1) t2.pts += 3; else { t1.pts++; t2.pts++; }
                 matches.push({ h: t1, a: t2, hg: g1, ag: g2 });
             });
-            
             sortTeamsForGroup(gt, matches);
             gt[0].rank = 1; gt[1].rank = 2; gt[2].rank = 3; gt[3].rank = 4;
             allThirds.push(gt[2]);
@@ -752,8 +751,12 @@
         while(ko.length > 1) {
             let next = [];
             for(let i=0; i<ko.length; i+=2) {
-                const [s1, s2] = simulateMatch(ko[i], ko[i+1], true);
-                next.push(s1 > s2 ? ko[i] : ko[i+1]);
+                const [s1, s2, p1, p2] = simulateMatch(ko[i], ko[i+1], true);
+                let t1Win = false;
+                if (s1 > s2) t1Win = true;
+                else if (s2 > s1) t1Win = false;
+                else t1Win = (p1 > p2);
+                next.push(t1Win ? ko[i] : ko[i+1]);
             }
             ko = next;
             rounds.push([...ko]);
@@ -766,8 +769,7 @@
         const container = document.getElementById('groupsDisplay');
         container.innerHTML = '';
         
-        let allThirds = [], renderQueue = []; 
-        let animationDelay = 0;
+        let allThirds = [], renderQueue = [], animationDelay = 0;
         
         "ABCDEFGHIJKL".split("").forEach(g => {
             const grpTeams = currentTeams.filter(t => t.grp === g);
@@ -777,15 +779,10 @@
                 const t1 = grpTeams[md.h], t2 = grpTeams[md.a];
                 const [g1, g2] = simulateMatch(t1, t2);
                 
-                t1.p++; t2.p++; 
-                t1.gf += g1; t1.ga += g2; t1.gd += (g1-g2);
-                t2.gf += g2; t2.ga += g1; t2.gd += (g2-g1);
+                t1.p++; t2.p++; t1.gf += g1; t1.ga += g2; t1.gd += (g1-g2); t2.gf += g2; t2.ga += g1; t2.gd += (g2-g1);
                 t1.fp -= Math.floor(Math.random()*3); t2.fp -= Math.floor(Math.random()*3);
                 
-                if(g1 > g2) { t1.w++; t2.l++; t1.pts += 3; }
-                else if(g2 > g1) { t2.w++; t1.l++; t2.pts += 3; }
-                else { t1.d++; t2.d++; t1.pts += 1; t2.pts += 1; }
-                
+                if(g1 > g2) { t1.w++; t2.l++; t1.pts += 3; } else if(g2 > g1) { t2.w++; t1.l++; t2.pts += 3; } else { t1.d++; t2.d++; t1.pts += 1; t2.pts += 1; }
                 matches.push({ num: md.num, h: t1, a: t2, hg: g1, ag: g2, date: `${md.d} - ${md.t} ET`, location: md.l });
             });
             
@@ -802,9 +799,7 @@
         bestThirds.forEach(t => t.advances = true);
         
         renderQueue.forEach(q => renderGroupCard(q.id, q.teams, q.matches, q.delay));
-        
-        const initialKnockout = buildKnockoutArray(currentTeams, bestThirds);
-        renderKnockout(initialKnockout);
+        renderKnockout(buildKnockoutArray(currentTeams, bestThirds));
     }
 
     function renderGroupCard(id, teams, matches, delay) {
@@ -818,13 +813,7 @@
             return `<tr class="${rowClass}"><td class="team-identity"><img src="${getTeamLogoSrc(t.name)}" class="team-logo" alt="${t.name}"> ${t.name}${hostTag}</td><td>${t.p}</td><td>${t.w}</td><td>${t.d}</td><td>${t.l}</td><td>${t.gd}</td><td class="col-pts">${t.pts}</td></tr>`;
         }).join('');
         
-        const mHtml = matches.map(m => `<div class="match-card">
-            <div style="width:100%; text-align:center; font-size: 0.6rem; color: var(--fifa-dark-grey); font-weight: 800; margin-bottom: 5px; text-transform: uppercase;">Match ${m.num}</div>
-            <span style="width:40%; text-align:left; font-weight:bold;"><img src="${getTeamLogoSrc(m.h.name)}" class="team-logo" alt="${m.h.name}"> ${m.h.name}</span>
-            <span class="match-score">${m.hg}-${m.ag}</span>
-            <span style="width:40%; text-align:right; font-weight:bold;">${m.a.name} <img src="${getTeamLogoSrc(m.a.name)}" class="team-logo" alt="${m.a.name}"></span>
-            <div class="match-meta" style="margin-top:5px;">${m.date} | ${m.location}</div>
-        </div>`).join('');
+        const mHtml = matches.map(m => `<div class="match-card"><div style="width:100%; text-align:center; font-size: 0.6rem; color: var(--fifa-dark-grey); font-weight: 800; margin-bottom: 5px; text-transform: uppercase;">Match ${m.num}</div><span style="width:40%; text-align:left; font-weight:bold;"><img src="${getTeamLogoSrc(m.h.name)}" class="team-logo" alt="${m.h.name}"> ${m.h.name}</span><span class="match-score">${m.hg}-${m.ag}</span><span style="width:40%; text-align:right; font-weight:bold;">${m.a.name} <img src="${getTeamLogoSrc(m.a.name)}" class="team-logo" alt="${m.a.name}"></span><div class="match-meta" style="margin-top:5px;">${m.date} | ${m.location}</div></div>`).join('');
         
         card.innerHTML = `<div class="group-name">GROUP ${id}</div><table><thead><tr><th style="text-align:left; padding-left:10px">National Team</th><th class="col-stat">P</th><th class="col-stat">W</th><th class="col-stat">D</th><th class="col-stat">L</th><th class="col-stat">GD</th><th class="col-pts">PTS</th></tr></thead><tbody>${rows}</tbody></table><div class="matches-preview">${mHtml}</div>`;
         document.getElementById('groupsDisplay').appendChild(card);
@@ -832,7 +821,11 @@
     
     function renderKnockout(teams) {
         const container = document.getElementById('bracketContent'); 
+        
+        const existingLines = document.getElementById('bracketLines');
         container.innerHTML = '';
+        if(existingLines) container.appendChild(existingLines);
+
         const rounds = ["Round of 32", "Round of 16", "Quarter-Finals", "Semi-Finals", "Grand Final"];
         let current = [...teams];      
         let sfLosers = []; 
@@ -849,13 +842,14 @@
                 const t1 = current[i], t2 = current[i+1];
                 if (!t1 || !t2) continue;
                 
-                const [s1, s2] = simulateMatch(t1, t2, true);
-                const win = s1 > s2 ? t1 : t2; 
-                next.push(win);             
+                const [s1, s2, p1, p2] = simulateMatch(t1, t2, true);
+                let win;
+                if (s1 > s2) win = t1;
+                else if (s2 > s1) win = t2;
+                else win = (p1 > p2) ? t1 : t2;
                 
-                if (idx === 3) {
-                    sfLosers.push(win === t1 ? t2 : t1);
-                }
+                next.push(win);             
+                if (idx === 3) sfLosers.push(win === t1 ? t2 : t1);
                 
                 const meta = KNOCKOUT_META[idx][matchIdx];
                 let location = meta ? meta.loc : "Stadium TBD";
@@ -863,26 +857,34 @@
                 let matchName = meta ? meta.m : "";
                 
                 let matchClasses = isFinal ? 'bracket-match final-match' : 'bracket-match';
+                const p1Str = p1 !== undefined ? `<span class="pen-score">(${p1})</span>` : '';
+                const p2Str = p2 !== undefined ? `<span class="pen-score">(${p2})</span>` : '';
 
-                col.innerHTML += `<div class="${matchClasses}">
+                col.innerHTML += `<div class="${matchClasses}" id="ko-m-${idx}-${matchIdx}">
                     <div style="font-size:0.6rem; color:var(--fifa-dark-grey); text-align:center; padding: 4px; font-weight: bold;">${matchName}</div>
-                    <div class="bracket-team ${win===t1?'winner':''}"><img src="${getTeamLogoSrc(t1.name)}" class="team-logo" alt="${t1.name}"> <span>${t1.name}</span> <span class="score">${s1}</span></div>
-                    <div class="bracket-team ${win===t2?'winner':''}"><img src="${getTeamLogoSrc(t2.name)}" class="team-logo" alt="${t2.name}"> <span>${t2.name}</span> <span class="score">${s2}</span></div>
+                    <div class="bracket-team ${win===t1?'winner':''}"><img src="${getTeamLogoSrc(t1.name)}" class="team-logo" alt="${t1.name}"> <span>${t1.name}</span> <span class="score">${s1} ${p1Str}</span></div>
+                    <div class="bracket-team ${win===t2?'winner':''}"><img src="${getTeamLogoSrc(t2.name)}" class="team-logo" alt="${t2.name}"> <span>${t2.name}</span> <span class="score">${s2} ${p2Str}</span></div>
                     <div class="knockout-meta">${date} <br> ${location}</div>
                 </div>`;
                 matchIdx++;
             }
             
             if (isFinal && sfLosers.length === 2) {
-                const [tp1, tp2] = simulateMatch(sfLosers[0], sfLosers[1], true);
-                const tpWin = tp1 > tp2 ? sfLosers[0] : sfLosers[1];
+                const [tp1, tp2, tpp1, tpp2] = simulateMatch(sfLosers[0], sfLosers[1], true);
+                let tpWin;
+                if (tp1 > tp2) tpWin = sfLosers[0];
+                else if (tp2 > tp1) tpWin = sfLosers[1];
+                else tpWin = (tpp1 > tpp2) ? sfLosers[0] : sfLosers[1];
+
+                const tpp1Str = tpp1 !== undefined ? `<span class="pen-score">(${tpp1})</span>` : '';
+                const tpp2Str = tpp2 !== undefined ? `<span class="pen-score">(${tpp2})</span>` : '';
                 
                 col.innerHTML += `
                     <div class="round-title third-place-title">Third Place Match</div>
-                    <div class="bracket-match" style="border: 2px solid var(--border-color);">
+                    <div class="bracket-match third-place" id="ko-m-tp" style="border: 2px solid var(--border-color);">
                         <div style="font-size:0.6rem; color:var(--fifa-dark-grey); text-align:center; padding: 4px; font-weight: bold;">Match 103</div>
-                        <div class="bracket-team ${tpWin===sfLosers[0]?'winner':''}"><img src="${getTeamLogoSrc(sfLosers[0].name)}" class="team-logo"> ${sfLosers[0].name} <span class="score">${tp1}</span></div>
-                        <div class="bracket-team ${tpWin===sfLosers[1]?'winner':''}"><img src="${getTeamLogoSrc(sfLosers[1].name)}" class="team-logo"> ${sfLosers[1].name} <span class="score">${tp2}</span></div>
+                        <div class="bracket-team ${tpWin===sfLosers[0]?'winner':''}"><img src="${getTeamLogoSrc(sfLosers[0].name)}" class="team-logo"> ${sfLosers[0].name} <span class="score">${tp1} ${tpp1Str}</span></div>
+                        <div class="bracket-team ${tpWin===sfLosers[1]?'winner':''}"><img src="${getTeamLogoSrc(sfLosers[1].name)}" class="team-logo"> ${sfLosers[1].name} <span class="score">${tp2} ${tpp2Str}</span></div>
                         <div class="knockout-meta">18 Jul <br> Miami</div>
                     </div>
                 `;
@@ -891,6 +893,11 @@
             container.appendChild(col); 
             current = next;
         });
+
+        // Trigger bracket redrawing immediately if on bracket tab
+        if(document.getElementById('bracketDisplay').classList.contains('hidden') === false) {
+            setTimeout(drawBracketLines, 50);
+        }
     }
 
     function runMonteCarlo() {
@@ -900,19 +907,12 @@
         
         setTimeout(() => {
             const stats = {};
-            TEAMS_CORE.forEach(t => {
-                let n = t.name;
-                stats[n] = { name: n, r32:0, r16:0, qf:0, sf:0, f:0, w:0 };
-            });
+            TEAMS_CORE.forEach(t => { stats[t.name] = { name: t.name, r32:0, r16:0, qf:0, sf:0, f:0, w:0 }; });
 
             for(let s=0; s<count; s++) {
                 const results = runFullSimInternal();
-                results[0].forEach(t => stats[t.name].r32++);
-                results[1].forEach(t => stats[t.name].r16++);
-                results[2].forEach(t => stats[t.name].qf++);
-                results[3].forEach(t => stats[t.name].sf++);
-                results[4].forEach(t => stats[t.name].f++);
-                stats[results[5][0].name].w++;
+                results[0].forEach(t => stats[t.name].r32++); results[1].forEach(t => stats[t.name].r16++); results[2].forEach(t => stats[t.name].qf++);
+                results[3].forEach(t => stats[t.name].sf++); results[4].forEach(t => stats[t.name].f++); stats[results[5][0].name].w++;
             }
 
             const sorted = Object.values(stats).sort((a,b) => b.w - a.w || b.f - a.f || b.sf - a.sf || b.qf - a.qf || b.r16 - a.r16 || b.r32 - a.r32);
@@ -921,7 +921,7 @@
             sorted.forEach(s => {
                 const v = [s.r32, s.r16, s.qf, s.sf, s.f, s.w].map(x => (x/count)*100);
                 const getCol = (val) => val === 0 ? 'transparent' : `rgba(42, 57, 141, ${0.05 + (val/100)*0.8})`;
-                const getGold = (val) => val === 0 ? 'transparent' : `rgba(60, 172, 59, ${0.1 + (val/100)*0.8})`; // Using green for win highlight
+                const getGold = (val) => val === 0 ? 'transparent' : `rgba(60, 172, 59, ${0.1 + (val/100)*0.8})`; 
                 
                 body.innerHTML += `<tr>
                     <td class="matrix-team"><img src="${getTeamLogoSrc(s.name)}" class="team-logo" alt="${s.name}"> ${s.name}</td>
@@ -936,10 +936,14 @@
         }, 100);
     }
 
-    // App Initialization
     document.addEventListener("DOMContentLoaded", () => {
         initCountdown();
         initTeamsTab();
+        window.addEventListener('resize', () => {
+            if(!document.getElementById('bracketDisplay').classList.contains('hidden')) {
+                drawBracketLines();
+            }
+        });
     });
 
 </script>
