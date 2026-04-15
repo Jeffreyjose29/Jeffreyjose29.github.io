@@ -605,21 +605,25 @@ function getPoisson(lambda) {
 }
 
 function simulateMatch(t1, t2, isKO = false) {
-    const chaos = document.getElementById('chaosFactor').value / 100;
+    const chaos = parseInt(document.getElementById('chaosFactor').value, 10) / 100;
     const diff = t1.str - t2.str; 
     
-    // Calculate Expected Goals (xG)
-    // Base xG for an average match is roughly 1.2 goals per team.
-    // Every 15 rating points of difference shifts the xG by 1 goal.
-    let lambda1 = Math.max(0.1, 1.2 + (diff / 15));
-    let lambda2 = Math.max(0.1, 1.2 - (diff / 15));
+    // 1. Scale the skill gap based on the chaos factor.
+    // Chaos 0 = full skill gap used. Chaos 1 = 0 skill gap (pure luck).
+    const effectiveDiff = diff * (1 - chaos); 
 
-    // Introduce chaos: Blend true xG with a highly randomized xG (between 0.5 and 2.5)
-    const randomVariance1 = 0.5 + (Math.random() * 2);
-    const randomVariance2 = 0.5 + (Math.random() * 2);
+    // 2. Calculate Base Expected Goals (xG). 
+    // 12 points of difference roughly shifts the expectation by 1 full goal.
+    let lambda1 = Math.max(0.05, 1.2 + (effectiveDiff / 12));
+    let lambda2 = Math.max(0.05, 1.2 - (effectiveDiff / 12));
+
+    // 3. Inject random noise (unpredictability).
+    // Adds up to 2.5 random expected goals if chaos is at 100%.
+    const noise1 = (Math.random() * 2.5) * chaos;
+    const noise2 = (Math.random() * 2.5) * chaos;
     
-    lambda1 = (lambda1 * (1 - chaos)) + (randomVariance1 * chaos);
-    lambda2 = (lambda2 * (1 - chaos)) + (randomVariance2 * chaos);
+    lambda1 += noise1;
+    lambda2 += noise2;
 
     // Roll the actual goals using the Poisson distribution
     let g1 = getPoisson(lambda1);
@@ -638,26 +642,35 @@ function simulateMatch(t1, t2, isKO = false) {
             p1 = 0; p2 = 0;
             let t1Taken = 0, t2Taken = 0;
             
+            // Penalty probability scales with team strength if chaos is low.
+            // Every point of skill difference shifts penalty success chance by 0.5%.
+            let basePen1 = 0.75 + (effectiveDiff * 0.005); 
+            let basePen2 = 0.75 - (effectiveDiff * 0.005);
+            
+            // Cap probabilities so shootouts aren't physically impossible 
+            // for bad teams, keeping limits between 40% and 95%.
+            basePen1 = Math.max(0.40, Math.min(0.95, basePen1));
+            basePen2 = Math.max(0.40, Math.min(0.95, basePen2));
+
             for(let i = 0; i < 5; i++) {
-                p1 += Math.random() < 0.75 ? 1 : 0; t1Taken++;
+                p1 += Math.random() < basePen1 ? 1 : 0; t1Taken++;
                 if (p1 > p2 + (5 - t2Taken)) break;
                 if (p2 > p1 + (5 - t1Taken)) break;
                 
-                p2 += Math.random() < 0.75 ? 1 : 0; t2Taken++;
+                p2 += Math.random() < basePen2 ? 1 : 0; t2Taken++;
                 if (p1 > p2 + (5 - t2Taken)) break;
                 if (p2 > p1 + (5 - t1Taken)) break;
             }
             
             // Sudden Death
             while (p1 === p2) {
-                p1 += Math.random() < 0.75 ? 1 : 0;
-                p2 += Math.random() < 0.75 ? 1 : 0;
+                p1 += Math.random() < basePen1 ? 1 : 0;
+                p2 += Math.random() < basePen2 ? 1 : 0;
             }
         }
     }
     return [g1, g2, p1, p2];
 }
-
     function sortTeamsForGroup(teams, matches) {
         return teams.sort((a, b) => {
             if (a.pts !== b.pts) return b.pts - a.pts; 

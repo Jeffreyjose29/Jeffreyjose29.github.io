@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IPL 2026 Pro Simulator | Advanced Analytics</title>
+    <style>
+        :root {
+            --ipl-navy: #19226D;
+            --ipl-blue: #22367E;
+            --ipl-gold: #FFD700;
+            --ipl-orange: #FF6600;
+            --ipl-green: #059669;
+            --bg-light: #F0F2F5;
+            --bg-white: #FFFFFF;
+            --border: #CBD5E1;
+            --text-dark: #0F172A;
+            --text-muted: #64748B;
+            --font-main: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --glass: rgba(255, 255, 255, 0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- OFFICIAL BANNER NAVIGATION --- */
+        .top-bar {
+            background-color: #060822;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            padding: 0 60px;
+            justify-content: space-between;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .top-bar-logos { display: flex; align-items: center; gap: 25px; }
+        .top-bar-logos img { height: 28px; cursor: pointer; transition: transform 0.2s; }
+        .top-bar-logos img:hover { transform: scale(1.1); }
+
+        .social-links { display: flex; align-items: center; gap: 15px; color: white; font-size: 0.8rem;}
+
+        .main-nav-banner {
+    background: linear-gradient(90deg, #2d2f88 0%, #22367E 100%);
+    height: 85px;
+    display: flex;
+    align-items: center;
+    padding: 0; /* remove left-right spacing */
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+}
+
+.ipl-main-logo {
+    height: 84px; /* fill full nav height */
+    width: auto;
+    margin: 0;
+    padding: 0;
+    display: block;
+    cursor: pointer;
+}
+
+        .nav-links-container { display: flex; align-items: center; gap: 5px; flex-grow: 1; }
+        .nav-item {
+            color: white; text-decoration: none; text-transform: uppercase; font-weight: 700;
+            font-size: 0.85rem; padding: 10px 18px; cursor: pointer; letter-spacing: 0.5px;
+            position: relative; transition: 0.3s; border-radius: 4px;
+        }
+        .nav-item:hover { background: rgba(255,255,255,0.1); }
+        .nav-item.active { color: var(--ipl-gold); }
+        .nav-item.active::after {
+            content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%);
+            width: 20px; height: 3px; background: var(--ipl-gold);
+        }
+
+        .nav-icons-right { display: flex; align-items: center; gap: 20px; margin-left: auto;}
+        .nav-icons-right img { height: 35px; cursor: pointer; }
+
+        /* --- LIVE TICKER --- */
+        .live-ticker {
+            background: #FF6600; color: white; padding: 8px 0; font-weight: 700;
+            font-size: 0.8rem; text-transform: uppercase; overflow: hidden; white-space: nowrap;
+        }
+        .ticker-content { display: inline-block; animation: ticker 30s linear infinite; }
+        @keyframes ticker { 0% { transform: translateX(100%); } 100% { transform: translateX(-100%); } }
+
+        /* --- MAIN CONTENT LOGIC --- */
+        main { max-width: 1300px; margin: 40px auto; padding: 0 20px; }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; animation: slideUp 0.4s ease-out; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- UI COMPONENTS --- */
+        .btn { 
+            padding: 12px 28px; border-radius: 8px; border: none; font-weight: 800; 
+            cursor: pointer; transition: 0.3s; text-transform: uppercase; font-size: 0.8rem;
+        }
+        .btn-primary { background: var(--ipl-orange); color: white; }
+        .btn-primary:hover { background: #e65c00; transform: scale(1.02); box-shadow: 0 5px 15px rgba(255,102,0,0.3); }
+        .btn:disabled { background: #cbd5e1; color: #64748b; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .match-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 25px; }
+        .match-card { 
+            background: white; border-radius: 12px; overflow: hidden; 
+            border: 1px solid var(--border); transition: 0.3s;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            display: flex; flex-direction: column;
+        }
+        .match-card:hover { transform: translateY(-5px); border-color: var(--ipl-blue); }
+        .match-header { 
+            background: #f8fafc; padding: 10px 20px; border-bottom: 1px solid #edf2f7;
+            display: flex; justify-content: space-between; align-items: center;
+            font-weight: 800; font-size: 0.7rem; color: var(--text-muted);
+        }
+        .match-body { padding: 20px; flex-grow: 1; }
+        .team-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+        .team-info { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+        .team-logo-small { width: 32px; height: 32px; object-fit: contain; border-radius: 50%; border: 1px solid #e2e8f0; padding: 2px; background: white;}
+        .match-footer { background: #f8fafc; padding: 10px; text-align: center; font-size: 0.7rem; font-weight: 900; border-top: 1px solid #edf2f7; }
+
+        .table-container { background: white; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); overflow: hidden; }
+        table { width: 100%; border-collapse: collapse; }
+        th { background: #19226D; color: white; padding: 15px; font-size: 0.8rem; text-transform: uppercase; }
+        td { padding: 15px; text-align: center; border-bottom: 1px solid #f1f5f9; font-weight: 600;}
+        .pos-cell { font-weight: 900; color: var(--ipl-blue); }
+        
+        .form-dots { display: flex; gap: 4px; justify-content: center; }
+        .form-dot { width: 22px; height: 22px; border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 900; color: white; }
+        .dot-w { background-color: #10B981; }
+        .dot-l { background-color: #EF4444; }
+
+        .sidebar { background: white; border: 1px solid var(--border); padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+        .input-group { margin-bottom: 25px; }
+        .input-group label { display: flex; justify-content: space-between; font-size: 0.75rem; font-weight: 800; color: var(--text-muted); margin-bottom: 8px; text-transform: uppercase; }
+        select, input[type="number"] { width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--border); font-family: inherit; font-weight: 600; outline: none; }
+        input[type="range"] { width: 100%; accent-color: var(--ipl-blue); cursor: pointer; }
+        
+        .slider-row { display: flex; align-items: center; gap: 15px; background: #f8fafc; padding: 10px 15px; border-radius: 8px; margin-bottom: 10px; border: 1px solid #e2e8f0; }
+        .slider-row span { font-weight: 900; font-size: 0.8rem; color: var(--ipl-blue); width: 25px; text-align: right; }
+
+        .playoff-tier { display: flex; justify-content: center; gap: 40px; margin-bottom: 40px; flex-wrap: wrap; }
+    </style>
+</head>
+<body>
+
+<div class="live-ticker">
+    <div class="ticker-content">
+        🔥 IPL 2026 AUCTION NEWS: RTM CARDS REINTRODUCED • CSK VS MI SEASON OPENER TICKETS LIVE SOON • MONTE CARLO MODEL UPDATED WITH LATEST PLAYER FORM • 
+    </div>
+</div>
+
+<div class="top-bar">
+    <div class="top-bar-logos">
+        <a href="https://www.bcci.tv" target="_blank"><img src="img/ipl/bcci.webp" alt="BCCI"></a>
+        <a href="https://www.wplt20.com" target="_blank"><img src="img/ipl/wpl.webp" alt="WPL"></a>
+    </div>
+    <div class="social-links">
+        Follow Us: <span>𝕏</span> <span>📸</span> <span>ⓕ</span>
+    </div>
+</div>
+
+<nav class="main-nav-banner">
+    <a href="https://www.iplt20.com" target="_blank">
+        <img src="img/ipl/ipl_logo2.png" class="ipl-main-logo" alt="IPL Logo">
+    </a>
+    <div class="nav-links-container">
+        <div class="nav-item active" onclick="showTab('matches', this)">Fixtures</div>
+        <div class="nav-item" onclick="showTab('points', this)">Points Table</div>
+        <div class="nav-item" onclick="showTab('playoffs', this)">Knockouts</div>
+        <div class="nav-item" onclick="showTab('monte', this)">Monte Carlo</div>
+    </div>
+    <div class="nav-icons-right">
+        <a href="https://www.iplt20.com/fan-poll" target="_blank" rel="noopener noreferrer">
+    <img src="img/ipl/fan_poll.webp" alt="Poll">
+</a>
+
+<a href="https://www.iplt20.com/polls/emerging-player" target="_blank" rel="noopener noreferrer">
+    <img src="img/ipl/viewers_choice.webp" alt="Choice">
+</a>
+    </div>
+</nav>
+
+<main>
+    <section id="tab-matches" class="tab-panel active">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+            <h1 style="font-weight: 900; color: var(--ipl-navy); font-size: 1.8rem;">SEASON FIXTURES</h1>
+            <div>
+                <button class="btn btn-primary" onclick="simulateGroupStage()">Simulate Group Stage</button>
+                <button class="btn" style="background: white; border: 1px solid var(--border); color: var(--text-dark); margin-left: 10px;" onclick="resetSeason()">Reset</button>
+            </div>
+        </div>
+        <div class="match-grid" id="match-list"></div>
+    </section>
+
+    <section id="tab-points" class="tab-panel">
+        <h1 style="font-weight: 900; color: var(--ipl-navy); margin-bottom: 30px; font-size: 1.8rem;">LEAGUE STANDINGS</h1>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Pos</th><th style="text-align: left;">Franchise</th><th>Pld</th><th>W</th><th>L</th><th>Form</th><th>Pts</th><th>NRR</th>
+                    </tr>
+                </thead>
+                <tbody id="points-body"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <section id="tab-playoffs" class="tab-panel">
+        <div style="text-align: center; margin-bottom: 50px;">
+            <h1 style="font-weight: 900; color: var(--ipl-navy); font-size: 1.8rem; margin-bottom: 10px;">ROAD TO THE FINAL</h1>
+            <p id="playoff-msg" style="color: var(--text-muted); font-weight: 600; margin-bottom: 25px;">Complete the Group Stage to unlock the Knockout Bracket.</p>
+            <button class="btn btn-primary" id="btn-sim-playoffs" onclick="simulatePlayoffs()" disabled>Run Knockout Stage</button>
+        </div>
+        <div id="playoffs-bracket"></div>
+    </section>
+
+    <section id="tab-monte" class="tab-panel">
+        <div style="display: grid; grid-template-columns: 380px 1fr; gap: 40px; align-items: start;">
+            <div class="sidebar">
+                <h2 style="font-weight: 900; color: var(--ipl-navy); margin-bottom: 25px; border-bottom: 2px solid #f1f5f9; padding-bottom: 10px;">Simulation Engine</h2>
+                
+                <div class="input-group">
+                    <label><span>Iterations</span><span>Max 100k</span></label>
+                    <input type="number" id="sim-count" value="5000" step="1000" max="100000">
+                </div>
+                
+                <div class="input-group">
+                    <label><span>Variance (Upset Probability)</span><span id="var-val">30%</span></label>
+                    <input type="range" id="mc-random" min="0" max="100" value="30" oninput="document.getElementById('var-val').innerText = this.value + '%'">
+                </div>
+                
+                <button class="btn btn-primary" style="width: 100%; margin-bottom: 30px;" onclick="runMonteCarlo()">Execute Analysis</button>
+                
+                <h3 style="font-size: 0.8rem; font-weight: 800; color: var(--text-muted); text-transform: uppercase; margin-bottom: 15px;">Franchise Power Index (FPI)</h3>
+                <div id="strength-editor"></div>
+            </div>
+            
+            <div class="table-container" id="mc-results-container" style="min-height: 500px; display: flex; align-items: center; justify-content: center;">
+                <p style="color: var(--text-muted); font-weight: 600;">Adjust parameters and execute the analysis to generate probability models.</p>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    // --- CORE CONFIGURATION & DATA ---
+    const TEAMS_CONFIG = [
+        { id: 'CSK', name: 'Chennai Super Kings', strength: 88 },
+        { id: 'MI',  name: 'Mumbai Indians', strength: 86 },
+        { id: 'KKR', name: 'Kolkata Knight Riders', strength: 85 },
+        { id: 'RCB', name: 'Royal Challengers Bengaluru', strength: 82 },
+        { id: 'RR',  name: 'Rajasthan Royals', strength: 81 },
+        { id: 'GT',  name: 'Gujarat Titans', strength: 79 },
+        { id: 'SRH', name: 'Sunrisers Hyderabad', strength: 77 },
+        { id: 'LSG', name: 'Lucknow Super Giants', strength: 76 },
+        { id: 'DC',  name: 'Delhi Capitals', strength: 74 },
+        { id: 'PBKS',name: 'Punjab Kings', strength: 72 }
+    ];
+
+    let TEAMS = [];
+    let matches = [];
+    let playoffMatches = [];
+    let groupStageComplete = false;
+
+    const getLogoPath = (id) => `img/teams/${id.toLowerCase()}.png`;
+
+    // --- UTILITIES ---
+    function showTab(tabId, element) {
+        if(element.classList.contains('cursor-not-allowed')) return;
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        document.getElementById('tab-' + tabId).classList.add('active');
+        element.classList.add('active');
+    }
+
+    function ballsToOversStr(balls) { return Math.floor(balls / 6) + "." + (balls % 6); }
+    function ballsToDecimalOvers(balls) { return balls / 6; }
+
+    // --- INITIALIZATION ---
+    window.onload = () => {
+        resetSeason();
+        renderStrengthEditor();
+    };
+
+    function resetSeason() {
+        TEAMS = TEAMS_CONFIG.map(t => ({
+            ...t, pl: 0, w: 0, l: 0, pts: 0, 
+            runsFor: 0, ballsFaced: 0, runsAgainst: 0, ballsBowled: 0, nrr: 0, form: []
+        }));
+        
+        matches = [];
+        playoffMatches = [];
+        groupStageComplete = false;
+        let count = 1;
+        
+        // Generate Double Round Robin
+        for(let i=0; i < TEAMS.length; i++) {
+            for(let j=i+1; j < TEAMS.length; j++) {
+                matches.push({ id: count++, h: TEAMS[i].id, a: TEAMS[j].id, result: null, date: 'APR ' + (count % 30 + 1) });
+                matches.push({ id: count++, h: TEAMS[j].id, a: TEAMS[i].id, result: null, date: 'MAY ' + (count % 30 + 1) });
+            }
+        }
+        
+        document.getElementById('btn-sim-playoffs').disabled = true;
+        document.getElementById('playoff-msg').innerText = "Complete the Group Stage to unlock the Knockout Bracket.";
+        document.getElementById('playoffs-bracket').innerHTML = '';
+        
+        renderMatches();
+        updatePointsTable();
+    }
+
+    // --- SIMULATION LOGIC ---
+    function simInnings(target = null, strength) {
+        let runs = 0, wickets = 0, balls = 0;
+        let maxBalls = 120;
+        let strFactor = (strength - 80) / 100; 
+        
+        let pW = Math.max(0.01, 0.055 - (strFactor * 0.03)); 
+        let pDot = 0.32 - (strFactor * 0.1); 
+        let p1 = 0.40; let p2 = 0.08; let p4 = 0.10 + (strFactor * 0.05); let p6 = 0.045 + (strFactor * 0.03);
+        
+        let total = pW + pDot + p1 + p2 + p4 + p6;
+        pW /= total; pDot /= total; p1 /= total; p2 /= total; p4 /= total; p6 /= total;
+
+        for(let i=1; i<=maxBalls; i++) {
+            balls++;
+            let r = Math.random();
+            if (r < pW) { wickets++; if (wickets === 10) break; }
+            else if (r < pW + pDot) runs += 0;
+            else if (r < pW + pDot + p1) runs += 1;
+            else if (r < pW + pDot + p1 + p2) runs += 2;
+            else if (r < pW + pDot + p1 + p2 + p4) runs += 4;
+            else runs += 6;
+
+            if (target !== null && runs >= target) break;
+        }
+        return { runs, wickets, balls, oversStr: ballsToOversStr(balls) };
+    }
+
+    function simMatch(match, upsetProb) {
+        const hStr = parseInt(document.getElementById(`str-${match.h}`)?.value) || TEAMS.find(t=>t.id===match.h).strength;
+        const aStr = parseInt(document.getElementById(`str-${match.a}`)?.value) || TEAMS.find(t=>t.id===match.a).strength;
+
+        const noise = (Math.random() - 0.5) * (upsetProb / 2);
+        const homeBatFirst = Math.random() > 0.5;
+
+        let t1 = homeBatFirst ? match.h : match.a;
+        let t2 = homeBatFirst ? match.a : match.h;
+        let s1 = (homeBatFirst ? hStr : aStr) + (noise * 10);
+        let s2 = (homeBatFirst ? aStr : hStr) - (noise * 10);
+
+        let inn1 = simInnings(null, s1);
+        let target = inn1.runs + 1;
+        let inn2 = simInnings(target, s2);
+
+        let winnerId, marginText;
+        if (inn2.runs >= target) {
+            winnerId = t2;
+            marginText = `${winnerId} WON BY ${10 - inn2.wickets} WICKETS`;
+        } else if (inn1.runs > inn2.runs) {
+            winnerId = t1;
+            marginText = `${winnerId} WON BY ${inn1.runs - inn2.runs} RUNS`;
+        } else {
+            winnerId = Math.random() > 0.5 ? t1 : t2;
+            if(winnerId === t2) inn2.runs++; else inn1.runs++; 
+            marginText = `${winnerId} WON BY SUPER OVER`;
+        }
+
+        return {
+            winnerId, marginText, homeBatFirst, t1, t2,
+            hScore: homeBatFirst ? `${inn1.runs}/${inn1.wickets}` : `${inn2.runs}/${inn2.wickets}`,
+            aScore: homeBatFirst ? `${inn2.runs}/${inn2.wickets}` : `${inn1.runs}/${inn1.wickets}`,
+            hOvers: homeBatFirst ? inn1.oversStr : inn2.oversStr,
+            aOvers: homeBatFirst ? inn2.oversStr : inn1.oversStr,
+            inn1runs: inn1.runs, inn1wickets: inn1.wickets, inn1balls: inn1.balls,
+            inn2runs: inn2.runs, inn2wickets: inn2.wickets, inn2balls: inn2.balls
+        };
+    }
+
+    function simulateGroupStage() {
+        const upset = parseInt(document.getElementById('mc-random').value) || 30;
+        matches.forEach(m => { if(!m.result) m.result = simMatch(m, upset); });
+        
+        groupStageComplete = true;
+        document.getElementById('btn-sim-playoffs').disabled = false;
+        document.getElementById('playoff-msg').innerText = "Group Stage Complete. The Knockout Bracket is ready.";
+        
+        updatePointsTable();
+        renderMatches();
+    }
+
+    // --- RENDER LOGIC ---
+    function updatePointsTable() {
+        TEAMS.forEach(t => { 
+            t.pl = 0; t.w = 0; t.l = 0; t.pts = 0; 
+            t.runsFor = 0; t.ballsFaced = 0; t.runsAgainst = 0; t.ballsBowled = 0; t.form = [];
+        });
+
+        matches.filter(m => m.result).forEach(m => {
+            const h = TEAMS.find(t => t.id === m.h);
+            const a = TEAMS.find(t => t.id === m.a);
+            const r = m.result;
+
+            h.pl++; a.pl++;
+            if (r.winnerId === h.id) { h.w++; h.pts += 2; a.l++; h.form.push('W'); a.form.push('L'); }
+            else { a.w++; a.pts += 2; h.l++; a.form.push('W'); h.form.push('L'); }
+
+            let i1B = r.inn1wickets === 10 ? 120 : r.inn1balls;
+            let i2B = r.inn2wickets === 10 ? 120 : r.inn2balls;
+
+            if (r.homeBatFirst) {
+                h.runsFor += r.inn1runs; h.ballsFaced += i1B; a.runsAgainst += r.inn1runs; a.ballsBowled += i1B;
+                a.runsFor += r.inn2runs; a.ballsFaced += i2B; h.runsAgainst += r.inn2runs; h.ballsBowled += i2B;
+            } else {
+                a.runsFor += r.inn1runs; a.ballsFaced += i1B; h.runsAgainst += r.inn1runs; h.ballsBowled += i1B;
+                h.runsFor += r.inn2runs; h.ballsFaced += i2B; a.runsAgainst += r.inn2runs; a.ballsBowled += i2B;
+            }
+        });
+
+        TEAMS.forEach(t => {
+            t.nrr = t.ballsFaced > 0 ? (t.runsFor / ballsToDecimalOvers(t.ballsFaced)) - (t.runsAgainst / ballsToDecimalOvers(t.ballsBowled)) : 0;
+            if (t.form.length > 5) t.form = t.form.slice(-5);
+        });
+
+        TEAMS.sort((a,b) => b.pts - a.pts || b.nrr - a.nrr);
+
+        const body = document.getElementById('points-body');
+        body.innerHTML = '';
+        TEAMS.forEach((t, i) => {
+            const isQual = i < 4 ? 'background-color: #f0fdf4; border-left: 4px solid var(--ipl-green);' : 'border-left: 4px solid transparent;';
+            const nrrStr = (t.nrr > 0 ? "+" : "") + t.nrr.toFixed(3);
+            let formHtml = t.form.map(f => `<div class="form-dot ${f==='W'?'dot-w':'dot-l'}">${f}</div>`).join('');
+
+            body.innerHTML += `
+                <tr style="${isQual}">
+                    <td class="pos-cell">${i+1}</td>
+                    <td>
+                        <div style="display:flex; align-items:center; gap:12px;">
+                            <img src="${getLogoPath(t.id)}" class="team-logo-small">
+                            <span style="font-weight:700;">${t.name}</span>
+                        </div>
+                    </td>
+                    <td>${t.pl}</td><td>${t.w}</td><td>${t.l}</td>
+                    <td><div class="form-dots">${formHtml || '-'}</div></td>
+                    <td style="font-weight: 900; color: var(--ipl-blue); font-size: 1.1em;">${t.pts}</td>
+                    <td style="color: ${t.nrr >= 0 ? 'var(--ipl-green)' : '#DC2626'}; font-weight: bold;">${nrrStr}</td>
+                </tr>`;
+        });
+    }
+
+    function createMatchCard(m) {
+        const h = TEAMS_CONFIG.find(t => t.id === m.h);
+        const a = TEAMS_CONFIG.find(t => t.id === m.a);
+        const r = m.result;
+
+        return `
+            <div class="match-card">
+                <div class="match-header">
+                    <span>MATCH ${m.id}</span>
+                    <span style="color: ${r ? 'var(--ipl-blue)' : 'inherit'}">${r ? 'COMPLETED' : m.date}</span>
+                </div>
+                <div class="match-body">
+                    <div class="team-row">
+                        <div class="team-info"><img src="${getLogoPath(h.id)}" class="team-logo-small"> 
+                        <span style="color: ${r && r.winnerId === h.id ? 'var(--ipl-blue)' : 'inherit'}">${h.name}</span></div>
+                        <div style="text-align:right;">
+                            <span style="font-weight:900; font-size:1.1rem;">${r ? r.hScore : '-'}</span>
+                            ${r ? `<span style="font-size:0.7rem; color:var(--text-muted);">(${r.hOvers})</span>` : ''}
+                        </div>
+                    </div>
+                    <div class="team-row" style="margin-bottom:0;">
+                        <div class="team-info"><img src="${getLogoPath(a.id)}" class="team-logo-small"> 
+                        <span style="color: ${r && r.winnerId === a.id ? 'var(--ipl-blue)' : 'inherit'}">${a.name}</span></div>
+                        <div style="text-align:right;">
+                            <span style="font-weight:900; font-size:1.1rem;">${r ? r.aScore : '-'}</span>
+                            ${r ? `<span style="font-size:0.7rem; color:var(--text-muted);">(${r.aOvers})</span>` : ''}
+                        </div>
+                    </div>
+                </div>
+                <div class="match-footer" style="color: ${r ? 'var(--ipl-orange)' : 'var(--text-muted)'}">
+                    ${r ? r.marginText : 'UPCOMING FIXTURE'}
+                </div>
+            </div>
+        `;
+    }
+
+    function renderMatches() {
+        const list = document.getElementById('match-list');
+        list.innerHTML = '';
+        matches.slice(0, 42).forEach(m => list.innerHTML += createMatchCard(m));
+    }
+
+    function renderStrengthEditor() {
+        const cont = document.getElementById('strength-editor');
+        cont.innerHTML = '';
+        TEAMS_CONFIG.forEach(t => {
+            cont.innerHTML += `
+                <div class="slider-row">
+                    <img src="${getLogoPath(t.id)}" class="team-logo-small" style="width:24px; height:24px;">
+                    <input type="range" id="str-${t.id}" min="50" max="100" value="${t.strength}" oninput="document.getElementById('val-${t.id}').innerText = this.value">
+                    <span id="val-${t.id}">${t.strength}</span>
+                </div>
+            `;
+        });
+    }
+
+    // --- PLAYOFFS ---
+    function simulatePlayoffs() {
+        if (!groupStageComplete) return;
+        TEAMS.sort((a,b) => b.pts - a.pts || b.nrr - a.nrr);
+        const upset = parseInt(document.getElementById('mc-random').value) || 30;
+        let t1 = TEAMS[0].id, t2 = TEAMS[1].id, t3 = TEAMS[2].id, t4 = TEAMS[3].id;
+
+        let q1 = { id: 'QUALIFIER 1', h: t1, a: t2, date: 'MAY 24', result: null };
+        let el = { id: 'ELIMINATOR', h: t3, a: t4, date: 'MAY 25', result: null };
+        q1.result = simMatch(q1, upset); el.result = simMatch(el, upset);
+
+        let q1W = q1.result.winnerId; let q1L = q1W === t1 ? t2 : t1; let elW = el.result.winnerId;
+
+        let q2 = { id: 'QUALIFIER 2', h: q1L, a: elW, date: 'MAY 27', result: null };
+        q2.result = simMatch(q2, upset); let q2W = q2.result.winnerId;
+
+        let final = { id: 'GRAND FINAL', h: q1W, a: q2W, date: 'MAY 29', result: null };
+        final.result = simMatch(final, upset); let champ = final.result.winnerId;
+
+        const bracket = document.getElementById('playoffs-bracket');
+        bracket.innerHTML = `
+            <div class="playoff-tier">
+                <div style="width: 350px;">${createMatchCard(q1)}</div>
+                <div style="width: 350px;">${createMatchCard(el)}</div>
+            </div>
+            <div class="playoff-tier">
+                <div style="width: 350px;">${createMatchCard(q2)}</div>
+            </div>
+            <div class="playoff-tier">
+                <div style="width: 450px; transform: scale(1.05); box-shadow: 0 20px 40px rgba(0,0,0,0.15); border: 2px solid var(--ipl-gold); border-radius: 12px;">
+                    ${createMatchCard(final).replace('class="match-header"', 'class="match-header" style="background: var(--ipl-navy); color: var(--ipl-gold); border-bottom: 2px solid var(--ipl-gold); font-size: 0.9rem;"')}
+                </div>
+            </div>
+            <div style="text-align:center; background: linear-gradient(135deg, var(--ipl-gold), #FFA500); padding: 30px; border-radius: 15px; color: white; width: 100%; max-width: 600px; box-shadow: 0 10px 20px rgba(0,0,0,0.1);">
+                <div style="font-size: 0.8rem; font-weight: 900; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px;">Tournament Winner</div>
+                <div style="font-size: 2.5rem; font-weight: 900;">${TEAMS.find(t=>t.id===champ).name}</div>
+            </div>
+        `;
+        document.getElementById('btn-sim-playoffs').disabled = true;
+    }
+
+    // --- MONTE CARLO ---
+    function fastDecideWinner(s1, s2, upset) {
+        return Math.random() < (0.5 + ((s1 - s2) / 100) * (1 - (upset/100))) ? 1 : 2;
+    }
+
+    function runMonteCarlo() {
+        const count = parseInt(document.getElementById('sim-count').value);
+        const upset = parseInt(document.getElementById('mc-random').value);
+        const container = document.getElementById('mc-results-container');
+        
+        const stats = {};
+        TEAMS_CONFIG.forEach(t => stats[t.id] = { champ: 0, final: 0, top4: 0, str: parseInt(document.getElementById(`str-${t.id}`).value) });
+
+        container.innerHTML = `<div style="text-align:center; color: var(--ipl-blue); font-weight: 800; font-size: 1.2rem; animation: pulse 1.5s infinite;">Processing ${count.toLocaleString()} Permutations...</div>`;
+
+        setTimeout(() => {
+            for(let i=0; i<count; i++) {
+                let pts = {}; TEAMS_CONFIG.forEach(t => pts[t.id] = 0);
+                for(let a=0; a<TEAMS_CONFIG.length; a++) {
+                    for(let b=a+1; b<TEAMS_CONFIG.length; b++) {
+                        let id1 = TEAMS_CONFIG[a].id; let id2 = TEAMS_CONFIG[b].id;
+                        fastDecideWinner(stats[id1].str, stats[id2].str, upset) === 1 ? pts[id1]+=2 : pts[id2]+=2;
+                        fastDecideWinner(stats[id2].str, stats[id1].str, upset) === 1 ? pts[id2]+=2 : pts[id1]+=2;
+                    }
+                }
+                let l = Object.keys(pts).map(id => ({id, p: pts[id] + Math.random()})).sort((a,b) => b.p - a.p);
+                let r1 = l[0].id, r2 = l[1].id, r3 = l[2].id, r4 = l[3].id;
+                stats[r1].top4++; stats[r2].top4++; stats[r3].top4++; stats[r4].top4++;
+
+                let q1W = fastDecideWinner(stats[r1].str, stats[r2].str, upset) === 1 ? r1 : r2;
+                let q1L = q1W === r1 ? r2 : r1;
+                let elW = fastDecideWinner(stats[r3].str, stats[r4].str, upset) === 1 ? r3 : r4;
+                let q2W = fastDecideWinner(stats[q1L].str, stats[elW].str, upset) === 1 ? q1L : elW;
+                let champ = fastDecideWinner(stats[q1W].str, stats[q2W].str, upset) === 1 ? q1W : q2W;
+                
+                stats[champ].champ++; stats[champ].final++; stats[champ === q1W ? q2W : q1W].final++;
+            }
+
+            const sorted = Object.entries(stats).sort((a,b) => b[1].champ - a[1].champ);
+            let html = `<table style="width:100%;"><thead><tr><th>Franchise</th><th>Win Title</th><th>Reach Final</th><th>Top 4</th></tr></thead><tbody>`;
+            
+            sorted.forEach(([id, s]) => {
+                const team = TEAMS_CONFIG.find(t => t.id === id);
+                const pC = ((s.champ / count) * 100).toFixed(1);
+                const pF = ((s.final / count) * 100).toFixed(1);
+                const p4 = ((s.top4 / count) * 100).toFixed(1);
+                
+                const heatColor = pC > 20 ? 'color: var(--ipl-green); font-weight: 900;' : (pC > 10 ? 'color: var(--ipl-blue); font-weight: 800;' : 'color: var(--text-dark);');
+
+                html += `<tr>
+                    <td style="text-align:left; display:flex; align-items:center; gap:10px;"><img src="${getLogoPath(id)}" class="team-logo-small"> <strong>${team.name}</strong></td>
+                    <td style="${heatColor} font-size:1.1rem;">${pC}%</td>
+                    <td style="font-weight:600;">${pF}%</td>
+                    <td style="font-weight:600;">${p4}%</td>
+                </tr>`;
+            });
+            container.innerHTML = html + `</tbody></table>`;
+        }, 50);
+    }
+</script>
+</body>
+</html>
