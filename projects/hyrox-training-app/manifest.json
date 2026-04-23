@@ -1,0 +1,10 @@
+{
+  "name": "HYBRD",
+  "icons": [
+    {
+      "src": "img/logo.jpg",
+      "type": "image/jpg",
+      "sizes": "512x512"
+    }
+  ]
+}
