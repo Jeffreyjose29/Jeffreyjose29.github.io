@@ -225,7 +225,16 @@ body{font-family:var(--fb);color:var(--fg);display:flex;justify-content:center;a
 <div id="onb">
   <div class="oh"><div class="br">HYROX TRAINING</div><div class="sl" id="slbl">Step 1 of 4</div></div>
   <div class="ob">
-    <div class="obs" data-s="1"><h2>What's your name?</h2><p class="su">Let's personalize your training experience.</p><input type="text" id="inp-name" placeholder="Enter your name" value="Jeffrey" autocomplete="off"></div>
+    <div class="obs" data-s="1">
+  <h2>What's your name?</h2>
+  <p class="su">Let's personalize your training experience.</p>
+  <input 
+    type="text" 
+    id="inp-name" 
+    placeholder="John Doe" 
+    autocomplete="off"
+  >
+</div>
     <div class="obs" data-s="2" style="display:none"><h2>When is race day?</h2><p class="su">We'll build your plan to peak on the right day.</p><input type="date" id="inp-date"></div>
     <div class="obs" data-s="3" style="display:none"><h2>What's your fitness level?</h2><p class="su">This helps us calibrate your training intensity.</p>
       <div id="fit-opts">
@@ -260,7 +269,7 @@ if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js');
 }
 
-var SK='hyrox_v4',state=null,onbStep=1,onbD={name:'Jeffrey',raceDate:'',level:'',freq:0};
+var SK='hyrox_v4',state=null,onbStep=1,onbD={name:'Hybrid Athlete',raceDate:'',level:'',freq:0};
 var DN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],DF=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 function cap(s){return s?s[0].toUpperCase()+s.slice(1):''}
 function save(){try{localStorage.setItem(SK,JSON.stringify(state))}catch(e){}}
@@ -273,7 +282,7 @@ function load(){try{var d=localStorage.getItem(SK);if(d){state=JSON.parse(d);ret
   document.getElementById('inp-date').min=new Date().toISOString().split('T')[0];
 
   document.getElementById('onb-btn').addEventListener('click',function(){
-    if(onbStep===1)onbD.name=document.getElementById('inp-name').value.trim()||'Jeffrey';
+    if(onbStep===1)onbD.name=document.getElementById('inp-name').value.trim()||'Hybrid Athlete';
     if(onbStep===2)onbD.raceDate=document.getElementById('inp-date').value;
     if(onbStep<4){onbStep++;showStep();vStep();}
     else finalize();
@@ -417,7 +426,14 @@ function swTab(t){if(t===curTab)return;var prev=document.querySelector('[data-t=
 function rOv(){
   var el=document.getElementById('tp-ov');var today=new Date();today.setHours(0,0,0,0);var rd=new Date(state.profile.raceDate);rd.setHours(0,0,0,0);var dl=Math.max(0,Math.ceil((rd-today)/864e5));var ws=new Date(today);ws.setDate(ws.getDate()-today.getDay());var wc=0,wt=0,wcal=0;
   state.plan.forEach(function(w){w.days.forEach(function(d){if(d.type==='rest'||!d.done)return;var dd=new Date(d.doneDate);if(dd>=ws&&dd<=today){wc++;wt+=d.dur||0;wcal+=Math.round((d.dur||0)*8.5)}})});
-  el.innerHTML='<div class="gr ani"><h1>Hi '+state.profile.name+'</h1><div class="cd"><i class="fas fa-bolt" style="margin-right:4px"></i> '+dl+' days until race day</div></div><div class="sr ani d1"><div class="sc ya"><div class="sv">'+wc+'</div><div class="sll">Workouts</div></div><div class="sc"><div class="sv">'+wt+'m</div><div class="sll">Training</div></div><div class="sc yg"><div class="sv">'+wcal+'</div><div class="sll">Calories</div></div></div><div class="sh ani d2"><h3>This Week</h3></div><div id="cal-sec" class="ani d2"></div><div class="sh ani d3"><h3>Progress</h3></div><div class="ccb ani d3"><div class="ctg"><button class="ctb on" data-c="strength">Strength</button><button class="ctb" data-c="cardio">Cardio</button></div><div class="ccw"><canvas id="pchart"></canvas><div class="ce" id="chart-empty"><i class="fas fa-chart-line"></i><span>Log exercises to see progress</span></div></div></div><div class="sh ani d3"><h3>Streak</h3></div><div class="stc ani d3"><div class="sf"><i class="fas fa-fire"></i></div><div class="si"><h4>'+state.streak+' Day Streak</h4><p>'+(state.streak>=7?'On fire!':state.streak>=3?'Building momentum!':'Start your streak today.')+'</p></div></div><div class="sh ani d4"><h3>Achievements</h3></div><div class="ar ani d4" id="ach-row"></div><button class="swb ani d4 pglow" onclick="startNext()"><i class="fas fa-play"></i> Start Next Workout</button><div class="sh"><h3>Recovery</h3></div><div class="rc ani d4"><div class="rr"><span class="rl"><i class="fas fa-moon" style="margin-right:6px;color:var(--ac)"></i>Sleep (hrs)</span><input class="ri" type="number" value="'+state.rec.sleep+'" min="0" max="12" step="0.5" onchange="state.rec.sleep=parseFloat(this.value);save()"></div><div class="rr"><span class="rl"><i class="fas fa-heart-pulse" style="margin-right:6px;color:var(--err)"></i>Soreness</span><input class="ri" type="number" value="'+state.rec.sore+'" min="1" max="10" onchange="state.rec.sore=parseFloat(this.value);save()"></div><div class="rr"><span class="rl"><i class="fas fa-face-smile" style="margin-right:6px;color:var(--ok)"></i>Mood</span><input class="ri" type="number" value="'+state.rec.mood+'" min="1" max="10" onchange="state.rec.mood=parseFloat(this.value);save()"></div></div><div class="es"><h4>Data</h4><button class="eb" onclick="doCSV()"><i class="fas fa-file-csv"></i> Export CSV</button><button class="eb" onclick="doShare()"><i class="fas fa-share-nodes"></i> Share</button><button class="eb dng" onclick="doReset()"><i class="fas fa-trash-can"></i> Reset App</button></div><div style="height:20px"></div>';
+  el.innerHTML =
+'<div class="gr ani" style="display:flex; align-items:center; justify-content:space-between;">\
+  <h1 style="margin:0;">Hi '+state.profile.name+'</h1>\
+  <img src="img/hyrox_logo.png" alt="Hyrox Logo" style="height:40px; object-fit:contain;">\
+</div>\
+<div class="cd"><i class="fas fa-bolt" style="margin-right:4px"></i> '+dl+' days until race day</div>'
+
++ '<div class="sr ani d1"><div class="sc ya"><div class="sv">'+wc+'</div><div class="sll">Workouts</div></div><div class="sc"><div class="sv">'+wt+'m</div><div class="sll">Training</div></div><div class="sc yg"><div class="sv">'+wcal+'</div><div class="sll">Calories</div></div></div><div class="sh ani d2"><h3>This Week</h3></div><div id="cal-sec" class="ani d2"></div><div class="sh ani d3"><h3>Progress</h3></div><div class="ccb ani d3"><div class="ctg"><button class="ctb on" data-c="strength">Strength</button><button class="ctb" data-c="cardio">Cardio</button></div><div class="ccw"><canvas id="pchart"></canvas><div class="ce" id="chart-empty"><i class="fas fa-chart-line"></i><span>Log exercises to see progress</span></div></div></div><div class="sh ani d3"><h3>Streak</h3></div><div class="stc ani d3"><div class="sf"><i class="fas fa-fire"></i></div><div class="si"><h4>'+state.streak+' Day Streak</h4><p>'+(state.streak>=7?'On fire!':state.streak>=3?'Building momentum!':'Start your streak today.')+'</p></div></div><div class="sh ani d4"><h3>Achievements</h3></div><div class="ar ani d4" id="ach-row"></div><button class="swb ani d4 pglow" onclick="startNext()"><i class="fas fa-play"></i> Start Next Workout</button><div class="sh"><h3>Recovery</h3></div><div class="rc ani d4"><div class="rr"><span class="rl"><i class="fas fa-moon" style="margin-right:6px;color:var(--ac)"></i>Sleep (hrs)</span><input class="ri" type="number" value="'+state.rec.sleep+'" min="0" max="12" step="0.5" onchange="state.rec.sleep=parseFloat(this.value);save()"></div><div class="rr"><span class="rl"><i class="fas fa-heart-pulse" style="margin-right:6px;color:var(--err)"></i>Soreness</span><input class="ri" type="number" value="'+state.rec.sore+'" min="1" max="10" onchange="state.rec.sore=parseFloat(this.value);save()"></div><div class="rr"><span class="rl"><i class="fas fa-face-smile" style="margin-right:6px;color:var(--ok)"></i>Mood</span><input class="ri" type="number" value="'+state.rec.mood+'" min="1" max="10" onchange="state.rec.mood=parseFloat(this.value);save()"></div></div><div class="es"><h4>Data</h4><button class="eb" onclick="doCSV()"><i class="fas fa-file-csv"></i> Export CSV</button><button class="eb" onclick="doShare()"><i class="fas fa-share-nodes"></i> Share</button><button class="eb dng" onclick="doReset()"><i class="fas fa-trash-can"></i> Reset App</button></div><div style="height:20px"></div>';
   rCal();rAch();setTimeout(rCharts,100);
   el.querySelectorAll('.ctb').forEach(function(btn){btn.addEventListener('click',function(){el.querySelectorAll('.ctb').forEach(function(b){b.classList.remove('on')});btn.classList.add('on');rCharts(btn.dataset.c)})});
 }
