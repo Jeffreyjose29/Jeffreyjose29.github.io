@@ -3,6 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#000000">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+
 <link rel="manifest" href="manifest.json" />
 <title>HYROX TRAINING</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -247,6 +255,11 @@ body{font-family:var(--fb);color:var(--fg);display:flex;justify-content:center;a
 
 <!-- SCRIPT 1: Onboarding + Boot (kept small to NEVER get truncated) -->
 <script>
+
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js');
+}
+
 var SK='hyrox_v4',state=null,onbStep=1,onbD={name:'Jeffrey',raceDate:'',level:'',freq:0};
 var DN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],DF=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'],MN=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 function cap(s){return s?s[0].toUpperCase()+s.slice(1):''}
